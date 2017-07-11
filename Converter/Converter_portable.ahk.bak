@@ -885,8 +885,10 @@ return
 Update:
 If ConnectedToInternet()
 {
-	UrlDownloadToFile, %dev_sborka%, "%A_Temp%\DBFFC.tmp\sborka.num"
+	UrlDownloadToFile, https://raw.githubusercontent.com/Apik21/Converter/master/sborka.num, "%A_Temp%\DBFFC.tmp\sborka.num"
+	ELM(%ErrorLevel%, Ошибка загрузки., 1)
 	FileRead, new_sborka, "%A_Temp%\DBFFC.tmp\sborka.num"
+	ELM(%ErrorLevel%, Ошибка чтения., 1)
 	If new_sborka > sborka 
 	{
 		MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%sborka2%.`n Скачать обновление??

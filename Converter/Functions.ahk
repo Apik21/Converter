@@ -5,6 +5,20 @@ ConnectedToInternet(flag=0x40)
 	Return DllCall("wininet.dll\InternetGetConnectedState", "Str", flag,"Int",0)
 }
 ;===================================================================================================
+ELM(ERR,e_msg, e_off=0)
+{
+	If ERR =1 
+	{
+		If e_off = 1
+		{
+			Msgbox, 48, Ошибка, %e_msg%
+			return
+		}
+		else
+			Msgbox, 48, Ошибка, %e_msg%
+	}
+}
+;===================================================================================================
 functiff(wp, lp, msg, hwnd)
 {
 	global hGui1, WI, i

@@ -10,6 +10,7 @@ FileCreateDir, %A_AppData%\Конвертер\Logs
 
 global Vers
 global sborka
+global dev_sborka
 global DnDJpeg
 global DnDPdf
 global DnDTiff
@@ -41,9 +42,10 @@ else
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
 sborka = 340                                  ; Номер сборки версии
+dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
-Repo = https://drive.google.com/drive/folders/0B3WLh6f1GjY1TXYzU2prWVhIdzg?usp=sharing ; Адрес программы для обновления
+Repo = https://rawgit.com/Apik21/Converter/master/ConverterSetup.exe ; Адрес программы для обновления
 LogPath = %A_AppData%\Конвертер\Logs\         ; Путь к папле для создания логов
 LogLine = "=========================================== `%date`% - `%time`% ================================================"
 CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
@@ -673,13 +675,34 @@ Run, "%A_AppData%\Конвертер\Logs"
 return
 
 Update:
-MsgBox, 52, Обновление, Автоматическое обновление будет доступно в ближайших версиях. Текущая версия программы - %Vers%.%sborka%, разрядность системы - %sys%. Желаете посетить репозиторий проекта для проверки доступности новой версии???
-IfMsgBox Yes
+If ConnectedToInternet()
 {
-	If ConnectedToInternet()
-		Run, %Repo%
+	UrlDownloadToFile, https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt, %A_Temp%\DBFFC.tmp\sborka.txt
+	ELM(%ErrorLevel%, Ошибка загрузки, 1)
+	FileRead, new_sborka, %A_Temp%\DBFFC.tmp\sborka.txt
+	ELM(%ErrorLevel%, Ошибка чтения, 1)
+	If (new_sborka > sborka) 
+	{
+		MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%new_sborka%.`n Скачать обновление??
+		IfMsgBox Yes
+		{
+			MsgBox,,Конвертер,Спасибо за ваш выбор.
+			Run, %Repo%
+			bat = ping 127.0.0.1 > NUL`ndel /F /Q Converter.exe`ndel /F /Q delete.bat
+			FileDelete, delete.bat
+			FileAppend %bat%, delete.bat
+			Run delete.bat, ,Hide
+			ExitApp
+
+return
+		}
+	}
 	else
-		Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
+		MsgBox,,Поздравляю!,Вы используете последнюю версию программы.
+}	
+else 
+{
+	Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 }
 Return
 

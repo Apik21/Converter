@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Icirc; &iuml;&eth;&icirc;&atilde;&eth;&agrave;&igrave;&igrave;&aring;">
+		<param name="Name" value="1">
+		<param name="Local" value="1.htm">
+		<param name="URL" value="1.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Ecirc;&icirc;&iacute;&acirc;&aring;&eth;&ograve;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring; &egrave;&ccedil;">
+			<param name="Name" value="Конвертирование">
+			<param name="Local" value="3.htm">
+			<param name="URL" value="3.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Ntilde;&aelig;&agrave;&ograve;&egrave;&aring;">
+			<param name="Name" value="Сжатие">
+			<param name="Local" value="2.htm">
+			<param name="URL" value="2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Iuml;&eth;&icirc;&divide;&aring;&aring;">
+			<param name="Name" value="4">
+			<param name="Local" value="4.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Egrave;&ntilde;&ograve;&icirc;&eth;&egrave;&yuml;">
+		<param name="Name" value="History">
+		<param name="Local" value="History.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>

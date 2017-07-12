@@ -1,0 +1,24 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=1.chm
+Contents file=C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\Table of Contents.hhc
+Default Window=Panel
+Display compile progress=Yes
+Index file=C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\Index.hhk
+Language=0x419 Русский (Россия)
+Title=Справка
+
+[WINDOWS]
+Panel="Справка","C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\Table of Contents.hhc","C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\Index.hhk","C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\1.htm","C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\1.htm","C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\Credit.htm","Разработчик",,,0x42121,,0x40066,[830,0,1278,526],,,,1,,,0
+
+
+[FILES]
+C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\1.htm
+C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\2.htm
+C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\3.htm
+C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\4.htm
+C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\History.htm
+C:\Users\krezub\Google Диск\AHK\Программы\Исходники\Conv\1.1.2 Setup\Spravka\Credit.htm
+
+[INFOTYPES]
+

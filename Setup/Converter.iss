@@ -23,11 +23,11 @@ DefaultDirName={localappdata}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=D:\AHK\1.1.2\Converter\Setup\License.txt
-InfoBeforeFile=D:\AHK\1.1.2\Converter\Setup\sys.txt
-OutputDir=D:\AHK\1.1.2\Converter\
+LicenseFile=D:\AHK\GitHub\Converter\Setup\License.txt
+InfoBeforeFile=D:\AHK\GitHub\Converter\Setup\sys.txt
+OutputDir=D:\AHK\GitHub\Converter\
 OutputBaseFilename=ConverterSetup
-SetupIconFile=D:\AHK\1.1.2\Converter\Setup\conv2.ico
+SetupIconFile=D:\AHK\GitHub\Converter\Setup\conv2.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -40,9 +40,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "D:\AHK\1.1.2\Converter\Setup\converter.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\AHK\1.1.2\Converter\Setup\Compi\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\AHK\1.1.2\Converter\Setup\License.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AHK\GitHub\Converter\Setup\converter.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AHK\GitHub\Converter\Setup\Compi\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\AHK\GitHub\Converter\Setup\License.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; Примечание: Не используйте флаги "ignoreversion" для общих системных файлов.
 
 [Icons]

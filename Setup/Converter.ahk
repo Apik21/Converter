@@ -42,10 +42,10 @@ else
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
 sborka = 340                                  ; Номер сборки версии
-dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt ;Сборка с сайта
+dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/setup/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
-Repo = https://rawgit.com/Apik21/Converter/master/ConverterSetup.exe ; Адрес программы для обновления
+Repo = https://raw.githubusercontent.com/Apik21/Converter/setup/ConverterSetup.exe ; Адрес программы для обновления
 LogPath = %A_AppData%\Конвертер\Logs\         ; Путь к папле для создания логов
 LogLine = "=========================================== `%date`% - `%time`% ================================================"
 CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
@@ -677,13 +677,14 @@ return
 Update:
 If ConnectedToInternet()
 {
-	UrlDownloadToFile, https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt, %A_Temp%\DBFFC.tmp\sborka.txt
+	UrlDownloadToFile, %dev_sborka%, %A_Temp%\DBFFC.tmp\sborka.txt
 	ELM(%ErrorLevel%, Ошибка загрузки, 1)
 	FileRead, new_sborka, %A_Temp%\DBFFC.tmp\sborka.txt
 	ELM(%ErrorLevel%, Ошибка чтения, 1)
-	If (new_sborka > sborka) 
+	If new_sborka > %sborka%
 	{
-		MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%new_sborka%.`n Скачать обновление??
+		MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%new_sborka%.`n Скачать обновление???
+		FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 		IfMsgBox Yes
 		{
 			MsgBox,,Конвертер,Спасибо за ваш выбор.
@@ -693,12 +694,13 @@ If ConnectedToInternet()
 			FileAppend %bat%, delete.bat
 			Run delete.bat, ,Hide
 			ExitApp
-
-return
 		}
 	}
 	else
+	{
 		MsgBox,,Поздравляю!,Вы используете последнюю версию программы.
+		FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
+	}
 }	
 else 
 {

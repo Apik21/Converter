@@ -559,7 +559,7 @@ IfExist, %LogPath%\Config.ini
 				{
 					MsgBox,,Конвертер,Спасибо за ваш выбор.
 					Run, %Repo%
-					bat = ping 127.0.0.1 > NUL`ndel /F /Q ConverterPortable.exe`ndel /F /Q delete.bat
+					bat = ping 127.0.0.1 > NUL`ndel /F /Q ConverterPortable*.exe`ndel /F /Q delete.bat
 					FileDelete, delete.bat
 					FileAppend %bat%, delete.bat
 					Run delete.bat, ,Hide

@@ -35,7 +35,12 @@ global CmdLog
 global gs
 global cv
 global sys
-
+global Win
+global Dos
+global Iso
+global Koir
+global Koiu
+global Mac, Period
 ;***************Проверка разрядности системы************************************************************
 ThisProcess := DllCall("GetCurrentProcess")
 if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
@@ -54,7 +59,7 @@ else
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 340                                  ; Номер сборки версии
+sborka = 342                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -512,30 +517,62 @@ Gui, 25:Add, Button, x5 y50 w70 h40 gBasE, Шифровать
 Gui, 25:Add, Button, x80 y50 w80 h40 gBasD, Дешифровать
 Gui, 25:Add, Button, x165 y50 w80 h40 gTb2bt, Шиф./Дешиф. текст
 
-;Gui, 26:Add, В резерве
-
 Gui, 27:Add, GroupBox, x3 y11 w150 h180 , Кодовая страница
-Gui, 27:Add, CheckBox, Checked 1 x15 y23 w100 h30 vWin gUpPage1, - 1251 Windows
-Gui, 27:Add, CheckBox, x15 y46 w100 h30 vDos gUpPage2, - 866 Dos
-Gui, 27:Add, CheckBox, x15 y72 w100 h30 vIso gUpPage3, - 28595 ISO
-Gui, 27:Add, CheckBox, x15 y97 w100 h30 vKoir gUpPage4, - 20866 KOI8-R
-Gui, 27:Add, CheckBox, x15 y122 w100 h30 vKoiu gUpPage5, - 21866 KOI8-U
-Gui, 27:Add, CheckBox, x15 y148 w100 h30 vMac gUpPage6, - 10007 Mac
+Gui, 27:Add, CheckBox, Checked 1 x15 y23 w100 h30 vWin gUpPage, - 1251 Windows
+Gui, 27:Add, CheckBox, x15 y46 w100 h30 vDos gUpPage, - 866 Dos
+Gui, 27:Add, CheckBox, x15 y72 w100 h30 vIso gUpPage, - 28595 ISO
+Gui, 27:Add, CheckBox, x15 y97 w100 h30 vKoir gUpPage, - 20866 KOI8-R
+Gui, 27:Add, CheckBox, x15 y122 w100 h30 vKoiu gUpPage, - 21866 KOI8-U
+Gui, 27:Add, CheckBox, x15 y148 w100 h30 vMac gUpPage, - 10007 Mac
 Gui, 27:Add, GroupBox, x162 y13 w252 h178 , Обновление
 Gui, 27:Add, Text, x170 y35 w150 h20 , Проверка обновлений
 Gui, 27:Add, Edit, x170 y56 w227 h20 vRep, %Rep%
+Gui, 27:Add, Text, x170 y80 w200 h20 , Частота автопроверки обновлений
+Gui, 27:Add, Edit, x170 y101 w30 h20 vPeriod, %Period%
+Gui, 27:Add, Text, x210 y101 w50 h20 , дней
 Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
-GuiControl, 27:Disabled, - 866 Dos
-GuiControl, 27:Disabled, - 28595 ISO
-GuiControl, 27:Disabled, - 20866 KOI8-R
-GuiControl, 27:Disabled, - 21866 KOI8-U
-GuiControl, 27:Disabled, - 10007 Mac
-GuiControlGet, Upd,, Upd
 
 VarSetCapacity(WI, 64)
 Sleep, 1024
-Gui, Show, Center h190 w300, Конвертер 
-
+Gui, Show, Center h190 w300, Конвертер
+;================АВТООБНОВЛЕНИЕ=====================================
+IfExist, %LogPath%\Config.ini
+{
+	IniRead, DataIzm, %LogPath%\Config.ini, Options, DataIzm
+	Delta = %A_YDay% - %DataIzm%
+	
+	If Delta >= %Period%
+	{
+		IfExist, %A_Temp%\DBFFC.tmp\sborka.txt
+		FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
+		If ConnectedToInternet()
+		{
+			UrlDownloadToFile, %dev_sborka%, %A_Temp%\DBFFC.tmp\sborka.txt
+			ELM(%ErrorLevel%, Ошибка загрузки, 1)
+			FileRead, new_sborka, %A_Temp%\DBFFC.tmp\sborka.txt
+			ELM(%ErrorLevel%, Ошибка чтения, 1)
+			If new_sborka > %sborka%
+			{
+				MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%new_sborka%.`n Скачать обновление???
+				FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
+				IfMsgBox Yes
+				{
+					MsgBox,,Конвертер,Спасибо за ваш выбор.
+					Run, %Repo%
+					bat = ping 127.0.0.1 > NUL`ndel /F /Q ConverterPortable.exe`ndel /F /Q delete.bat
+					FileDelete, delete.bat
+					FileAppend %bat%, delete.bat
+					Run delete.bat, ,Hide
+					ExitApp
+				}
+			}
+			else
+				FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
+		}	
+		else 
+			Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
+	}
+}
 Return
 
 GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
@@ -727,142 +764,167 @@ return
 ;*****************************OPTIONS***********************************************************
 ;***********************************************************************************************
 Options:
+
+global Arr := [{Perem: "Win",  Page: 1251,  Chek: "- 1251 Win"}
+			 , {Perem: "Dos",  Page: 866,   Chek: "- 866 Dos"}
+			 , {Perem: "Iso",  Page: 28595, Chek: "- 28595 ISO"}
+			 , {Perem: "Koir", Page: 20866, Chek: "- 20866 KOI8-R"}
+			 , {Perem: "Koiu", Page: 21866, Chek: "- 21866 KOI8-U"}
+			 , {Perem: "Mac",  Page: 10007, Chek: "- 10007 Mac"}]
+
+IfNotExist, %LogPath%\Config.ini
+{
+	IniWrite, 1251, %LogPath%\Config.ini, Options, PageN
+	IniWrite, 14, %LogPath%\Config.ini, Options, Period
+	IniWrite, %A_YDay%, %LogPath%\Config.ini, Options, DataIzm
+	global PageN = 1251, global Period = 14
+   	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	GuiControl, 27:, - 1251 Win,1
+	GuiControl,27:,Period, %Period% 
+	Loop, 6
+	{
+		c:= % Arr[A_Index].Chek
+		If A_Index > 1
+		{
+			GuiControl, 27:, %c%,0
+			GuiControl, 27:Disabled,%c%
+		}
+	}
+}
+else
+{
+	IniRead, PageN, %LogPath%\Config.ini, Options, PageN, 1251
+	Loop, 6
+	{
+		n:= % Arr[A_Index].Page
+		c:= % Arr[A_Index].Chek
+		if n = %PageN%
+		{
+			CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
+			RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+			GuiControl, 27:, %c%,1
+			GuiControl, 27:Enabled,%c%
+		}
+		else
+		{
+			GuiControl, 27:, %c%,0
+			GuiControl, 27:Disabled,%c%
+		}
+	}
+	
+	IniRead, Period, %LogPath%\Config.ini, Options, Period, 14
+	GuiControl,27:, Period, %Period%
+}
 Gui 27:Show, ,Настройки
 return
 
-UpPage1:
-GuiControlGet, Win,, Win
-If Win =1
+UpPage:
+
+GuiControlGet, Win,,Win
+GuiControlGet, Dos,,Dos
+GuiControlGet, Iso,,Iso
+GuiControlGet, Koir,,Koir
+GuiControlGet, Koiu,,Koiu
+GuiControlGet, Mac,,Mac
+
+If (Win = 1) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
 {
 	global PageN = 1251
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
 	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	GuiControl, 27:Disabled, - 866 Dos
-	GuiControl, 27:Disabled, - 28595 ISO
-	GuiControl, 27:Disabled, - 20866 KOI8-R
-	GuiControl, 27:Disabled, - 21866 KOI8-U
-	GuiControl, 27:Disabled, - 10007 Mac
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+		If A_Index > 1
+			GuiControl, 27:Disabled, % Arr[A_Index].Chek
+	}
 }
-else
-{
-	GuiControl, 27:Enabled, - 866 Dos
-	GuiControl, 27:Enabled, - 28595 ISO
-	GuiControl, 27:Enabled, - 20866 KOI8-R
-	GuiControl, 27:Enabled, - 21866 KOI8-U
-	GuiControl, 27:Enabled, - 10007 Mac
-}
-return
 
-UpPage2:
-GuiControlGet, Dos,, Dos
-If Dos =1
+If (Win = 0) & (Dos = 1) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
 {
 	global PageN = 866
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
 	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	GuiControl, 27:Disabled, - 1251 Win
-	GuiControl, 27:Disabled, - 28595 ISO
-	GuiControl, 27:Disabled, - 20866 KOI8-R
-	GuiControl, 27:Disabled, - 21866 KOI8-U
-	GuiControl, 27:Disabled, - 10007 Mac
+RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+		If A_Index != 2
+			GuiControl, 27:Disabled, % Arr[A_Index].Chek
+	}
 }
-else
-{
-	GuiControl, 27:Enabled, - 1251 Win
-	GuiControl, 27:Enabled, - 28595 ISO
-	GuiControl, 27:Enabled, - 20866 KOI8-R
-	GuiControl, 27:Enabled, - 21866 KOI8-U
-	GuiControl, 27:Enabled, - 10007 Mac
-}
-return
 
-UpPage3:
-GuiControlGet, Iso,, Iso
-If Iso =1
+If (Win = 0) & (Dos = 0) & (Iso = 1) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
 {
 	global PageN = 28595
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
 	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	GuiControl, 27:Disabled, - 866 Dos
-	GuiControl, 27:Disabled, - 1251 Win
-	GuiControl, 27:Disabled, - 20866 KOI8-R
-	GuiControl, 27:Disabled, - 21866 KOI8-U
-	GuiControl, 27:Disabled, - 10007 Mac
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+		If A_Index != 3
+			GuiControl, 27:Disabled, % Arr[A_Index].Chek
+	}
 }
-else
-{
-	GuiControl, 27:Enabled, - 866 Dos
-	GuiControl, 27:Enabled, - 1251 Win
-	GuiControl, 27:Enabled, - 20866 KOI8-R
-	GuiControl, 27:Enabled, - 21866 KOI8-U
-	GuiControl, 27:Enabled, - 10007 Mac
-}
-return
 
-UpPage4:
-GuiControlGet, Koir,, Koir
-If Koir =1
+If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 1) & (Koiu = 0) & (Mac = 0)
 {
 	global PageN = 20866
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
 	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	GuiControl, 27:Disabled, - 866 Dos
-	GuiControl, 27:Disabled, - 28595 ISO
-	GuiControl, 27:Disabled, - 1251 Win
-	GuiControl, 27:Disabled, - 21866 KOI8-U
-	GuiControl, 27:Disabled, - 10007 Mac
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+		If A_Index != 4
+			GuiControl, 27:Disabled, % Arr[A_Index].Chek
+	}
 }
-else
-{
-	GuiControl, 27:Enabled, - 866 Dos
-	GuiControl, 27:Enabled, - 28595 ISO
-	GuiControl, 27:Enabled, - 1251 Win
-	GuiControl, 27:Enabled, - 21866 KOI8-U
-	GuiControl, 27:Enabled, - 10007 Mac
-}
-return
 
-UpPage5:
-GuiControlGet, Koiu,, Koiu
-If Koiu =1
+If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 1) & (Mac = 0)
 {
 	global PageN = 21866
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
 	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	GuiControl, 27:Disabled, - 866 Dos
-	GuiControl, 27:Disabled, - 28595 ISO
-	GuiControl, 27:Disabled, - 20866 KOI8-R
-	GuiControl, 27:Disabled, - 1251 Win
-	GuiControl, 27:Disabled, - 10007 Mac
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+		If A_Index != 5
+			GuiControl, 27:Disabled, % Arr[A_Index].Chek
+	}
 }
-else
-{
-	GuiControl, 27:Enabled, - 866 Dos
-	GuiControl, 27:Enabled, - 28595 ISO
-	GuiControl, 27:Enabled, - 20866 KOI8-R
-	GuiControl, 27:Enabled, - 1251 Win
-	GuiControl, 27:Enabled, - 10007 Mac
-}
-return
 
-UpPage6:
-GuiControlGet, Mac,, Mac
-If Mac =1
+If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 1)
 {
 	global PageN = 10007
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
 	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	GuiControl, 27:Disabled, - 866 Dos
-	GuiControl, 27:Disabled, - 28595 ISO
-	GuiControl, 27:Disabled, - 20866 KOI8-R
-	GuiControl, 27:Disabled, - 21866 KOI8-U
-	GuiControl, 27:Disabled, - 1251 Win
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+		If A_Index != 6
+			GuiControl, 27:Disabled, % Arr[A_Index].Chek
+	}
 }
-else
+
+If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
 {
-	GuiControl, 27:Enabled, - 866 Dos
-	GuiControl, 27:Enabled, - 28595 ISO
-	GuiControl, 27:Enabled, - 20866 KOI8-R
-	GuiControl, 27:Enabled, - 21866 KOI8-U
-	GuiControl, 27:Enabled, - 1251 Win
+	global PageN = 1251
+	IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
+	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	Loop, 6
+	{
+			GuiControl, 27:Enabled, % Arr[A_Index].Chek
+	}
 }
+
 return
 
 27ButtonСохранить:
+GuiControlGet PeriodIzm,,Period
+IniWrite, %PeriodIzm%, %LogPath%\Config.ini, Options, Period
+If Period != % PeriodIzm
+	IniWrite, %A_YDay%, %LogPath%\Config.ini, Options, DataIzm
 Gui 27:Submit
 return
 
@@ -940,14 +1002,9 @@ Gui, 21:Submit
 Loop, parse, files, `n
 {
     if a_index = 1
-	{
 		path = %A_LoopField%
-    }
 	else
-	{
-	; Установить дату изменения (время будет полночь):
-		FileSetTime, %Vremya%, %path%\%A_LoopField% , M
-	} 
+		FileSetTime, %Vremya%, %path%\%A_LoopField% , M ; Установить дату изменения (время будет полночь):
 }
 sleep 500
 ControlClick, JPG,Конвертер, , LEFT
@@ -967,14 +1024,9 @@ Gui, 21:Submit
 Loop, parse, files, `n
 {
     if a_index = 1
-	{
 		path = %A_LoopField%
-    }
 	else
-	{
-	; Установить дату изменения (время будет полночь):
-		FileSetTime, %Vremya%, %path%\%A_LoopField% , C
-	} 
+		FileSetTime, %Vremya%, %path%\%A_LoopField% , C ; Установить дату изменения (время будет полночь):
 }
 sleep 500
 ControlClick, JPG,Конвертер, , LEFT
@@ -985,25 +1037,18 @@ VD:
 Gui, 21:Submit
 FileSelectFile, files, M3,,Редактирование времени последнего доступа к файлу, Все файлы (*.*) ; M3 = Множественный выбор существующих файлов.
 if files =
-{
     return
-}
 
 WinWaitClose Редактирование времени последнего доступа к файлу
 GuiControlGet, Vremya
 Gui, 21:Submit
 Loop, parse, files, `n
-	{
-		if a_index = 1
-		{
-			path = %A_LoopField%
-		}
-		else
-		{
-		; Установить дату изменения (время будет полночь):
-			FileSetTime, %Vremya%, %path%\%A_LoopField% , A
-		} 
-	}
+{
+	if a_index = 1
+		path = %A_LoopField%
+	else
+		FileSetTime, %Vremya%, %path%\%A_LoopField% , A ; Установить дату изменения (время будет полночь):
+}
 sleep 500
 ControlClick, JPG,Конвертер, , LEFT
 MsgBox, 64,Конвертер, Готово!, 1
@@ -1024,12 +1069,10 @@ Return
 BasE:
 Gui 25:Submit
 FileSelectFile, files, 3,,Зашифровать файл, Все файлы (*.*)
-	if files =
-	{
-		return
-	}
-	WinWaitClose Зашифровать файл
-	SplitPath, files, FiNam, Dir, Ext, Name
+if files =
+	return
+WinWaitClose Зашифровать файл
+SplitPath, files, FiNam, Dir, Ext, Name
 base = "%A_Temp%\DBFFC.tmp\bsed.exe" -e "%files%" "%A_Temp%\DBFFC.tmp\%FiNam%" 
 GuiControlGet, Int,, Int
 WaitProgress(1)

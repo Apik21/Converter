@@ -14,12 +14,19 @@
 		<param name="Local" value="History.htm">
 		<param name="ImageNumber" value="17">
 		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="&Icirc; &iuml;&eth;&icirc;&atilde;&eth;&agrave;&igrave;&igrave;&aring;">
-		<param name="Local" value="1.htm">
-		<param name="ImageNumber" value="9">
-		</OBJECT>
 	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Readme">
+			<param name="Local" value="README.htm">
+			<param name="WindowName" value="Readme">
+			<param name="Comment" value="Справка">
+			<param name="ImageNumber" value="17">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Icirc; &iuml;&eth;&icirc;&atilde;&eth;&agrave;&igrave;&igrave;&aring;">
+			<param name="Local" value="1.htm">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="&Ecirc;&icirc;&iacute;&acirc;&aring;&eth;&ograve;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring;">
 			<param name="Local" value="3.htm">

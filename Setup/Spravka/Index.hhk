@@ -6,6 +6,11 @@
 </HEAD><BODY>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Readme">
+		<param name="Name" value="README">
+		<param name="See Also" value="README.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&Icirc; &iuml;&eth;&icirc;&atilde;&eth;&agrave;&igrave;&igrave;&aring;">
 		<param name="Name" value="1">
 		<param name="Local" value="1.htm">
@@ -28,12 +33,14 @@
 			<param name="Name" value="&Iuml;&eth;&icirc;&divide;&aring;&aring;">
 			<param name="Name" value="4">
 			<param name="Local" value="4.htm">
+			<param name="URL" value="4.htm">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="&Egrave;&ntilde;&ograve;&icirc;&eth;&egrave;&yuml;">
 		<param name="Name" value="History">
 		<param name="Local" value="History.htm">
+		<param name="URL" value="History.htm">
 		</OBJECT>
 </UL>
 </BODY></HTML>

@@ -21,26 +21,11 @@ IfWinActive, Конвертер
 return
 
 Label1:
-global Vers
-global sborka
-global dev_sborka
-global DnDJpeg
-global DnDPdf
-global DnDTiff
-global DnDDoc
-global DnDPng
-global PageN
-global LogLine
-global CmdLog
-global gs
-global cv
-global sys
-global Win
-global Dos
-global Iso
-global Koir
-global Koiu
-global Mac, Period
+global Vers, global sborka, global dev_sborka
+global DnDJpeg, global DnDPdf, global DnDTiff, global DnDDoc, global DnDPng
+global PageN, global LogLine, global CmdLog
+global gs, global cv, global sys
+global Win, global Dos, global Iso, global Koir, global Koiu, global Mac, Period
 ;***************Проверка разрядности системы************************************************************
 ThisProcess := DllCall("GetCurrentProcess")
 if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
@@ -574,6 +559,8 @@ IfExist, %LogPath%\Config.ini
 	}
 }
 Return
+;================КОННЕЦ НАЧАЛЬНОГО БЛОКА=====================================
+
 
 GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 {

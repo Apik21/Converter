@@ -1,57 +1,106 @@
-# Converter
-Конвертер изображений
+<html>
+<h1>Converter</h1>
 
-Программа "Конвертер" является унифицированной оболочкой, включающей в себя модули и библиотеки сторонних разработчиков.
-В программе использованы следующие модули:
-- GhostScript (gsdll64.dll, gsdll64.lib)
-- NConverter (cvert64.exe, cvert.exe)
-- PdfTk (pdftk.exe, libiconv2.dll)
-- Ildar Shaimordanov (doc.bat, doc2fb.xsl)
+<h2>Конвертер изображений</h2>
+<h2>Image Converter</h2>
+<hr>
+<body>
+<p><a href="https://raw.githubusercontent.com/Apik21/Converter/master/ConverterPortable.exe">Скачать портативную версию</a></p>
 
-
-Версия 1.0.0 Сборка 015
-  Поддерживает:
-  
-  Конвертирование
-- Jpg to Pdf
-- Pdf to Jpg
-- Tiff to Jpg
-- Jpg to Tiff
-
-  Сжатие
-- Tiff, Pdf и Jpg
-
-Версия 1.0.2 Сборка 022
-  Добавлено: 
-- Склеить и Разрезание PDF Файлов 
-
-Версия 1.0.3 Сборка 003-026
-  Добавлено:
-- Изменение метаданных, Восстановление, Снияте и Установка защиты PDF Файлов.
-- Раздел DOC: конвертирование DOC, DOCX, HTML, XML, RTF, MHT, TXT в PDF, XPS, HTML, XML, RTF, MHT, TXT. - Раздел DOC: конвертирование в FB2 формат. 
-
-Версия 1.1.0 Сборка 227
-  Добавлено:
-- Полностью изменен и оптимизирован алгоритм работы окон программы.
-- Добавлена возможность изменения даты создания, изменения или открытия любых не защищенных файлов.
-  Добавлено конвертирование:
-- JPG в PS, PNG, JPEG, ICO, EMF, BMP ;
-- PDF в TIFF (цветной), TIFF (чернобелый), TXT (для файлов с текстовым слоем) ;
-- TIFF в PS, PNG, PDF, ICO, EMF, BMP . 
-- Изменен алгоритм сжатия исполняемого (бинарного) файла;
-- Добавлена функция Drag-and-Drop.
-- Устранены известные ошибки. 
-
-Версия 1.1.1 Сборка 231-326
-  Добавлено:
-- Добавлена возможность конвертирования из pdf формата в DJVU. - Добавлена возможность конвертирования из png формата в PDF, TIFF, PS, JPG, JPEG, ICO, EMF, BMP.
-- Исправлены мелкие ошибки при конвертировании из JPG в PNG. - В функцию Drag-and-Drop добавлено склеивание PDF файлов при перенесении их в блок Сжатие. - Добавлена возможность шифровать/дешифровать любой файл по алгоритму Base64. - Ведение лога исполненя команд.
-- Возможность изменения кодовой страницы.
-- Исправлены известные ошибки. 
-
-Версия 1.1.2 Сборка 330
-  Изменения:
-- Дополнен и улучшен раздел шифрования.
-- Внесены изменения в внешний интерфейс.
-- Устранена ошибка конвертирования в FB2.
-- Исправлены другие известные ошибки и оптимизирован код. 
+<p><a href="https://raw.githubusercontent.com/Apik21/Converter/setup/ConverterSetup.exe">Скачать установочную версию</a></p>
+<hr>
+<p>Конвертирует по следующим направлениям</p>
+<table border="1" align="center" cellpadding="5" cols="2">
+   <tr>
+    <th>Исходный формат<br>Source format</th>
+    <th>На выходе<br>At the exit</th>
+   </tr>
+   <tr>
+    <td>Jpg(JPEG)</td>
+    <td>
+      <ul>
+        <li>PDF</li>
+        <li>PS</li>
+        <li>PNG</li>
+        <li>JPEG</li>
+        <li>ICO</li>
+        <li>EMF</li>
+        <li>BMP</li>
+        <li>TIFF</li>
+      </ul>
+    </td></tr>
+<tr>
+    <td>PDF</td>
+    <td>
+      <ul>
+      <li>JPG</li>
+      <li>TIFF(color)</li>
+      <li>TIFF(B&W)</li>
+      <li>DJVU</li>
+      <li>TXT(при наличии текстового слоя)</li>
+      </ul>
+  </tr>
+  <tr>
+  <td>TIFF</td>
+  <td><ul>
+  <li>JPG</li>
+  <li>PDF</li>
+  <li>PS</li>
+  <li>ICO</li>
+  <li>PNG</li>
+  <li>EMF</li>
+  <li>BMP</li>
+  </ul>
+  </tr>
+  <tr>
+  <td>PNG</td>
+  <td><ul>
+        <li>PDF</li>
+        <li>PS</li>
+        <li>JPG</li>
+        <li>JPEG</li>
+        <li>ICO</li>
+        <li>EMF</li>
+        <li>BMP</li>
+        <li>TIFF</li>
+      </ul>
+    </td></tr>
+    <tr>
+    <td>DOC(DOCX)</td>
+    <td><ul>
+    <li>HTML</li>
+    <li>FB2</li>
+    <li>RTF</li>
+    <li>XPS</li>
+    <li>MHT</li>
+    <li>PDF</li>
+    <li>TXT</li>
+    <li>XML</li>
+    </ul></td></tr>
+    <tr>
+    <td colspan="2"><ul><li>Изменение даты и времени создания/изменения/доступа для любых файлов.<br>Change the date and time of creation / modification / access for any files.</ul></li></td>
+    </tr>
+    <tr>
+    <td colspan="2"><ul><li>Шифрование/дешифрование текста или любого файла по алгоритму Base64.<br>Encrypt / decrypt text or any file using the Base64 algorithm.</ul></li></td></tr>
+    <tr>
+    <td colspan="2">Сжатие файлов TIFF<br>Compressing TIFF files</td></tr>
+    <tr><td colspan="2">Сжатие файлов JPG(JPEG)<br>Compression of JPG files (JPEG)</td></tr>
+    <tr>
+    <td>Работа с PDF<br>Working with PDF</td>
+    <td>
+    <ul>
+    <li>Сжатие pdf файлов<br>Compress pdf files</li>
+    <li>Разрезание (Сохранение в pdf выбранных страниц)<br>Cut (Save to pdf selected pages)</li>
+    <li>Склеивание<br>Merge</li>
+    <li>Изменение метаданных файла pdf<br>Changing metadata for a pdf file</li>
+    <li>Установка снятие парольной защиты pdf<br>Setting / removing password protection pdf</li></ul></td></tr>
+ </table>
+ <p>Программа представляет собой скрипт, который в одном окне позволяет использовать ниже перечисленные программы для работы с файлами изображений.<br>The program is a script that allows you to use the following programs in one window to work with image files.</p>
+ <ul>
+  <li>GhostScript (gsdll64.dll, gsdll64.lib)</li>
+  <li>NConverter (cvert64.exe, cvert.exe)</li>
+  <li>PdfTk (pdftk.exe, libiconv2.dll)</li>
+  <li>Ildar Shaimordanov (doc.bat, doc2fb.xsl)</li>
+  </ul>
+</body>
+</html>

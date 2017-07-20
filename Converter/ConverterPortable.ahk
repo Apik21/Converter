@@ -357,9 +357,9 @@ Gui, 9:Add, Button, x166 y40 w75 h30 gDSh, Защита
 
 Gui, 10:+hwndhGui10 +owner1 -Caption +Border
 Gui, 10:Add, Edit, x5 y10 w250 h25 vStran
-Gui, 10:Add, Text, x5 y30 w350 h30, Укажите сохраняемые страницы:1, 3-5, 8 Для поворота после страницы указать сторну поворота: left, right, down. См. справку.
-Gui, 10:Add, Button, x5 y70 w140 h30 gSplt, Сохранить выбранные страницы
-Gui, 10:Add, Button, x160 y70 w60 h30 , Отмена
+Gui, 10:Add, Text, x5 y36 w300 h40, Укажите сохраняемые страницы:1, 3-5, 8 Для поворота после страницы указать сторну поворота: left, right, down. См. справку.
+Gui, 10:Add, Button, x5 y80 w140 h30 gSplt, Сохранить выбранные страницы
+Gui, 10:Add, Button, x160 y80 w60 h30 , Отмена
 
 Gui, 11:+hwndhGui11 +owner1 -Caption +Border
 Gui, 11:Add, Text, x10 y5 w290 h20 , В какой формат будем конвертировать документ?
@@ -519,6 +519,33 @@ Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
 
 VarSetCapacity(WI, 64)
 Sleep, 1024
+
+global GuHi := [{GuiN: 1,  Hg: 190}
+			 , {GuiN: 2,  Hg: 105}	
+			 , {GuiN: 3,  Hg: 70}
+			 , {GuiN: 4,  Hg: 105}			 
+			 , {GuiN: 5,  Hg: 115}
+			 , {GuiN: 6,  Hg: 105}
+			 , {GuiN: 7,  Hg: 105}
+			 , {GuiN: 8,  Hg: 105}
+			 , {GuiN: 9,  Hg: 80}
+			 , {GuiN: 10, Hg: 115}
+			 , {GuiN: 11, Hg: 100}
+			 , {GuiN: 12, Hg: 85}
+			 , {GuiN: 13, Hg: 90}
+			 , {GuiN: 14, Hg: 85}
+			 , {GuiN: 15, Hg: 115}
+			 , {GuiN: 16, Hg: 115}
+			 , {GuiN: 17, Hg: 115}
+			 , {GuiN: 18, Hg: 115}
+			 , {GuiN: 19, Hg: 115}
+			 , {GuiN: 20, Hg: 115}
+			 , {GuiN: 21, Hg: 140}
+			 , {GuiN: 22, Hg: 85}
+			 , {GuiN: 23, Hg: 105}
+			 , {GuiN: 24, Hg: 105}
+			 , {GuiN: 25, Hg: 100}]
+
 Gui, Show, Center h190 w300, Конвертер
 ;================АВТООБНОВЛЕНИЕ=====================================
 IfExist, %LogPath%\Config.ini
@@ -968,12 +995,14 @@ Return
 ;==========================Дата===================================================================
 Dt:
 gosub, allguicancel
-OnMessage(0x0003, "funcdt")
-OnMessage(0x112, "funcdt")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[21].GuiN
+global GuiHigh := % GuHi[21].Hg
+OnMessage(0x0003, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-      Gui, 21:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h140 w300"
-   DllCall("AnimateWindow", Ptr, hGui21, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+if i := !i
+	Gui, 21:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h140 w300"
+DllCall("AnimateWindow", Ptr, hGui21, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 return
 
 VI:
@@ -1045,8 +1074,10 @@ return
 ;==========================Шифрование===============================================================
 Bas:
 gosub, allguicancel
-OnMessage(0x0003, "funcbas")
-OnMessage(0x112, "funcbas")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[25].GuiN
+global GuiHigh := % GuHi[25].Hg
+OnMessage(0x0003, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 25:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h100 w300"
@@ -1110,8 +1141,10 @@ ButtonPNG:
 DnDPng = ""
 BPNG:
 gosub, allguicancel
-OnMessage(0x3, "funcpng")
-OnMessage(0x112, "funcpng")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[22].GuiN
+global GuiHigh := % GuHi[22].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 22:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
@@ -1122,8 +1155,10 @@ ButtonJPG:
 DnDJpeg = ""
 BJPG:
 gosub, allguicancel
-OnMessage(0x3, "funcjpg")
-OnMessage(0x112, "funcjpg")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[12].GuiN
+global GuiHigh := % GuHi[12].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 12:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
@@ -1134,8 +1169,10 @@ ButtonPDF:
 DnDPdf = ""
 BPDF:
 gosub, allguicancel
-OnMessage(0x0003, "funcpdf")
-OnMessage(0x112, "funcpdf")
+global GuiNum := % GuHi[13].GuiN
+global GuiHigh := % GuHi[13].Hg
+OnMessage(0x0003, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 13:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h90"
@@ -1146,8 +1183,10 @@ ButtonTIFF:
 DnDTiff = ""
 BTIFF:
 gosub, allguicancel
-OnMessage(0x0003, "functiff")
-OnMessage(0x112, "functiff")
+global GuiNum := % GuHi[14].GuiN
+global GuiHigh := % GuHi[14].Hg
+OnMessage(0x0003, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 14:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
@@ -1165,8 +1204,10 @@ If DnDJpeg = ""
 	WinWaitClose Конвертация JPG to PDF
 }
 
-OnMessage(0x0003, "funcjp")
-OnMessage(0x112, "funcjp")
+global GuiNum := % GuHi[2].GuiN
+global GuiHigh := % GuHi[2].Hg
+OnMessage(0x0003, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 2:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 DllCall("AnimateWindow", Ptr, hGui2, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
@@ -1381,8 +1422,10 @@ IF DnDJpeg = ""
 		return
 	WinWaitClose Конвертация JPG to PDF
 }
-OnMessage(0x3, "funcjt")
-OnMessage(0x112, "funcjt")
+global GuiNum := % GuHi[4].GuiN
+global GuiHigh := % GuHi[4].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 4:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 	DllCall("AnimateWindow", Ptr, hGui4, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
@@ -1469,9 +1512,10 @@ If DnDPng = ""
 		return
 	WinWaitClose Конвертация PNG to PDF
 }
-
-OnMessage(0x0003, "funcpp")
-OnMessage(0x112, "funcpp")
+global GuiNum := % GuHi[23].GuiN
+global GuiHigh := % GuHi[23].Hg
+OnMessage(0x0003, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 23:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 DllCall("AnimateWindow", Ptr, hGui23, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
@@ -1627,8 +1671,10 @@ IF DnDPng = ""
 		return
 	WinWaitClose Конвертация PNG to TIFF
 }
-OnMessage(0x3, "funcpt")
-OnMessage(0x112, "funcpt")
+global GuiNum := % GuHi[24].GuiN
+global GuiHigh := % GuHi[24].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 		Gui, 24:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
    DllCall("AnimateWindow", Ptr, hGui24, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
@@ -1703,8 +1749,10 @@ else
 	SplitPath, DnDPdf,, Dir, Ext, Name
 	conv = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%Dir%\%Name%`%02d.jpg" "%DnDPdf%" -c quit
 }
-OnMessage(0x3, "funcpj")
-OnMessage(0x112, "funcpj")
+global GuiNum := % GuHi[3].GuiN
+global GuiHigh := % GuHi[3].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 3:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h70 w300"
    DllCall("AnimateWindow", Ptr, hGui3, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -1825,13 +1873,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to JPG"
 }
-OnMessage(0x3, "functj")
-OnMessage(0x112, "functj")
+global GuiNum := % GuHi[5].GuiN
+global GuiHigh := % GuHi[5].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-  ;if i := !i
-      Gui, 5:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-
-   DllCall("AnimateWindow", Ptr, hGui5, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 5:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui5, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -1882,12 +1930,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to PS"
 }
-OnMessage(0x3, "functps")
-OnMessage(0x112, "functps")
+global GuiNum := % GuHi[15].GuiN
+global GuiHigh := % GuHi[15].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 15:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-
-   DllCall("AnimateWindow", Ptr, hGui15, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 15:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui15, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -1938,11 +1987,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to PNG"
 }
-OnMessage(0x3, "functpn")
-OnMessage(0x112, "functpn")
+global GuiNum := % GuHi[16].GuiN
+global GuiHigh := % GuHi[16].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 16:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui16, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 16:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui16, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -1993,11 +2044,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to PDF"
 }
-OnMessage(0x3, "functp")
-OnMessage(0x112, "functp")
+global GuiNum := % GuHi[17].GuiN
+global GuiHigh := % GuHi[17].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 17:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui17, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 17:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui17, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2014,7 +2067,7 @@ if Page = 0
 }
 else
 {
-Page := Page-1
+	Page := Page-1
 	if Del =1
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -page %Page% -o
 	else
@@ -2048,11 +2101,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to Ico"
 }
-OnMessage(0x3, "functi")
-OnMessage(0x112, "functi")
+global GuiNum := % GuHi[18].GuiN
+global GuiHigh := % GuHi[18].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 18:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui18, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 18:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui18, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2069,7 +2124,7 @@ if Page = 0
 }
 else
 {
-Page := Page-1
+	Page := Page-1
 	if Del =1
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out ico -D -c 8 -q %Zip% -page %Page% -o
 	else
@@ -2104,11 +2159,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to EMF"
 }
-OnMessage(0x3, "functe")
-OnMessage(0x112, "functe")
+global GuiNum := % GuHi[19].GuiN
+global GuiHigh := % GuHi[19].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 19:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui19, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 19:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui19, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2125,7 +2182,7 @@ if Page = 0
 }
 else
 {
-Page := Page-1
+	Page := Page-1
 	if Del =1
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out emf -D -c 5 -q %Zip% -page %Page% -o
 	else
@@ -2159,11 +2216,13 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to BMP"
 }
-OnMessage(0x3, "functb")
-OnMessage(0x112, "functb")
+global GuiNum := % GuHi[20].GuiN
+global GuiHigh := % GuHi[20].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 20:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui20, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, 20:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui20, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2180,7 +2239,7 @@ if Page = 0
 }
 else
 {
-Page := Page-1
+	Page := Page-1
 	if Del =1
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out bmp -D -c 5 -q %Zip% -page %Page% -o
 	else
@@ -2213,13 +2272,15 @@ if files =
     return
 
 WinWaitClose Сжатие JPG
-OnMessage(0x3, "funczj")
-OnMessage(0x112, "funczj")   ; M_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[6].GuiN
+global GuiHigh := % GuHi[6].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; M_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-      Gui, 6:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
-   DllCall("AnimateWindow", Ptr, hGui6, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
-	return
+if i := !i
+	Gui, 6:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
+DllCall("AnimateWindow", Ptr, hGui6, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+return
 
 6ButtonOK:
 GuiControlGet, Del
@@ -2255,12 +2316,14 @@ return
 ;==============================Блок сжатия и т.д. Pdf===============================================
 ZP:
 gosub, allguicancel
-OnMessage(0x3, "funczp")
-OnMessage(0x112, "funczp")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[9].GuiN
+global GuiHigh := % GuHi[9].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-      Gui, 9:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h80 w300"
-   DllCall("AnimateWindow", Ptr, hGui9, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+if i := !i
+	Gui, 9:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h80 w300"
+DllCall("AnimateWindow", Ptr, hGui9, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 return
 
 9ButtonСклеить:
@@ -2298,11 +2361,13 @@ if files =
     return
 SplitPath, files,, dir,,name
 WinWaitClose Разрезать PDF
-OnMessage(0x3, "funczpsp")
-OnMessage(0x112, "funczpsp")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[10].GuiN
+global GuiHigh := % GuHi[10].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 10:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w360"
-   DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
+Gui, 10:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
+DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
 return
 
 Splt:
@@ -2341,11 +2406,13 @@ FileCreateDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}
 export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\{41243843A44243E4402042643E4392041643843221}\%name%`%02d.jpg" "%files%" -c quit
 
 WinWaitClose Сжатие PDF
-OnMessage(0x3, "funczpz")
-OnMessage(0x112, "funczpz")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[8].GuiN
+global GuiHigh := % GuHi[8].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 8:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w300"
-   DllCall("AnimateWindow", Ptr, hGui8, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
+Gui, 8:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w300"
+DllCall("AnimateWindow", Ptr, hGui8, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
 return
 
 8ButtonOK:
@@ -2516,14 +2583,15 @@ FileSelectFile, files, 3,,Сжатие TIFF, Изображения (*.tiff; *.t
 if files =
     return
 WinWaitClose Сжатие TIFF
-
-OnMessage(0x3, "funczt")
-OnMessage(0x112, "funczt")
+global GuiNum := % GuHi[7].GuiN
+global GuiHigh := % GuHi[7].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-	if i := !i
-		Gui, 7:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h 105"
-   DllCall("AnimateWindow", Ptr, hGui7, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+if i := !i
+	Gui, 7:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h 105"
+DllCall("AnimateWindow", Ptr, hGui7, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 return
 
 7ButtonOK:
@@ -2555,12 +2623,14 @@ DnDDoc = ""
 BDOC:
 gosub, allguicancel
 VarSetCapacity(WI, 64)
-OnMessage(0x3, "funcdoc")
-OnMessage(0x112, "funcdoc")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[11].GuiN
+global GuiHigh := % GuHi[11].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-      Gui, 11:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h100 w300"
-   DllCall("AnimateWindow", Ptr, hGui11, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+if i := !i
+	Gui, 11:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h100 w300"
+DllCall("AnimateWindow", Ptr, hGui11, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 return
 
 11ButtonHtml:

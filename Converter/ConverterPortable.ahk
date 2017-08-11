@@ -16,8 +16,10 @@ Gui, 26: Add, text, ,`tЗагрузка...`n `n Подождите нескол�
 Gui, 26: Show, Center, app
 WinSet, TransColor, White, app
 gosub, Label1
-IfWinActive, Конвертер
-	Gui, 26: Submit
+WinWaitActive, Конвертер
+WinActivate, Конвертер
+ControlFocus,,Конвертер
+Gui, 26: Submit
 return
 
 Label1:
@@ -27,24 +29,18 @@ global PageN, global LogLine, global CmdLog
 global gs, global cv, global sys
 global Win, global Dos, global Iso, global Koir, global Koiu, global Mac, Period
 ;***************Проверка разрядности системы************************************************************
-ThisProcess := DllCall("GetCurrentProcess")
-if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
-    IsWow64Process := false
-Sys := % IsWow64Process ? "win64" : "win32"
-if sys = "win64"
-{
-	gs = gswin64c.exe
-	cv = cvert64.exe
-}
-else
-{
-	gs = gswin32c.exe
-	cv = cvert.exe
+Architectura()
+if (sys = "win64"){
+	gs := "gswin64c.exe"
+	cv := "cvert64.exe"
+}else if (sys = "win32"){
+	gs := "gswin32c.exe"
+	cv := "cvert.exe"
 }
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 342                                  ; Номер сборки версии
+sborka = 343                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -257,10 +253,11 @@ Menu, Option, Add, &Открыть логи, LogOpen
 Menu, Option, Add, &Настройки, Options
 Menu, Option, Add, О&бновление, Update
 Menu, HelpMenu, Add, &Справка, HelpAbout
+Menu, HelpMenu, Add, &ChangeLog, Changelog
 Menu, MyMenuBar, Add, Параметры, :Option
 Menu, MyMenuBar, Add, Справка (F1), :HelpMenu ; Создаем строку меню, присоединяя к ней подменю:
 
-Menu, Tray, NoStandard
+;Menu, Tray, NoStandard
 Menu, Tray, MainWindow
 Menu, pConvert, add, Jpg->Pdf, JP
 Menu, pConvert, add, Pdf->Jpg, PJ
@@ -520,10 +517,10 @@ Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
 Gui, 28:+hwndhGui28 +owner1 -Caption +Border
 Gui, 28:Add, Button, x5 y5 w100 h30 gDnd_Zip, Пакетное сжатие
 Gui, 28:Add, Button, xp+105 yp w100 h30 gDnd_Merge, Склеить выбранное
-Gui, 28:Add, Button, xp+105 yp w100 h30 gDnd_Cancel, Отмена
+Gui, 28:Add, Button, xp+105 yp w80 h30 gDnd_Cancel, Отмена
 
 VarSetCapacity(WI, 64)
-Sleep, 1024
+Sleep, 1000
 
 global GuHi := [{GuiN: 1,  Hg: 190}
 			 , {GuiN: 2,  Hg: 105}	
@@ -549,7 +546,8 @@ global GuHi := [{GuiN: 1,  Hg: 190}
 			 , {GuiN: 22, Hg: 85}
 			 , {GuiN: 23, Hg: 105}
 			 , {GuiN: 24, Hg: 105}
-			 , {GuiN: 25, Hg: 100}]
+			 , {GuiN: 25, Hg: 100}
+			 , {GuiN: 28, Hg: 40}]
 
 Gui, Show, Center h190 w300, Конвертер
 ;================АВТООБНОВЛЕНИЕ=====================================
@@ -600,16 +598,17 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 	{
 		for i, Files in FileArray
 		{
+		try {
 			SplitPath, Files,, Dir, Ext, Name
 	   ; Сжатие перетаскиваемых файлов
-			If (((Ext = "jpg"||"jpeg") && (A_GuiControl = "T I F F"||"J P G"||"P D F"||"Сжатие")))
+			If (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = "Сжатие" ))
 			{
 				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			}
-			If (((Ext = "pdf") && (A_GuiControl = "T I F F"||"P D F"||"J P G"||"Сжатие")))
+			else If (( Ext = "pdf" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = " Сжатие" ))
 			{
 				FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
 				export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
@@ -620,7 +619,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 				FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			} 
-			if (((Ext = "tiff"||"tif") && (A_GuiControl = "T I F F"||"P D F"||"J P G"||"Сжатие")))
+			else if (( Ext = "tiff" || Ext = "tif" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = "Сжатие" ))
 			{
 				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
 				WaitProgress(1)
@@ -628,27 +627,27 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			}
 			; Конвертирование перетаскиваемых файлов
-			if ((Ext = "jpg"||"jpeg") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
+			else if (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из" ))
 			{
 				DnDJpeg = %Files%
 				gosub, BJPG
 			}
-			if ((Ext = "pdf") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
+			else if (( Ext = "pdf" ) && ( A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" ||A_GuiControl =  "Конвертирование из" ))
 			{
 				DnDPdf = %Files%
 				gosub, BPDF
 			}
-			if ((Ext = "tiff"||"tif") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
+			else if (( Ext = "tiff" || Ext = "tif" ) && ( A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из"))
 			{
 				DnDTiff = %Files%
 				gosub, BTIFF
 			}
-			if ((Ext = "doc"||"docx"||"html"||"xml"||"rtf"||"mht"||"txt") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
+			else if (( Ext = "doc" || Ext = "docx" || Ext = "html" || Ext = "xml" || Ext = "rtf" || Ext = "mht" || Ext = "txt" ) && (A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из"))
 			{
 				DnDDoc = %Files%
 				gosub, BDOC
 			}
-			if ((Ext = "png") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
+			else if (( Ext = "png" ) && (A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из"))
 			{
 				DnDPng = %Files%
 				gosub, BPNG
@@ -660,38 +659,65 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 					Run, "%A_Temp%\DBFFC.tmp\1.chm"
 				else return
 			}
+		} catch e {
+			MsgBox % e "ERROR code 1001 DnD_General"
+		}
 		}
 	}
 	
 	If (A_EventInfo > 1)
 	{
+		try {
 		global FileList := A_GuiControlEvent 
 		Sort, FileList 
-		Gui, 28:Show
+		gosub, allguicancel
+		gosub, g28
 		return
+	} catch e {
+		MsgBox % e "ERROR code 1005 DnD_General"
+		}
 	}
 Return	
 }
+G28:
+try {
+	global GuiNum := 28
+	global GuiHigh := 40
+	OnMessage(0x0003, "FuncGui")
+	OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
+	DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+	if i := !i
+	{
+		xI := NumGet(WI, 20, UInt)
+		yI := NumGet(WI, 16, UInt)
+		Gui, %GuiNum%:Show, x%xI% y%yI% h%GuiHigh% w300
+	}
+	DllCall("AnimateWindow", Ptr, hGui28, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+} catch e {
+	MsgBox % e "ERROR code 1006 DnD_B28"
+	}
+return
 
 Dnd_Cancel:
 Gui 28:Submit
+ControlClick, JPG,Конвертер, , LEFT
 return
 
 Dnd_Zip:
 Gui 28:Submit
 Loop, parse, FileList, `n
 {
+	try {
 	Files := A_LoopField
 	SplitPath, Files,, Dir, Ext, Name
-	MsgBox % Ext
-	If ((Ext in jpg,jpeg) & (A_GuiControl in T I F F,J P G,P D F,Сжатие))
+	If Ext in jpg,jpeg,JPG,JPEG
 	{
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-		WaitProgress(0, %A_LastError%, %ErrorLevel%)
-	}
-	else if ((Ext in pdf) && (A_GuiControl in T I F F,P D F,J P G,Сжатие))
+		WaitProgress(0)
+	} 
+	else if Ext in pdf,PDF
 	{
 		FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
 		export = "%A_Temp%\DBFFC.tmp\%gs%" -sDEVICE=jpeg -dNOPAUSE -r150 -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
@@ -700,58 +726,70 @@ Loop, parse, FileList, `n
 		RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
-		WaitProgress(0, %A_LastError%, %ErrorLevel%)
-	}
-	else if ((Ext in tiff,tif) && (A_GuiControl in T I F F,P D F,J P G,Сжатие))
+		WaitProgress(0)
+	} 
+	else if Ext in tiff,tif
 	{
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-		WaitProgress(0, %A_LastError%, %ErrorLevel%)
+		WaitProgress(0)
 	}
+	} catch e {
+		MsgBox % e "ERROR code 1002 DnD_Zip"
+	}
+	
 }
 Return
 
 Dnd_Merge:
+{
 Gui 28:Submit
-
+try {
 Loop, parse, FileList, `n
 {
 	Files := A_LoopField
 	SplitPath, Files,, Dir, Ext, Name
 	global mark := Ext
-	Dnd_merge_files .= Files
+	Dnd_merge_files .= "" Files "" " "
 }
-MsgBox % mark
 
-If (mark in jpg,jpeg)
+If mark in pdf,PDF
 {
-	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" "%Dnd_merge_files%"
-	WaitProgress(1)
-	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-	WaitProgress(0, %A_LastError%, %ErrorLevel%)
-	Dnd_merge_files = ""
-	mark = ""
-	return
-}
-else If (mark in pdf,PDF)
-{
-	merge = "%A_Temp%\DBFFC.tmp\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" "%Dnd_merge_files%"
+	merge = "%A_Temp%\DBFFC.tmp\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" %Dnd_merge_files%
 	WaitProgress(1)
 	RunWait, %comspec% /c %CmdLog% && %merge% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-	WaitProgress(0, %A_LastError%, %ErrorLevel%)
 	Dnd_merge_files = ""
 	mark = ""
-	return
+	WaitProgress(0)
+}
+else If mark in jpg,jpeg
+{
+	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" %Dnd_merge_files%
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	Dnd_merge_files = ""
+	mark = ""
+	WaitProgress(0)
+} 
+else MsgBox, "Тип файлов не поддерживается данной программой `nОбратитесь к разработчику для добавления нового типа файлов."
+	
+Dnd_merge_files = ""
+mark = ""
+} catch e {
+	MsgBox % e "ERROR code 1003 DnD_Merge"
 }
 return
-
+}
 ;================================GUI\===============================================================
 
 BarTime:
 SB_SetText(A_Hour . ":" . A_Min, 3)
 return
 
+Changelog:
+MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Отредактировано сбрасывание стартовой заставки`, которая в некоторых случаях "зависала".
+return
 ;================================MAIN/=========================================================
 
 ;***********************************************************************************************
@@ -937,6 +975,7 @@ Run, "%A_AppData%\Конвертер\Logs"
 return
 
 Update:
+try {
 IfExist, %A_Temp%\DBFFC.tmp\sborka.txt
 	FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 If ConnectedToInternet()
@@ -970,6 +1009,9 @@ else
 {
 	Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 }
+} catch e {
+	MsgBox "ERROR code 1004 UPD_module"
+}
 Return
 
 ;==========================Дата===================================================================
@@ -988,9 +1030,7 @@ return
 VI:
 FileSelectFile, files, M3,,Редактирование времени изменения файла, Все файлы (*.*) ; M3 = Множественный выбор существующих файлов.
 if files =
-{
     return
-}
 
 WinWaitClose Редактирование времени изменения файла
 GuiControlGet, Vremya
@@ -1010,9 +1050,7 @@ return
 VS:
 FileSelectFile, files, M3,,Редактирование времени создания файла, Все файлы (*.*) ; M3 = Множественный выбор существующих файлов.
 if files =
-{
     return
-}
 
 WinWaitClose Редактирование времени создания файла
 GuiControlGet, Vremya
@@ -2779,6 +2817,7 @@ allguicancel:
 	gui, 24:Submit
 	gui, 25:Submit
 	Gui, 27:submit
+	Gui, 28:submit
 	return
 }
 ;===================================================================================================

@@ -19,6 +19,14 @@ ELM(ERR,e_msg, e_off=0)
 	}
 }
 ;===================================================================================================
+Architectura()
+{
+ThisProcess := DllCall("GetCurrentProcess")
+if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
+    IsWow64Process := false
+Sys := % IsWow64Process ? "win64" : "win32"
+return %Sys%
+}
 ;===================================================================================================
 WaitProgress(runing = 0, ALE = 0, EL = 0)
 {
@@ -33,7 +41,7 @@ WaitProgress(runing = 0, ALE = 0, EL = 0)
 	else
 	{
 		SB_SetText("", 1)
-		If ((%ALE% = 0) || (%EL% != ERROR))
+		If ((ALE = 0) or (EL != "ERROR"))
 		{
 			GuiControl,, Progr, 75
 			Sleep 500

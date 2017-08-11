@@ -517,6 +517,11 @@ Gui, 27:Add, Edit, x170 y101 w30 h20 vPeriod, %Period%
 Gui, 27:Add, Text, x210 y101 w50 h20 , дней
 Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
 
+Gui, 28:+hwndhGui28 +owner1 -Caption +Border
+Gui, 28:Add, Button, x5 y5 w100 h30 gDnd_Zip, Пакетное сжатие
+Gui, 28:Add, Button, xp+105 yp w100 h30 gDnd_Merge, Склеить выбранное
+Gui, 28:Add, Button, xp+105 yp w100 h30 gDnd_Cancel, Отмена
+
 VarSetCapacity(WI, 64)
 Sleep, 1024
 
@@ -597,32 +602,25 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 		{
 			SplitPath, Files,, Dir, Ext, Name
 	   ; Сжатие перетаскиваемых файлов
-			If (((Ext = "jpg") && (A_GuiControl = "T I F F")) || ((Ext = "jpg") && (A_GuiControl = "J P G")) || ((Ext = "jpg") && (A_GuiControl = "P D F")) || ((Ext = "jpg") && (A_GuiControl = "Сжатие")))
+			If (((Ext = "jpg"||"jpeg") && (A_GuiControl = "T I F F"||"J P G"||"P D F"||"Сжатие")))
 			{
-				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_#.jpg" "%Files%"
+				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			}
-			else If (((Ext = "jpeg") && (A_GuiControl = "T I F F")) || ((Ext = "jpeg") && (A_GuiControl = "J P G")) || ((Ext = "jpeg") && (A_GuiControl = "P D F")) || ((Ext = "jpeg") && (A_GuiControl = "Сжатие")))
+			If (((Ext = "pdf") && (A_GuiControl = "T I F F"||"P D F"||"J P G"||"Сжатие")))
 			{
-				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_#.jpg" "%Files%"
-				WaitProgress(1)
-				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-				WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			}					
-			else If (((Ext = "pdf") && (A_GuiControl = "T I F F")) || ((Ext = "pdf") && (A_GuiControl = "P D F")) || ((Ext = "pdf") && (A_GuiControl = "J P G")) || ((Ext = "pdf") && (A_GuiControl = "Сжатие")))
-			{
-				FileCreateDir, %A_Temp%\DBFFC.tmp\{ZipPdfFile}
-				export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\{ZipPdfFile}\%Name%`%02d.jpg" "%Files%" -c quit
-				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\{ZipPdfFile}\*.jpg"
+				FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
+				export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
+				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-				FileRemoveDir, %A_Temp%\DBFFC.tmp\{ZipPdfFile}, 1
+				FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			} 
-			else if (((Ext = "tiff") && (A_GuiControl = "T I F F")) || ((Ext = "tif") && (A_GuiControl = "T I F F")) || ((Ext = "tiff") && (A_GuiControl = "P D F")) || ((Ext = "tif") && (A_GuiControl = "P D F")) || ((Ext = "tiff") && (A_GuiControl = "J P G")) || ((Ext = "tif") && (A_GuiControl = "J P G")) || ((Ext = "tiff") && (A_GuiControl = "Сжатие")) || ((Ext = "tif") && (A_GuiControl = "Сжатие")))
+			if (((Ext = "tiff"||"tif") && (A_GuiControl = "T I F F"||"P D F"||"J P G"||"Сжатие")))
 			{
 				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
 				WaitProgress(1)
@@ -630,67 +628,27 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			}
 			; Конвертирование перетаскиваемых файлов
-			else if ((Ext = "jpg") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			if ((Ext = "jpg"||"jpeg") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
 			{
 				DnDJpeg = %Files%
 				gosub, BJPG
 			}
-			else if ((Ext = "jpeg") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDJpeg = %Files%
-				gosub, BJPG
-			}
-			else if ((Ext = "pdf") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			if ((Ext = "pdf") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
 			{
 				DnDPdf = %Files%
 				gosub, BPDF
 			}
-			else if ((Ext = "tiff") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			if ((Ext = "tiff"||"tif") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
 			{
 				DnDTiff = %Files%
 				gosub, BTIFF
 			}
-			else if ((Ext = "tif") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDTiff = %Files%
-				gosub, BTIFF
-			}
-			else if ((Ext = "doc") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			if ((Ext = "doc"||"docx"||"html"||"xml"||"rtf"||"mht"||"txt") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
 			{
 				DnDDoc = %Files%
 				gosub, BDOC
 			}
-			else if ((Ext = "docx") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "html") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "xml") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "rtf") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "mht") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "txt") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "png") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			if ((Ext = "png") && (A_GuiControl = "TIFF"||"PDF"||"JPG"||"DOC"||"PNG"||"Конвертирование из"))
 			{
 				DnDPng = %Files%
 				gosub, BPNG
@@ -704,67 +662,89 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 			}
 		}
 	}
-	If (A_EventInfo > 1)  ; при передаче более одного jpg файла конвертировать в pdf
+	
+	If (A_EventInfo > 1)
 	{
-		for i, Files in FileArray
-		{
-			SplitPath, Files,, Dir, Ext, Name
-			if (((Ext = "jpg") && (A_GuiControl = "TIFF")) || ((Ext = "jpg") && (A_GuiControl = "PDF")) || ((Ext = "jpg") && (A_GuiControl = "JPG")) || ((Ext = "jpg") && (A_GuiControl = "DOC")) || ((Ext = "jpg") && (A_GuiControl = "PNG")) || ((Ext = "jpg") && (A_GuiControl = "Конвертирование из")))
-			{
-				jj=1
-				pp=0
-				if i = 1
-					DnDJpeg = "%Files%"
-				else
-					DnDJpeg = %DnDJpeg% "%Files%"
-			}
-			else if (((Ext = "jpeg") && (A_GuiControl = "TIFF")) || ((Ext = "jpeg") && (A_GuiControl = "PDF")) || ((Ext = "jpeg") && (A_GuiControl = "JPG")) || ((Ext = "jpeg") && (A_GuiControl = "DOC")) || ((Ext = "jpeg") && (A_GuiControl = "PNG")) || ((Ext = "jpeg") && (A_GuiControl = "Конвертирование из")))
-			{
-				jj=1
-				pp=0
-				if i = 1
-					DnDJpeg = "%Files%"
-				else
-					DnDJpeg = %DnDJpeg% "%Files%"
-			}
-			; при передаче более одного pdf файла склеить в pdf
-			else if (((Ext = "pdf") && (A_GuiControl = "T I F F")) || ((Ext = "pdf") && (A_GuiControl = "P D F")) || ((Ext = "pdf") && (A_GuiControl = "J P G")) || ((Ext = "pdf") && (A_GuiControl = "Сжатие")))
-			{
-				jj=0
-				pp=1
-				if i = 1
-					DnDpdf = "%Files%" 
-				else
-					DnDPdf = %DnDpdf% "%Files%"
-			} 
-			else
-			{
-				jj=0
-				pp=0
-				MsgBox, 4144, Ошибка, Передано более одного файла с расширением отличным от поддерживаемого jpg/jpeg/pdf. Будте терпеливы и повторите попытку.
-				return
-			}
-		}
-		
-		If ((jj=1) && (pp=0))
-		{
-			conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" %DnDJpeg%
-			WaitProgress(1)
-			RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-			WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			DnDJpeg = ""
-		}
-		else if ((jj=0) && (pp=1))
-		{
-			merge = "%A_Temp%\DBFFC.tmp\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" %DnDPdf%
-			WaitProgress(1)
-			RunWait, %comspec% /c %CmdLog% && %merge% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-			WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			DnDPdf = ""
-		}
+		global FileList := A_GuiControlEvent 
+		Sort, FileList 
+		Gui, 28:Show
+		return
 	}
-}	
+Return	
+}
+
+Dnd_Cancel:
+Gui 28:Submit
+return
+
+Dnd_Zip:
+Gui 28:Submit
+Loop, parse, FileList, `n
+{
+	Files := A_LoopField
+	SplitPath, Files,, Dir, Ext, Name
+	MsgBox % Ext
+	If ((Ext in jpg,jpeg) & (A_GuiControl in T I F F,J P G,P D F,Сжатие))
+	{
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
+		WaitProgress(1)
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		WaitProgress(0, %A_LastError%, %ErrorLevel%)
+	}
+	else if ((Ext in pdf) && (A_GuiControl in T I F F,P D F,J P G,Сжатие))
+	{
+		FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
+		export = "%A_Temp%\DBFFC.tmp\%gs%" -sDEVICE=jpeg -dNOPAUSE -r150 -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
+		WaitProgress(1)
+		RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
+		WaitProgress(0, %A_LastError%, %ErrorLevel%)
+	}
+	else if ((Ext in tiff,tif) && (A_GuiControl in T I F F,P D F,J P G,Сжатие))
+	{
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
+		WaitProgress(1)
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		WaitProgress(0, %A_LastError%, %ErrorLevel%)
+	}
+}
 Return
+
+Dnd_Merge:
+Gui 28:Submit
+
+Loop, parse, FileList, `n
+{
+	Files := A_LoopField
+	SplitPath, Files,, Dir, Ext, Name
+	global mark := Ext
+	Dnd_merge_files .= Files
+}
+MsgBox % mark
+
+If (mark in jpg,jpeg)
+{
+	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" "%Dnd_merge_files%"
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	WaitProgress(0, %A_LastError%, %ErrorLevel%)
+	Dnd_merge_files = ""
+	mark = ""
+	return
+}
+else If (mark in pdf,PDF)
+{
+	merge = "%A_Temp%\DBFFC.tmp\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" "%Dnd_merge_files%"
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %merge% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	WaitProgress(0, %A_LastError%, %ErrorLevel%)
+	Dnd_merge_files = ""
+	mark = ""
+	return
+}
+return
 
 ;================================GUI\===============================================================
 

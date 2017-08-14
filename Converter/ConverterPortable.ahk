@@ -551,6 +551,7 @@ global GuHi := [{GuiN: 1,  Hg: 190}
 
 Gui, Show, Center h190 w300, Конвертер
 ;================АВТООБНОВЛЕНИЕ=====================================
+try {
 IfExist, %LogPath%\Config.ini
 {
 	IniRead, DataIzm, %LogPath%\Config.ini, Options, DataIzm
@@ -587,6 +588,9 @@ IfExist, %LogPath%\Config.ini
 		else 
 			Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 	}
+} 
+} catch e {
+	MsgBox % e "ERROR code 1007 AutoUpdate"
 }
 Return
 ;================КОННЕЦ НАЧАЛЬНОГО БЛОКА=====================================
@@ -601,7 +605,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 		try {
 			SplitPath, Files,, Dir, Ext, Name
 	   ; Сжатие перетаскиваемых файлов
-			If (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = "Сжатие" ))
+			If (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = " Сжатие" ))
 			{
 				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 				WaitProgress(1)
@@ -674,7 +678,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 		gosub, g28
 		return
 	} catch e {
-		MsgBox % e "ERROR code 1005 DnD_General"
+		MsgBox % e "ERROR code 1005 DnD_General_Event"
 		}
 	}
 Return	
@@ -694,7 +698,7 @@ try {
 	}
 	DllCall("AnimateWindow", Ptr, hGui28, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 } catch e {
-	MsgBox % e "ERROR code 1006 DnD_B28"
+	MsgBox % e "ERROR code 1006 DnD_Gui28"
 	}
 return
 
@@ -730,7 +734,7 @@ Loop, parse, FileList, `n
 	} 
 	else if Ext in tiff,tif
 	{
-		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_zip.tiff" "%Files%"
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		WaitProgress(0)
@@ -771,7 +775,14 @@ else If mark in jpg,jpeg
 	Dnd_merge_files = ""
 	mark = ""
 	WaitProgress(0)
-} 
+}
+else If mark in tif,tiff
+{
+	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 85 -multi -o "%Dir%\%Name%_#.tiff" %Dnd_merge_files%
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	WaitProgress(0)
+}
 else MsgBox, "Тип файлов не поддерживается данной программой `nОбратитесь к разработчику для добавления нового типа файлов."
 	
 Dnd_merge_files = ""
@@ -788,7 +799,7 @@ SB_SetText(A_Hour . ":" . A_Min, 3)
 return
 
 Changelog:
-MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Отредактировано сбрасывание стартовой заставки`, которая в некоторых случаях "зависала".
+MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg`, tiff или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf и tiff слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Отредактировано сбрасывание стартовой заставки`, которая в некоторых случаях "зависала".
 return
 ;================================MAIN/=========================================================
 
@@ -1103,6 +1114,7 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 Return
 ;===================================================================================================
 BasE:
+try {
 Gui 25:Submit
 FileSelectFile, files, 3,,Зашифровать файл, Все файлы (*.*)
 if files =
@@ -1121,9 +1133,13 @@ Loop %Int%
 	sleep 1000
 }
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
+} catch e {
+	MsgBox % e "ERROR code 1008 BasE"
+}
 Return
 ;===================================================================================================
 BasD:
+try {
 Gui 25:Cancel
 FileSelectFile, files, 3,,Дешифровать файл, Все файлы (*.*)
 	if files =
@@ -1144,6 +1160,9 @@ Loop %Int%
 	sleep 1000
 }
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
+} catch e {
+	MsgBox % e "ERROR code 1009 BasD"
+}
 Return
 ;===================================================================================================
 Tb2bt:
@@ -1233,6 +1252,7 @@ Gui 12:Show, hide
 Return
 
 2ButtonOK:
+try {
 GuiControlGet, del
 GuiControlGet, Zip
 Gui, 12:Submit
@@ -1266,6 +1286,9 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1010 JP_Module"
+}
 Return
 
 2ButtonОтмена:
@@ -1273,6 +1296,7 @@ Gui 2:Submit
 Return
 ;==========================Конвертирование Jpg to Ps================================================
 JPs:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1302,9 +1326,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1011 JPs_Module"
+}
 return
 ;==========================Конвертирование Jpg to Png================================================
 JPn:
+try{
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1334,9 +1362,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1012 JPn_Module"
+}
 return
 ;==========================Конвертирование Jpg to Jpeg================================================
 JJ:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1366,9 +1398,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1013 JJ_Module"
+}
 return
 ;==========================Конвертирование Jpg to Ico================================================
 JI:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1398,9 +1434,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1014 JI_Module"
+}
 return
 ;==========================Конвертирование Jpg to Emf================================================
 JE:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1430,9 +1470,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1015 JE_Module"
+}
 return
 ;============================Конвертирование Jpg to Tiff============================================
 JT:
+
 IF DnDJpeg = ""
 {
 	FileSelectFile, files, M3,,Конвертация JPG to TIFF, Изображения (*.jpg; *.jpeg) ; M3 = Множественный выбор существующих файлов.
@@ -1451,6 +1495,7 @@ Gui 12:Show, hide
 return
 	
 4ButtonOK:
+try {
 Gui, 12:Submit
 GuiControlGet, Del
 GuiControlGet, Zip
@@ -1482,6 +1527,9 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1016 JT_Module"
+}
 Return	
 
 4ButtonОтмена:
@@ -1489,6 +1537,7 @@ Gui 4:Submit
 return
 ;==========================Конвертирование Jpg to Bmp================================================
 JB:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1518,6 +1567,9 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1017 JB_Module"
+}
 return                                                                                           
 ;==========================Конвертирование PNG======================================================================================
 

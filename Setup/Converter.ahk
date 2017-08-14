@@ -15,24 +15,21 @@ global gs, global cv, global sys
 Global Win, global Dos, global global Iso, global Koir, global Koiu, global Mac, global Period
 
 ;***************Проверка разрядности системы************************************************************
-ThisProcess := DllCall("GetCurrentProcess")
-if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
-    IsWow64Process := false
-Sys := % IsWow64Process ? "win64" : "win32"
-if sys = "win64"
+Architectura()
+if (sys = "win64")
 {
-	gs = gswin64c.exe
-	cv = cvert64.exe
+	gs := "gswin64c.exe"
+	cv := "cvert64.exe"
 }
-else
+else if (sys = "win32")
 {
-	gs = gswin32c.exe
-	cv = cvert.exe
+	gs := "gswin32c.exe"
+	cv := "cvert.exe"
 }
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 342                                  ; Номер сборки версии
+sborka = 343                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/setup/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -54,6 +51,7 @@ Menu, Option, Add, &Открыть логи, LogOpen
 Menu, Option, Add, &Настройки, Options
 Menu, Option, Add, О&бновление, Update
 Menu, HelpMenu, Add, &Справка, HelpAbout
+Menu, HelpMenu, Add, &ChangeLog, Changelog
 Menu, MyMenuBar, Add, Параметры, :Option
 Menu, MyMenuBar, Add, Справка (F1), :HelpMenu ; Создаем строку меню, присоединяя к ней подменю:
 
@@ -299,7 +297,10 @@ Gui, 25:Add, Button, x5 y50 w70 h40 gBasE, Шифровать
 Gui, 25:Add, Button, x80 y50 w80 h40 gBasD, Дешифровать
 Gui, 25:Add, Button, x165 y50 w80 h40 gTb2bt, Шиф./Дешиф. текст
 
-;Gui, 26:Add, В резерве
+Gui, 26:+hwndhGui26 +owner1 -Caption +Border
+Gui, 26:Add, Button, x5 y5 w100 h30 gDnd_Zip, Пакетное сжатие
+Gui, 26:Add, Button, xp+105 yp w100 h30 gDnd_Merge, Склеить выбранное
+Gui, 26:Add, Button, xp+105 yp w80 h30 gDnd_Cancel, Отмена
 
 Gui, 27:Add, GroupBox, x3 y11 w150 h180 , Кодовая страница
 Gui, 27:Add, CheckBox, Checked 1 x15 y23 w100 h30 vWin gUpPage, - 1251 Windows
@@ -318,8 +319,38 @@ Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
 
 VarSetCapacity(WI, 64)
 Sleep, 1024
-Gui, Show, x200 y200 h190 w300, Конвертер 
+
+global GuHi := [{GuiN: 1,  Hg: 190}
+			 , {GuiN: 2,  Hg: 105}	
+			 , {GuiN: 3,  Hg: 70}
+			 , {GuiN: 4,  Hg: 105}			 
+			 , {GuiN: 5,  Hg: 115}
+			 , {GuiN: 6,  Hg: 105}
+			 , {GuiN: 7,  Hg: 105}
+			 , {GuiN: 8,  Hg: 105}
+			 , {GuiN: 9,  Hg: 80}
+			 , {GuiN: 10, Hg: 115}
+			 , {GuiN: 11, Hg: 100}
+			 , {GuiN: 12, Hg: 85}
+			 , {GuiN: 13, Hg: 90}
+			 , {GuiN: 14, Hg: 85}
+			 , {GuiN: 15, Hg: 115}
+			 , {GuiN: 16, Hg: 115}
+			 , {GuiN: 17, Hg: 115}
+			 , {GuiN: 18, Hg: 115}
+			 , {GuiN: 19, Hg: 115}
+			 , {GuiN: 20, Hg: 115}
+			 , {GuiN: 21, Hg: 140}
+			 , {GuiN: 22, Hg: 85}
+			 , {GuiN: 23, Hg: 105}
+			 , {GuiN: 24, Hg: 105}
+			 , {GuiN: 25, Hg: 100}
+			 , {GuiN: 26, Hg: 40}]
+
+Gui, Show, Center h190 w300, Конвертер
+
 ;================АВТООБНОВЛЕНИЕ=====================================
+try {
 IfExist, %A_WorkingDir%\Config.ini
 {
 	IniRead, DataIzm, %A_WorkingDir%\Config.ini, Options, DataIzm
@@ -357,6 +388,9 @@ IfExist, %A_WorkingDir%\Config.ini
 			Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 	}
 }
+} catch e {
+	MsgBox % e "ERROR code 1007 AutoUpdate"
+}
 Return
 
 GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
@@ -365,102 +399,56 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 	{
 		for i, Files in FileArray
 		{
+		try {
 			SplitPath, Files,, Dir, Ext, Name
 	   ; Сжатие перетаскиваемых файлов
-			If (((Ext = "jpg") && (A_GuiControl = "T I F F")) || ((Ext = "jpg") && (A_GuiControl = "J P G")) || ((Ext = "jpg") && (A_GuiControl = "P D F")) || ((Ext = "jpg") && (A_GuiControl = "Сжатие")))
+			If (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = " Сжатие" ))
 			{
-				conv = "%A_WorkingDir%\Sourse\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_#.jpg" "%Files%"
+				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			}
-			else If (((Ext = "jpeg") && (A_GuiControl = "T I F F")) || ((Ext = "jpeg") && (A_GuiControl = "J P G")) || ((Ext = "jpeg") && (A_GuiControl = "P D F")) || ((Ext = "jpeg") && (A_GuiControl = "Сжатие")))
+			else If (( Ext = "pdf" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = " Сжатие" ))
 			{
-				conv = "%A_WorkingDir%\Sourse\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_#.jpg" "%Files%"
-				WaitProgress(1)
-				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-				WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			}					
-			else If (((Ext = "pdf") && (A_GuiControl = "T I F F")) || ((Ext = "pdf") && (A_GuiControl = "P D F")) || ((Ext = "pdf") && (A_GuiControl = "J P G")) || ((Ext = "pdf") && (A_GuiControl = "Сжатие")))
-			{
-				FileCreateDir, %A_Temp%\DBFFC.tmp\{ZipPdfFile}
-				export = "%A_WorkingDir%\Sourse\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\{ZipPdfFile}\%Name%`%02d.jpg" "%Files%" -c quit
-				conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\{ZipPdfFile}\*.jpg"
+				FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
+				export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
+				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-				FileRemoveDir, %A_Temp%\DBFFC.tmp\{ZipPdfFile}, 1
+				FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			} 
-			else if (((Ext = "tiff") && (A_GuiControl = "T I F F")) || ((Ext = "tif") && (A_GuiControl = "T I F F")) || ((Ext = "tiff") && (A_GuiControl = "P D F")) || ((Ext = "tif") && (A_GuiControl = "P D F")) || ((Ext = "tiff") && (A_GuiControl = "J P G")) || ((Ext = "tif") && (A_GuiControl = "J P G")) || ((Ext = "tiff") && (A_GuiControl = "Сжатие")) || ((Ext = "tif") && (A_GuiControl = "Сжатие")))
+			else if (( Ext = "tiff" || Ext = "tif" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = "Сжатие" ))
 			{
-				conv = "%A_WorkingDir%\Sourse\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
+				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
 			}
 			; Конвертирование перетаскиваемых файлов
-			else if ((Ext = "jpg") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			else if (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из" ))
 			{
 				DnDJpeg = %Files%
 				gosub, BJPG
 			}
-			else if ((Ext = "jpeg") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDJpeg = %Files%
-				gosub, BJPG
-			}
-			else if ((Ext = "pdf") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			else if (( Ext = "pdf" ) && ( A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" ||A_GuiControl =  "Конвертирование из" ))
 			{
 				DnDPdf = %Files%
 				gosub, BPDF
 			}
-			else if ((Ext = "tiff") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			else if (( Ext = "tiff" || Ext = "tif" ) && ( A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из"))
 			{
 				DnDTiff = %Files%
 				gosub, BTIFF
 			}
-			else if ((Ext = "tif") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDTiff = %Files%
-				gosub, BTIFF
-			}
-			else if ((Ext = "doc") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			else if (( Ext = "doc" || Ext = "docx" || Ext = "html" || Ext = "xml" || Ext = "rtf" || Ext = "mht" || Ext = "txt" ) && (A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из"))
 			{
 				DnDDoc = %Files%
 				gosub, BDOC
 			}
-			else if ((Ext = "docx") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "html") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "xml") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "rtf") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "mht") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "txt") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
-			{
-				DnDDoc = %Files%
-				gosub, BDOC
-			}
-			else if ((Ext = "png") && (A_GuiControl = "TIFF") || (A_GuiControl = "PDF") || (A_GuiControl = "JPG") || (A_GuiControl = "DOC") || (A_GuiControl = "PNG") || (A_GuiControl = "Конвертирование из"))
+			else if (( Ext = "png" ) && (A_GuiControl = "TIFF" || A_GuiControl = "PDF" || A_GuiControl = "JPG" || A_GuiControl = "DOC" || A_GuiControl = "PNG" || A_GuiControl = "Конвертирование из"))
 			{
 				DnDPng = %Files%
 				gosub, BPNG
@@ -469,77 +457,148 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 			{
 				MsgBox, 4148, Ошибка, Файлы перемещены не в блок обработки`, либо данный тип файлов не поддерживается. Открыть справку "Функция Drag-and-Drop"?
 				IfMsgBox Yes
-					Run, "%A_WorkingDir%\Help\1.chm"
+					Run, "%A_Temp%\DBFFC.tmp\1.chm"
 				else return
 			}
+		} catch e {
+			MsgBox % e "ERROR code 1001 DnD_General"
+		}
 		}
 	}
-	If (A_EventInfo > 1)  ; при передаче более одного jpg файла конвертировать в pdf
+	
+If (A_EventInfo > 1)
 	{
-		for i, Files in FileArray
-		{
-			SplitPath, Files,, Dir, Ext, Name
-			if (((Ext = "jpg") && (A_GuiControl = "TIFF")) || ((Ext = "jpg") && (A_GuiControl = "PDF")) || ((Ext = "jpg") && (A_GuiControl = "JPG")) || ((Ext = "jpg") && (A_GuiControl = "DOC")) || ((Ext = "jpg") && (A_GuiControl = "PNG")) || ((Ext = "jpg") && (A_GuiControl = "Конвертирование из")))
-			{
-				jj=1
-				pp=0
-				if i = 1
-					DnDJpeg = "%Files%"
-				else
-					DnDJpeg = %DnDJpeg% "%Files%"
-			}
-			else if (((Ext = "jpeg") && (A_GuiControl = "TIFF")) || ((Ext = "jpeg") && (A_GuiControl = "PDF")) || ((Ext = "jpeg") && (A_GuiControl = "JPG")) || ((Ext = "jpeg") && (A_GuiControl = "DOC")) || ((Ext = "jpeg") && (A_GuiControl = "PNG")) || ((Ext = "jpeg") && (A_GuiControl = "Конвертирование из")))
-			{
-				jj=1
-				pp=0
-				if i = 1
-					DnDJpeg = "%Files%"
-				else
-					DnDJpeg = %DnDJpeg% "%Files%"
-			}
-			; при передаче более одного pdf файла склеить в pdf
-			else if (((Ext = "pdf") && (A_GuiControl = "T I F F")) || ((Ext = "pdf") && (A_GuiControl = "P D F")) || ((Ext = "pdf") && (A_GuiControl = "J P G")) || ((Ext = "pdf") && (A_GuiControl = "Сжатие")))
-			{
-				jj=0
-				pp=1
-				if i = 1
-					DnDpdf = "%Files%" 
-				else
-					DnDPdf = %DnDpdf% "%Files%"
-			} 
-			else
-			{
-				jj=0
-				pp=0
-				MsgBox, 4144, Ошибка, Передано более одного файла с расширением отличным от поддерживаемого jpg/jpeg/pdf. Будте терпеливы и повторите попытку.
-				return
-			}
-		}
-		
-		If ((jj=1) && (pp=0))
-		{
-			conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" %DnDJpeg%
-			WaitProgress(1)
-			RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-			WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			DnDJpeg = ""
-		}
-		else if ((jj=0) && (pp=1))
-		{
-			merge = "%A_WorkingDir%\Sourse\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" %DnDPdf%
-			WaitProgress(1)
-			RunWait, %comspec% /c %CmdLog% && %merge% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-			WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			DnDPdf = ""
+		try {
+		global FileList := A_GuiControlEvent 
+		Sort, FileList 
+		gosub, allguicancel
+		gosub, g26
+		return
+	} catch e {
+		MsgBox % e "ERROR code 1005 DnD_General_Event"
 		}
 	}
-}	
+Return	
+}
+
+G26:
+try {
+	global GuiNum := 26
+	global GuiHigh := 40
+	OnMessage(0x3, "FuncGui")
+	OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
+	DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+	if i := !i
+	{
+		xI := NumGet(WI, 20, UInt)
+		yI := NumGet(WI, 16, UInt)
+		Gui, %GuiNum%:Show, x%xI% y%yI% h%GuiHigh% w300
+	}
+	DllCall("AnimateWindow", Ptr, hGui26, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+} catch e {
+	MsgBox % e "ERROR code 1006 DnD_Gui26"
+	}
+return
+
+Dnd_Cancel:
+Gui 26:Submit
+ControlClick, JPG,Конвертер, , LEFT
+return
+
+Dnd_Zip:
+Gui 26:Submit
+Loop, parse, FileList, `n
+{
+	try {
+	Files := A_LoopField
+	SplitPath, Files,, Dir, Ext, Name
+	If Ext in jpg,jpeg,JPG,JPEG
+	{
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
+		WaitProgress(1)
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		WaitProgress(0)
+	} 
+	else if Ext in pdf,PDF
+	{
+		FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
+		export = "%A_Temp%\DBFFC.tmp\%gs%" -sDEVICE=jpeg -dNOPAUSE -r150 -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
+		WaitProgress(1)
+		RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
+		WaitProgress(0)
+	} 
+	else if Ext in tiff,tif
+	{
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_zip.tiff" "%Files%"
+		WaitProgress(1)
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+		WaitProgress(0)
+	}
+	} catch e {
+		MsgBox % e "ERROR code 1002 DnD_Zip"
+	}
+	
+}
 Return
+
+Dnd_Merge:
+{
+Gui 26:Submit
+try {
+Loop, parse, FileList, `n
+{
+	Files := A_LoopField
+	SplitPath, Files,, Dir, Ext, Name
+	global mark := Ext
+	Dnd_merge_files .= "" Files "" " "
+}
+
+If mark in pdf,PDF
+{
+	merge = "%A_Temp%\DBFFC.tmp\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" %Dnd_merge_files%
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %merge% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	Dnd_merge_files = ""
+	mark = ""
+	WaitProgress(0)
+}
+else If mark in jpg,jpeg
+{
+	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" %Dnd_merge_files%
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	Dnd_merge_files = ""
+	mark = ""
+	WaitProgress(0)
+}
+else If mark in tif,tiff
+{
+	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 85 -multi -o "%Dir%\%Name%_#.tiff" %Dnd_merge_files%
+	WaitProgress(1)
+	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+	WaitProgress(0)
+}
+else MsgBox, "Тип файлов не поддерживается данной программой `nОбратитесь к разработчику для добавления нового типа файлов."
+	
+Dnd_merge_files = ""
+mark = ""
+} catch e {
+	MsgBox % e "ERROR code 1003 DnD_Merge"
+}
+return
+}
 
 ;================================GUI\===============================================================
 
 BarTime:
 SB_SetText(A_Hour . ":" . A_Min, 3)
+return
+
+Changelog:
+MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg`, tiff или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf и tiff слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Отредактировано сбрасывание стартовой заставки`, которая в некоторых случаях "зависала".
 return
 
 ;================================MAIN/=========================================================
@@ -727,6 +786,9 @@ Run, "%LogPath%"
 return
 
 Update:
+try {
+IfExist, %A_Temp%\DBFFC.tmp\sborka.txt
+	FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 If ConnectedToInternet()
 {
 	UrlDownloadToFile, %dev_sborka%, %A_Temp%\DBFFC.tmp\sborka.txt
@@ -758,13 +820,18 @@ else
 {
 	Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 }
+} catch e {
+	MsgBox "ERROR code 1004 UPD_module"
+}
 Return
 
 ;==========================Дата===================================================================
 Dt:
 gosub, allguicancel
-OnMessage(0x0003, "funcdt")
-OnMessage(0x112, "funcdt")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[21].GuiN
+global GuiHigh := % GuHi[21].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 21:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h140 w300"
@@ -857,8 +924,10 @@ return
 ;==========================Шифрование===============================================================
 Bas:
 gosub, allguicancel
-OnMessage(0x0003, "funcbas")
-OnMessage(0x112, "funcbas")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[25].GuiN
+global GuiHigh := % GuHi[25].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 25:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h100 w300"
@@ -866,6 +935,7 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 Return
 ;===================================================================================================
 BasE:
+try {
 Gui 25:Submit
 FileSelectFile, files, 3,,Зашифровать файл, Все файлы (*.*)
 	if files =
@@ -886,9 +956,13 @@ Loop %Int%
 	sleep 1000
 }
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
+} catch e {
+	MsgBox % e "ERROR code 1008 BasE"
+}
 Return
 ;===================================================================================================
 BasD:
+try {
 Gui 25:Cancel
 FileSelectFile, files, 3,,Дешифровать файл, Все файлы (*.*)
 	if files =
@@ -909,6 +983,9 @@ Loop %Int%
 	sleep 1000
 }
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
+} catch e {
+	MsgBox % e "ERROR code 1009 BasD"
+}
 Return
 ;===================================================================================================
 Tb2bt:
@@ -924,8 +1001,10 @@ ButtonPNG:
 DnDPng = ""
 BPNG:
 gosub, allguicancel
-OnMessage(0x3, "funcpng")
-OnMessage(0x112, "funcpng")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[22].GuiN
+global GuiHigh := % GuHi[22].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 22:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
@@ -936,8 +1015,10 @@ ButtonJPG:
 DnDJpeg = ""
 BJPG:
 gosub, allguicancel
-OnMessage(0x3, "funcjpg")
-OnMessage(0x112, "funcjpg")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[12].GuiN
+global GuiHigh := % GuHi[12].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 12:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
@@ -948,8 +1029,10 @@ ButtonPDF:
 DnDPdf = ""
 BPDF:
 gosub, allguicancel
-OnMessage(0x0003, "funcpdf")
-OnMessage(0x112, "funcpdf")
+global GuiNum := % GuHi[13].GuiN
+global GuiHigh := % GuHi[13].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 13:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h90"
@@ -960,8 +1043,10 @@ ButtonTIFF:
 DnDTiff = ""
 BTIFF:
 gosub, allguicancel
-OnMessage(0x0003, "functiff")
-OnMessage(0x112, "functiff")
+global GuiNum := % GuHi[14].GuiN
+global GuiHigh := % GuHi[14].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 14:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
@@ -979,8 +1064,10 @@ If DnDJpeg = ""
 	WinWaitClose Конвертация JPG to PDF
 }
 
-OnMessage(0x0003, "funcjp")
-OnMessage(0x112, "funcjp")
+global GuiNum := % GuHi[2].GuiN
+global GuiHigh := % GuHi[2].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 2:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 DllCall("AnimateWindow", Ptr, hGui2, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
@@ -988,6 +1075,7 @@ Gui 12:Show, hide
 Return
 
 2ButtonOK:
+try {
 GuiControlGet, del
 GuiControlGet, Zip
 Gui, 12:Submit
@@ -1021,6 +1109,9 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1010 JP_Module"
+}
 Return
 
 2ButtonОтмена:
@@ -1028,6 +1119,7 @@ Gui 2:Submit
 Return
 ;==========================Конвертирование Jpg to Ps================================================
 JPs:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1057,9 +1149,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1011 JPs_Module"
+}
 return
 ;==========================Конвертирование Jpg to Png================================================
 JPn:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1089,9 +1185,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1012 JPn_Module"
+}
 return
 ;==========================Конвертирование Jpg to Jpeg================================================
 JJ:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1121,9 +1221,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1013 JJ_Module"
+}
 return
 ;==========================Конвертирование Jpg to Ico================================================
 JI:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1153,9 +1257,13 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1014 JI_Module"
+}
 return
 ;==========================Конвертирование Jpg to Emf================================================
 JE:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1168,11 +1276,11 @@ IF DnDJpeg = ""
 	{
 		if a_index = 1
 		{
-			path = %A_LoopField%
-			conv=%conv% "%path%\`%.emf" "
-        }
+			path := A_LoopField
+			conv = %conv% "%path%\`%.emf" "
+		}
 		else
-			conv = %conv%%path%\%A_LoopField%" "
+			conv .= path "\" A_LoopField """ """ 
 	}
 	StringTrimRight, conv, conv, 2
 }
@@ -1185,6 +1293,9 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1015 JE_Module"
+}
 return
 ;============================Конвертирование Jpg to Tiff============================================
 JT:
@@ -1195,8 +1306,10 @@ IF DnDJpeg = ""
 		return
 	WinWaitClose Конвертация JPG to PDF
 }
-OnMessage(0x3, "funcjt")
-OnMessage(0x112, "funcjt")
+global GuiNum := % GuHi[4].GuiN
+global GuiHigh := % GuHi[4].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 4:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 	DllCall("AnimateWindow", Ptr, hGui4, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
@@ -1204,10 +1317,12 @@ Gui 12:Show, hide
 return
 	
 4ButtonOK:
+try {
 Gui, 12:Submit
 GuiControlGet, Del
 GuiControlGet, Zip
 Gui, 4:Submit
+conv = ""
 If del = 1
     conv = "%A_WorkingDir%\Sourse\%cv%" -out tiff -D -c 5 -q %Zip% -multi -o
 else
@@ -1218,23 +1333,26 @@ IF DnDJpeg = ""
 	{
 		if a_index = 1
 		{
-			path = %A_LoopField%
-			conv=%conv% "%path%\`%.tiff" "
+			path := A_LoopField
+			conv = %conv% "%path%\`%.tiff" "
 		}
 		else
-			conv = %conv%%path%\%A_LoopField%" " 
+			conv .= path "\" A_LoopField """ """ 
 	}
 	StringTrimRight, conv, conv, 2
 }
 else
 {
 	SplitPath, DnDJpeg,, Dir, Ext, Name
-	conv = "%A_WorkingDir%\Sourse\%cv%" %conv% "%Dir%\%Name%.tiff" "%DnDJpeg%"
+	conv = %conv% "%Dir%\%Name%.tiff" "%DnDJpeg%"
 }
 WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1016 JT_Module"
+}
 Return	
 
 4ButtonОтмена:
@@ -1242,6 +1360,7 @@ Gui 4:Submit
 return
 ;==========================Конвертирование Jpg to Bmp================================================
 JB:
+try {
 Gui, 12:Submit
 IF DnDJpeg = ""
 {
@@ -1271,6 +1390,9 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
+} catch e {
+	MsgBox % e "ERROR code 1017 JB_Module"
+}
 return                                                                                           
 ;==========================Конвертирование PNG======================================================================================
 
@@ -1284,8 +1406,10 @@ If DnDPng = ""
 	WinWaitClose Конвертация PNG to PDF
 }
 
-OnMessage(0x0003, "funcpp")
-OnMessage(0x112, "funcpp")
+global GuiNum := % GuHi[23].GuiN
+global GuiHigh := % GuHi[23].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 23:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 DllCall("AnimateWindow", Ptr, hGui23, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
@@ -1441,8 +1565,10 @@ IF DnDPng = ""
 		return
 	WinWaitClose Конвертация PNG to TIFF
 }
-OnMessage(0x3, "funcpt")
-OnMessage(0x112, "funcpt")
+global GuiNum := % GuHi[24].GuiN
+global GuiHigh := % GuHi[24].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 		Gui, 24:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
    DllCall("AnimateWindow", Ptr, hGui24, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
@@ -1517,8 +1643,10 @@ else
 	SplitPath, DnDPdf,, Dir, Ext, Name
 	conv = "%A_WorkingDir%\Sourse\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%Dir%\%Name%`%02d.jpg" "%DnDPdf%" -c quit
 }
-OnMessage(0x3, "funcpj")
-OnMessage(0x112, "funcpj")
+global GuiNum := % GuHi[3].GuiN
+global GuiHigh := % GuHi[3].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 3:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h70 w300"
    DllCall("AnimateWindow", Ptr, hGui3, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -1639,8 +1767,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to JPG"
 }
-OnMessage(0x3, "functj")
-OnMessage(0x112, "functj")
+global GuiNum := % GuHi[5].GuiN
+global GuiHigh := % GuHi[5].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
   ;if i := !i
       Gui, 5:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
@@ -1696,8 +1826,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to PS"
 }
-OnMessage(0x3, "functps")
-OnMessage(0x112, "functps")
+global GuiNum := % GuHi[15].GuiN
+global GuiHigh := % GuHi[15].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 15:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
 
@@ -1752,8 +1884,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to PNG"
 }
-OnMessage(0x3, "functpn")
-OnMessage(0x112, "functpn")
+global GuiNum := % GuHi[16].GuiN
+global GuiHigh := % GuHi[16].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 16:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
    DllCall("AnimateWindow", Ptr, hGui16, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -1807,8 +1941,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to PDF"
 }
-OnMessage(0x3, "functp")
-OnMessage(0x112, "functp")
+global GuiNum := % GuHi[17].GuiN
+global GuiHigh := % GuHi[17].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 17:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
    DllCall("AnimateWindow", Ptr, hGui17, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -1862,8 +1998,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to Ico"
 }
-OnMessage(0x3, "functi")
-OnMessage(0x112, "functi")
+global GuiNum := % GuHi[18].GuiN
+global GuiHigh := % GuHi[18].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 18:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
    DllCall("AnimateWindow", Ptr, hGui18, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -1918,8 +2056,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to EMF"
 }
-OnMessage(0x3, "functe")
-OnMessage(0x112, "functe")
+global GuiNum := % GuHi[19].GuiN
+global GuiHigh := % GuHi[19].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 19:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
    DllCall("AnimateWindow", Ptr, hGui19, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -1973,8 +2113,10 @@ if DnDTiff = ""
 		return
 	WinWaitClose "Конвертация TIFF to BMP"
 }
-OnMessage(0x3, "functb")
-OnMessage(0x112, "functb")
+global GuiNum := % GuHi[20].GuiN
+global GuiHigh := % GuHi[20].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 20:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
    DllCall("AnimateWindow", Ptr, hGui20, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
@@ -2027,8 +2169,10 @@ if files =
     return
 
 WinWaitClose Сжатие JPG
-OnMessage(0x3, "funczj")
-OnMessage(0x112, "funczj")   ; M_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[6].GuiN
+global GuiHigh := % GuHi[6].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 6:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
@@ -2073,8 +2217,10 @@ return
 
 ZP:
 gosub, allguicancel
-OnMessage(0x3, "funczp")
-OnMessage(0x112, "funczp")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[9].GuiN
+global GuiHigh := % GuHi[9].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 9:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h80 w300"
@@ -2116,8 +2262,10 @@ if files =
     return
 SplitPath, files,, dir,,name
 WinWaitClose Разрезать PDF
-OnMessage(0x3, "funczpsp")
-OnMessage(0x112, "funczpsp")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[10].GuiN
+global GuiHigh := % GuHi[10].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 10:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w360"
    DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
@@ -2158,8 +2306,10 @@ FileCreateDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}
 export = "%A_WorkingDir%\Sourse\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\{41243843A44243E4402042643E4392041643843221}\%name%`%02d.jpg" "%files%" -c quit
 
 WinWaitClose Сжатие PDF
-OnMessage(0x3, "funczpz")
-OnMessage(0x112, "funczpz")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[8].GuiN
+global GuiHigh := % GuHi[8].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 8:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w300"
    DllCall("AnimateWindow", Ptr, hGui8, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
@@ -2334,8 +2484,10 @@ if files =
     return
 WinWaitClose Сжатие TIFF
 
-OnMessage(0x3, "funczt")
-OnMessage(0x112, "funczt")
+global GuiNum := % GuHi[7].GuiN
+global GuiHigh := % GuHi[7].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	if i := !i
@@ -2372,8 +2524,11 @@ DnDDoc = ""
 BDOC:
 gosub, allguicancel
 VarSetCapacity(WI, 64)
-OnMessage(0x3, "funcdoc")
-OnMessage(0x112, "funcdoc")   ; WM_SYSCOMMAND = 0x112
+global GuiNum := % GuHi[11].GuiN
+global GuiHigh := % GuHi[11].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 11:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h100 w300"

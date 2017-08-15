@@ -3,10 +3,28 @@
 #IfWinActive, ahk_class AutoHotkeyGUI ;работает только в активном GUI, при сворачивании ожидает активации окна.
 #SingleInstance Force ; старый экземпляр скрипта будет замещён новым автоматически, без вывода диалогового окна.
 #Include Functions.ahk
+
+
 SendMode Input  ; для новых сценариев, обеспечение высокой скорости и надежности.
 SetWorkingDir %A_ScriptDir%  ; Обеспечивает согласованность c начальныv каталогом.
 FileCreateDir, %A_Temp%\DBFFC.tmp
 FileCreateDir, %A_AppData%\Конвертер\Logs
+
+;***********************************************************************************************
+pr:= a_scriptdir . "\SkinH_EL.dll"
+IniRead, aa1, %A_WorkingDir%\Config.ini , Skin , SkinPath
+aa1:= aa1
+SkinForm(Apply,pr,aa1)
+OnExit, GetOut
+try {
+	Skins =
+	Loop, %A_WorkingDir%\she\*.she
+		Skins .= A_LoopFileName "|"
+} catch e {
+	MsgBox % e "ERROR Code 1018 Skins_Read"
+}
+		
+;***********************************************************************************************
 
 global Vers, global sborka, global dev_sborka
 global DnDJpeg, global DnDPdf, global DnDTiff, global DnDDoc, global DnDPng, global PageN
@@ -29,7 +47,7 @@ else if (sys = "win32")
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 343                                  ; Номер сборки версии
+sborka = 344                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/setup/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -43,8 +61,27 @@ CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogP
 ;***********************************************************************************************
 IfExist %A_Temp%\*.*
 	FileDelete, %A_Temp%\*.*
-
-
+;***********************************************************************************************
+IfNotExist, %A_WorkingDir%\Config.ini
+{
+	IniWrite, 1251, %A_WorkingDir%\Config.ini, Options, PageN
+	IniWrite, 14, %A_WorkingDir%\Config.ini, Options, Period
+	IniWrite, %A_YDay%, %A_WorkingDir%\Config.ini, Options, DataIzm
+	global PageN = 1251, global Period = 14
+   	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	GuiControl,27:,Period, %Period% 
+	IniWrite, %A_WorkingDir%\she\aero.she, %A_WorkingDir%\Config.ini, Skin, SkinPath
+}
+else
+{
+	IniRead, PageN, %A_WorkingDir%\Config.ini, Options, PageN, 1251
+	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
+	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+	IniRead, Period, %A_WorkingDir%\Config.ini, Options, Period, 14
+	GuiControl,27:, Period, %Period%
+}
+;***********************************************************************************************
 ;================================GUI/===============================================================
 Gui, +hwndhGui1 + OwnDialogs +lastfound
 Menu, Option, Add, &Открыть логи, LogOpen
@@ -54,6 +91,7 @@ Menu, HelpMenu, Add, &Справка, HelpAbout
 Menu, HelpMenu, Add, &ChangeLog, Changelog
 Menu, MyMenuBar, Add, Параметры, :Option
 Menu, MyMenuBar, Add, Справка (F1), :HelpMenu ; Создаем строку меню, присоединяя к ней подменю:
+
 
 Menu, Tray, NoStandard
 Menu, Tray, MainWindow
@@ -302,23 +340,30 @@ Gui, 26:Add, Button, x5 y5 w100 h30 gDnd_Zip, Пакетное сжатие
 Gui, 26:Add, Button, xp+105 yp w100 h30 gDnd_Merge, Склеить выбранное
 Gui, 26:Add, Button, xp+105 yp w80 h30 gDnd_Cancel, Отмена
 
-Gui, 27:Add, GroupBox, x3 y11 w150 h180 , Кодовая страница
-Gui, 27:Add, CheckBox, Checked 1 x15 y23 w100 h30 vWin gUpPage, - 1251 Windows
-Gui, 27:Add, CheckBox, x15 y46 w100 h30 vDos gUpPage, - 866 Dos
-Gui, 27:Add, CheckBox, x15 y72 w100 h30 vIso gUpPage, - 28595 ISO
-Gui, 27:Add, CheckBox, x15 y97 w100 h30 vKoir gUpPage, - 20866 KOI8-R
-Gui, 27:Add, CheckBox, x15 y122 w100 h30 vKoiu gUpPage, - 21866 KOI8-U
-Gui, 27:Add, CheckBox, x15 y148 w100 h30 vMac gUpPage, - 10007 Mac
-Gui, 27:Add, GroupBox, x162 y13 w252 h178 , Обновление
+Gui, 27:Add, GroupBox, x3 y10 w150 h180 , Кодовая страница
+Gui, 27:Add, ListBox, vPageCode x15 y46 Choose1 R6 h150 AltSubmit, 1251     - Windows|866       - Dos|28595   - ISO|20866   - KOI8-R|21866   - KOI8-U|10007   - Mac
+Gui, 27:Add, GroupBox, x162 y10 w252 h115 , Обновление
 Gui, 27:Add, Text, x170 y35 w150 h20 , Проверка обновлений
 Gui, 27:Add, Edit, x170 y56 w227 h20 vRep, %Rep%
 Gui, 27:Add, Text, x170 y80 w200 h20 , Частота автопроверки обновлений
 Gui, 27:Add, Edit, x170 y101 w30 h20 vPeriod, %Period%
 Gui, 27:Add, Text, x210 y101 w50 h20 , дней
+Gui, 27:Add, GroupBox, x162 y130 w252 h60 , Оформление
+Gui, 27:Add, Text, x167 yp+25 w40  , Скин
+Gui, 27:Add, DropDownList, xp+45 yp w190 vSkinName Sort, %Skins%
 Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
+Gui, 27:Add, Button, xp+150 yp w100 h30 , Отмена
 
 VarSetCapacity(WI, 64)
 Sleep, 1024
+
+global Arr := [{Perem: "Win",  Page: 1251,  Chek: "- 1251 Win"}
+			 , {Perem: "Dos",  Page: 866,   Chek: "- 866 Dos"}
+			 , {Perem: "Iso",  Page: 28595, Chek: "- 28595 ISO"}
+			 , {Perem: "Koir", Page: 20866, Chek: "- 20866 KOI8-R"}
+			 , {Perem: "Koiu", Page: 21866, Chek: "- 21866 KOI8-U"}
+			 , {Perem: "Mac",  Page: 10007, Chek: "- 10007 Mac"}]
+
 
 global GuHi := [{GuiN: 1,  Hg: 190}
 			 , {GuiN: 2,  Hg: 105}	
@@ -598,7 +643,7 @@ SB_SetText(A_Hour . ":" . A_Min, 3)
 return
 
 Changelog:
-MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg`, tiff или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf и tiff слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Отредактировано сбрасывание стартовой заставки`, которая в некоторых случаях "зависала".
+MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg`, tiff или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf и tiff слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Добавлена поддержка скинов оформления рабочего окна в меню параметры.
 return
 
 ;================================MAIN/=========================================================
@@ -607,168 +652,31 @@ return
 ;*****************************OPTIONS***********************************************************
 ;***********************************************************************************************
 Options:
-global Arr := [{Perem: "Win",  Page: 1251,  Chek: "- 1251 Win"}
-			 , {Perem: "Dos",  Page: 866,   Chek: "- 866 Dos"}
-			 , {Perem: "Iso",  Page: 28595, Chek: "- 28595 ISO"}
-			 , {Perem: "Koir", Page: 20866, Chek: "- 20866 KOI8-R"}
-			 , {Perem: "Koiu", Page: 21866, Chek: "- 21866 KOI8-U"}
-			 , {Perem: "Mac",  Page: 10007, Chek: "- 10007 Mac"}]
-
-IfNotExist, %A_WorkingDir%\Config.ini
-{
-	IniWrite, 1251, %A_WorkingDir%\Config.ini, Options, PageN
-	IniWrite, 14, %A_WorkingDir%\Config.ini, Options, Period
-	IniWrite, %A_YDay%, %A_WorkingDir%\Config.ini, Options, DataIzm
-	global PageN = 1251, global Period = 14
-   	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	GuiControl, 27:, - 1251 Win,1
-	GuiControl,27:,Period, %Period% 
-	Loop, 6
-	{
-		c:= % Arr[A_Index].Chek
-		If A_Index > 1
-		{
-			GuiControl, 27:, %c%,0
-			GuiControl, 27:Disabled,%c%
-		}
-	}
-}
-else
-{
-	IniRead, PageN, %A_WorkingDir%\Config.ini, Options, PageN, 1251
-	Loop, 6
-	{
-		n:= % Arr[A_Index].Page
-		c:= % Arr[A_Index].Chek
-		if n = %PageN%
-		{
-			CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-			RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-			GuiControl, 27:, %c%,1
-			GuiControl, 27:Enabled,%c%
-		}
-		else
-		{
-			GuiControl, 27:, %c%,0
-			GuiControl, 27:Disabled,%c%
-		}
-	}
-	
-	IniRead, Period, %A_WorkingDir%\Config.ini, Options, Period, 14
-	GuiControl,27:, Period, %Period%
-}
-Gui 27:Show, ,Настройки
-return
-
-UpPage:
-
-GuiControlGet, Win,,Win
-GuiControlGet, Dos,,Dos
-GuiControlGet, Iso,,Iso
-GuiControlGet, Koir,,Koir
-GuiControlGet, Koiu,,Koiu
-GuiControlGet, Mac,,Mac
-
-If (Win = 1) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
-{
-	global PageN = 1251
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-		If A_Index > 1
-			GuiControl, 27:Disabled, % Arr[A_Index].Chek
-	}
-}
-
-If (Win = 0) & (Dos = 1) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
-{
-	global PageN = 866
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-		If A_Index != 2
-			GuiControl, 27:Disabled, % Arr[A_Index].Chek
-	}
-}
-
-If (Win = 0) & (Dos = 0) & (Iso = 1) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
-{
-	global PageN = 28595
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-		If A_Index != 3
-			GuiControl, 27:Disabled, % Arr[A_Index].Chek
-	}
-}
-
-If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 1) & (Koiu = 0) & (Mac = 0)
-{
-	global PageN = 20866
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-		If A_Index != 4
-			GuiControl, 27:Disabled, % Arr[A_Index].Chek
-	}
-}
-
-If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 1) & (Mac = 0)
-{
-	global PageN = 21866
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-		If A_Index != 5
-			GuiControl, 27:Disabled, % Arr[A_Index].Chek
-	}
-}
-
-If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 1)
-{
-	global PageN = 10007
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-		If A_Index != 6
-			GuiControl, 27:Disabled, % Arr[A_Index].Chek
-	}
-}
-
-If (Win = 0) & (Dos = 0) & (Iso = 0) & (Koir = 0) & (Koiu = 0) & (Mac = 0)
-{
-	global PageN = 1251
-	IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
-	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
-	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	Loop, 6
-	{
-			GuiControl, 27:Enabled, % Arr[A_Index].Chek
-	}
-}
-
+Gui 27:Show, Center w425 h250 ,Настройки
 return
 
 27ButtonСохранить:
+try {
 GuiControlGet PeriodIzm,,Period
+GuiControlGet PageCode,,PageCode
+GuiControlGet SkinName,,SkinName
+Gui 27:Submit
+IniWrite, %A_WorkingDir%\she\%SkinName%, %A_WorkingDir%\Config.ini, Skin, SkinPath
 IniWrite, %PeriodIzm%, %A_WorkingDir%\Config.ini, Options, Period
 If Period != % PeriodIzm
 	IniWrite, %A_YDay%, %A_WorkingDir%\Config.ini, Options, DataIzm
-Gui 27:Submit
+global PageN := % Arr[PageCode].Page
+IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
+CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
+RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
+} catch e {
+	MsgBox "ERROR code 1019 Save_Btn_27"
+}
+WinSet , Redraw,, Конвертер	
 return
+
+27ButtonОтмена:
+Gui, 27:Cancel
 return
 
 ;***********************************************************************************************
@@ -2711,9 +2619,11 @@ IfMsgBox Yes
 	ExitApp
 Return
 
+GetOut:
 TEX:
 GuiClose:
 ButtonВыход:
 GEX:
+SkinForm(0)
 FileRemoveDir, %A_Temp%\DBFFC.tmp
 ExitApp

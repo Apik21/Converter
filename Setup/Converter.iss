@@ -2,7 +2,7 @@
 ; напюрхреяэ й яопюбнвмни днйслемрюжхх, врнаш хяонкэгнбюрэ бяе бнглнфмнярх INNO SETUP!
 
 #define MyAppName "йНМБЕПРЕП"
-#define MyAppVersion "1.1.2.343"
+#define MyAppVersion "1.1.2.344"
 #define MyAppPublisher "Pavel Krezub"
 #define MyAppURL "https://github.com/Apik21/Converter"
 #define MyAppExeName "converter.exe"

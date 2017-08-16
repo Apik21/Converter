@@ -78,4 +78,13 @@ FuncGui(wp, lp, msg, hwnd)
 	Gui, %GuiNum%:Show, x%xI% y%yI% h%GuiHigh% w300
 }
 ;===================================================================================================
+SkinForm(Param1 = "Apply", DLL = "", SkinName = ""){
+    if(Param1 = Apply){
+        DllCall("LoadLibrary", str, DLL)
+        DllCall(DLL . "\SkinH_AttachEx", AStr,SkinName, Str,"mhgd")
+    }else if(Param1 = 0){
+        DllCall(DLL . "\USkinExit")
+        }
+}
+;===================================================================================================
 ;================================FUNCTIONS==========================================================

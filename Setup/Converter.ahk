@@ -30,7 +30,7 @@ global Vers, global sborka, global dev_sborka
 global DnDJpeg, global DnDPdf, global DnDTiff, global DnDDoc, global DnDPng, global PageN
 global LogLine, global CmdLog
 global gs, global cv, global sys
-Global Win, global Dos, global global Iso, global Koir, global Koiu, global Mac, global Period
+Global Win, global Dos, global Iso, global Koir, global Koiu, global Mac, global Period
 
 ;***************Проверка разрядности системы************************************************************
 Architectura()
@@ -47,7 +47,7 @@ else if (sys = "win32")
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 344                                  ; Номер сборки версии
+sborka = 345                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/setup/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -449,7 +449,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 	   ; Сжатие перетаскиваемых файлов
 			If (( Ext = "jpg" || Ext = "jpeg" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = " Сжатие" ))
 			{
-				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
+				conv = "%A_WorkingDir%\Sourse\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
@@ -457,8 +457,8 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 			else If (( Ext = "pdf" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = " Сжатие" ))
 			{
 				FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
-				export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
-				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
+				export = "%A_WorkingDir%\Sourse\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
+				conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
@@ -467,7 +467,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 			} 
 			else if (( Ext = "tiff" || Ext = "tif" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = "Сжатие" ))
 			{
-				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
+				conv = "%A_WorkingDir%\Sourse\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
 				WaitProgress(1)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
@@ -502,7 +502,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 			{
 				MsgBox, 4148, Ошибка, Файлы перемещены не в блок обработки`, либо данный тип файлов не поддерживается. Открыть справку "Функция Drag-and-Drop"?
 				IfMsgBox Yes
-					Run, "%A_Temp%\DBFFC.tmp\1.chm"
+					Run, "%A_WorkingDir%\Sourse\1.chm"
 				else return
 			}
 		} catch e {
@@ -552,6 +552,7 @@ return
 
 Dnd_Zip:
 Gui 26:Submit
+ControlClick, JPG,Конвертер, , LEFT
 Loop, parse, FileList, `n
 {
 	try {
@@ -559,7 +560,7 @@ Loop, parse, FileList, `n
 	SplitPath, Files,, Dir, Ext, Name
 	If Ext in jpg,jpeg,JPG,JPEG
 	{
-		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
+		conv = "%A_WorkingDir%\Sourse\%cv%" -out jpeg -c 8 -q 50 -multi -o "%Dir%\%Name%_zip.jpg" "%Files%"
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		WaitProgress(0)
@@ -567,8 +568,8 @@ Loop, parse, FileList, `n
 	else if Ext in pdf,PDF
 	{
 		FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
-		export = "%A_Temp%\DBFFC.tmp\%gs%" -sDEVICE=jpeg -dNOPAUSE -r150 -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
-		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
+		export = "%A_WorkingDir%\Sourse\%gs%" -sDEVICE=jpeg -dNOPAUSE -r150 -sOutputFile="%A_Temp%\DBFFC.tmp\ZipPdfFile\%Name%`%02d.jpg" "%Files%" -c quit
+		conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -D -c 5 -q 50 -multi -o "%dir%\%Name%_zip.pdf" "%A_Temp%\DBFFC.tmp\ZipPdfFile\*.jpg"
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
@@ -577,7 +578,7 @@ Loop, parse, FileList, `n
 	} 
 	else if Ext in tiff,tif
 	{
-		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_zip.tiff" "%Files%"
+		conv = "%A_WorkingDir%\Sourse\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_zip.tiff" "%Files%"
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		WaitProgress(0)
@@ -592,44 +593,47 @@ Return
 Dnd_Merge:
 {
 Gui 26:Submit
+ControlClick, JPG,Конвертер, , LEFT
 try {
 Loop, parse, FileList, `n
 {
 	Files := A_LoopField
 	SplitPath, Files,, Dir, Ext, Name
 	global mark := Ext
-	Dnd_merge_files .= "" Files "" " "
+	Char = "
+	Dnd_merge_files .=  A_Space Char Files Char
 }
 
 If mark in pdf,PDF
 {
-	merge = "%A_Temp%\DBFFC.tmp\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" %Dnd_merge_files%
+	merge = "%A_WorkingDir%\Sourse\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile="%Dir%\%Name%_#.pdf" %Dnd_merge_files%
 	WaitProgress(1)
 	RunWait, %comspec% /c %CmdLog% && %merge% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-	Dnd_merge_files = ""
-	mark = ""
+	Dnd_merge_files :=
+	mark :=
 	WaitProgress(0)
 }
 else If mark in jpg,jpeg
 {
-	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" %Dnd_merge_files%
+	
+	conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -c 5 -q 85 -multi -o "%Dir%\%Name%.pdf" %Dnd_merge_files%
 	WaitProgress(1)
 	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
-	Dnd_merge_files = ""
-	mark = ""
+	Dnd_merge_files :=
+	mark :=
 	WaitProgress(0)
 }
 else If mark in tif,tiff
 {
-	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 85 -multi -o "%Dir%\%Name%_#.tiff" %Dnd_merge_files%
+	conv = "%A_WorkingDir%\Sourse\%cv%" -out tiff -c 5 -q 85 -multi -o "%Dir%\%Name%_#.tiff" %Dnd_merge_files%
 	WaitProgress(1)
 	RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 	WaitProgress(0)
 }
 else MsgBox, "Тип файлов не поддерживается данной программой `nОбратитесь к разработчику для добавления нового типа файлов."
 	
-Dnd_merge_files = ""
-mark = ""
+Dnd_merge_files := 
+mark := 
 } catch e {
 	MsgBox % e "ERROR code 1003 DnD_Merge"
 }

@@ -47,12 +47,12 @@ else if (sys = "win32")
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 345                                  ; Номер сборки версии
+sborka = 1                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/setup/sborka.txt ;Сборка с сайта
-Vers = v1.1.2								  ; Номер версисии комбайна
+Vers = v1.1.3								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
-Repo = https://raw.githubusercontent.com/Apik21/Converter/setup/ConverterSetup.exe ; Адрес программы для обновления
-Rep = https://github.com/Apik21/Converter/tree/setup
+Repo = https://raw.githubusercontent.com/Apik21/Converter/setup_113/ConverterSetup.exe ; Адрес программы для обновления
+Rep = https://github.com/Apik21/Converter/tree/setup_113
 LogPath = %A_AppData%\Конвертер\Logs\         ; Путь к папле для создания логов
 LogLine = "=========================================== `%date`% - `%time`% ================================================"
 CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1

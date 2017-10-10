@@ -48,8 +48,8 @@ else if (sys = "win32")
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
 sborka = 346                                  ; Номер сборки версии
-dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/setup/sborka.txt ;Сборка с сайта
-Vers = v1.1.3								  ; Номер версисии комбайна
+dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/Setup_113/sborka.txt ;Сборка с сайта
+Vers = 1.1.3								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
 Repo = https://raw.githubusercontent.com/Apik21/Converter/setup_113/ConverterSetup.exe ; Адрес программы для обновления
 Rep = https://github.com/Apik21/Converter/tree/setup_113
@@ -124,7 +124,7 @@ Gui, Add, Button, x130 y27 w75 h30 gDt, Дата
 Gui, Add, Button, x130 y60 w75 h30 gBas, Шифрование
 Gui, Add, StatusBar,,
 SB_SetParts(150, 110)
-SB_SetText("Версия " . Vers . "." . sborka, 2)
+SB_SetText("Версия v" . Vers . "." . sborka, 2)
 SB_SetText(	A_Hour . ":" . A_Min, 3)
 SetTimer, BarTime, 3000
 SB_SetIcon("shell32.dll", 266)
@@ -332,9 +332,12 @@ IfExist, %A_WorkingDir%\Config.ini
 			ELM(%ErrorLevel%, Ошибка загрузки, 1)
 			FileRead, new_sborka, %A_Temp%\DBFFC.tmp\sborka.txt
 			ELM(%ErrorLevel%, Ошибка чтения, 1)
-			If new_sborka > %sborka%
+			old_vers := Vers "." sborka
+			StringReplace, old_versP, old_vers, .,, All
+			StringReplace, new_sborkaP, new_sborka, .,, All
+			If new_sborkaP > %old_versP%
 			{
-				MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%new_sborka%.`n Скачать обновление???
+				MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %new_sborka%.`n Скачать обновление???
 				FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 				IfMsgBox Yes
 				{

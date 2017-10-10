@@ -17,7 +17,7 @@ aa1:= aa1
 SkinForm(Apply,pr,aa1)
 OnExit, GetOut
 try {
-	Skins =
+	Skins = ==NO_SKIN== |
 	Loop, %A_WorkingDir%\she\*.she
 		Skins .= A_LoopFileName "|"
 } catch e {
@@ -47,7 +47,7 @@ else if (sys = "win32")
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 346                                  ; Номер сборки версии
+sborka = 1                                    ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/Setup_113/sborka.txt ;Сборка с сайта
 Vers = 1.1.3								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -337,8 +337,7 @@ IfExist, %A_WorkingDir%\Config.ini
 			StringReplace, new_sborkaP, new_sborka, .,, All
 			If new_sborkaP > %old_versP%
 			{
-				MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %new_sborka%.`n Скачать обновление???
-				FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
+				MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %old_versP%,`n Новая версия программы - %new_sborkaP%.`n`n Скачать обновление???
 				IfMsgBox Yes
 				{
 					MsgBox,,Конвертер,Спасибо за ваш выбор.
@@ -349,6 +348,8 @@ IfExist, %A_WorkingDir%\Config.ini
 					Run delete.bat, ,Hide
 					ExitApp
 				}
+				else
+					FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 			}
 			else
 				FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
@@ -571,7 +572,7 @@ SB_SetText(A_Hour . ":" . A_Min, 3)
 return
 
 Changelog:
-MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg`, tiff или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf и tiff слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Добавлена поддержка скинов оформления рабочего окна в меню параметры.
+MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 1.1.3.1.`n`nИнтерфейс:`n- Полностью обновлен интерфейс программы`n`nРедактор PDF:`n- Добавлена функция сохранять все страницы документа отдельными файлами.
 return
 
 ;================================MAIN/=========================================================
@@ -590,6 +591,8 @@ try {
 GuiControlGet PeriodIzm,,Period
 GuiControlGet PageCode,,PageCode
 GuiControlGet SkinName,,SkinName
+If SkinName = "No_Skin"
+	SkinName = ""
 Gui 27:Submit
 IniWrite, %A_WorkingDir%\she\%SkinName%, %A_WorkingDir%\Config.ini, Skin, SkinPath
 IniWrite, %PeriodIzm%, %A_WorkingDir%\Config.ini, Options, Period
@@ -633,20 +636,24 @@ If ConnectedToInternet()
 	ELM(%ErrorLevel%, Ошибка загрузки, 1)
 	FileRead, new_sborka, %A_Temp%\DBFFC.tmp\sborka.txt
 	ELM(%ErrorLevel%, Ошибка чтения, 1)
-	If new_sborka > %sborka%
+	old_vers := Vers "." sborka
+	StringReplace, old_versP, old_vers, .,, All
+	StringReplace, new_sborkaP, new_sborka, .,, All
+	If new_sborkaP > %old_versP%
 	{
-		MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %Vers%.%sborka%,`n Новая версия программы - %Vers%.%new_sborka%.`n Скачать обновление???
-		FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
+		MsgBox, 52, Обновление, Найдена новая версия программы.`n Текущая версия программы - %old_vers%,`n Новая версия программы - %new_sborka% .`n`n Скачать обновление???
 		IfMsgBox Yes
 		{
 			MsgBox,,Конвертер,Спасибо за ваш выбор.
 			Run, %Repo%
-			bat = ping 127.0.0.1 > NUL`ndel /F /Q Converter*.exe`ndel /F /Q delete.bat
+			bat = ping 127.0.0.1 > NUL`ndel /F /Q ConverterSetup*.exe`ndel /F /Q delete.bat
 			FileDelete, delete.bat
 			FileAppend %bat%, delete.bat
 			Run delete.bat, ,Hide
 			ExitApp
 		}
+		else
+			FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 	}
 	else
 	{
@@ -655,9 +662,7 @@ If ConnectedToInternet()
 	}
 }	
 else 
-{
 	Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
-}
 } catch e {
 	MsgBox "ERROR code 1004 UPD_module"
 }
@@ -832,9 +837,9 @@ Run, "%A_WorkingDir%\Sourse\tb2bt.exe"
 Return
 
 ;===================================================================================================
-;==========================Конвертирование Png======================================================
-;===================================================================================================
 
+;===================================================================================================
+;==========================Конвертирование Png======================================================
 ButtonPNG:
 DnDPng = ""
 BPNG:
@@ -890,8 +895,71 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
       Gui, 14:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
    DllCall("AnimateWindow", Ptr, hGui14, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 return 
-;==========================Конвертирование Jpg =====================================================
+;=============================Обработка PDF =================================================
+ZP:
+gosub, allguicancel
+global GuiNum := % GuHi[9].GuiN
+global GuiHigh := % GuHi[9].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) ;выдвигаем/задвигаем окно-слайдер
+return
+;============================Сжатие TIFF======================================================
+ZT:
+gosub, allguicancel
+FileSelectFile, files, 3,,Сжатие TIFF, Изображения (*.tiff; *.tif)
+if files =
+    return
+WinWaitClose Сжатие TIFF
+global GuiNum := % GuHi[7].GuiN
+global GuiHigh := % GuHi[7].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
 
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+	if i := !i
+		Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+return
+;==============================Сжатие JPG======================================================
+ZJ:
+gosub, allguicancel
+FileSelectFile, files, M3,,Сжатие JPG, Изображения (*.jpg; *.jpeg)
+if files =
+    return
+WinWaitClose Сжатие JPG
+global GuiNum := % GuHi[6].GuiN
+global GuiHigh := % GuHi[6].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+return
+;===================================================================================================	
+DOC:
+DnDDoc = ""
+BDOC:
+gosub, allguicancel
+VarSetCapacity(WI, 64)
+global GuiNum := % GuHi[11].GuiN
+global GuiHigh := % GuHi[11].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+   if i := !i
+		Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) ;выдвигаем/задвигаем окно-слайдер
+return
+;===================================================================================================
+;===================================================================================================
+
+;==========================Конвертирование Jpg =====================================================
 ;==========================Конвертирование Jpg to Pdf===============================================
 JP:
 If DnDJpeg = ""
@@ -1997,23 +2065,6 @@ Return
 Gui 20:Submit 
 return
 ;=============================Сжатие Jpg============================================================
-ZJ:
-gosub, allguicancel
-FileSelectFile, files, M3,,Сжатие JPG, Изображения (*.jpg; *.jpeg)
-if files =
-    return
-
-WinWaitClose Сжатие JPG
-global GuiNum := % GuHi[6].GuiN
-global GuiHigh := % GuHi[6].Hg
-OnMessage(0x3, "FuncGui")
-OnMessage(0x112, "FuncGui")
-DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-if i := !i
-	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
-	return
-
 6ButtonOK:
 GuiControlGet, Del
 GuiControlGet, Zip
@@ -2049,19 +2100,6 @@ return
 ;===================================================================================================
 ;==============================Блок сжатия и т.д. Pdf===============================================
 ;===================================================================================================
-
-ZP:
-gosub, allguicancel
-global GuiNum := % GuHi[9].GuiN
-global GuiHigh := % GuHi[9].Hg
-OnMessage(0x3, "FuncGui")
-OnMessage(0x112, "FuncGui")
-DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-		Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) ;выдвигаем/задвигаем окно-слайдер
-return
-
 9ButtonСклеить:
 Gui 9:Submit
 {
@@ -2321,24 +2359,6 @@ Gui 9:Submit
 Gui 8:Submit 
 return
 ;===============================Сжатие Tiff=========================================================
-ZT:
-gosub, allguicancel
-FileSelectFile, files, 3,,Сжатие TIFF, Изображения (*.tiff; *.tif)
-if files =
-    return
-WinWaitClose Сжатие TIFF
-
-global GuiNum := % GuHi[7].GuiN
-global GuiHigh := % GuHi[7].Hg
-OnMessage(0x3, "FuncGui")
-OnMessage(0x112, "FuncGui")
-
-DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-	if i := !i
-		Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
-return
-
 7ButtonOK:
 GuiControlGet, Del
 GuiControlGet, Zip
@@ -2363,22 +2383,6 @@ Return
 Gui 7:Submit 
 return
 ;===============================Конвертирование DOC файлов==========================================
-DOC:
-DnDDoc = ""
-BDOC:
-gosub, allguicancel
-VarSetCapacity(WI, 64)
-global GuiNum := % GuHi[11].GuiN
-global GuiHigh := % GuHi[11].Hg
-OnMessage(0x3, "FuncGui")
-OnMessage(0x112, "FuncGui")
-
-DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-		Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) ;выдвигаем/задвигаем окно-слайдер
-return
-
 CHtml:
 Gui 11:Submit
 If DnDDoc = ""

@@ -4,11 +4,6 @@
 #SingleInstance Force ; старый экземпляр скрипта будет замещён новым автоматически, без вывода диалогового окна.
 
 #Include Functions.ahk
-#Include Data.ahk
-#Include Base64.ahk
-#Include GUI_Buttons.ahk
-#Include Conv_JPG.ahk
-
 
 SendMode Input  ; для новых сценариев, обеспечение высокой скорости и надежности.
 SetWorkingDir %A_ScriptDir%  ; Обеспечивает согласованность c начальныv каталогом.
@@ -133,7 +128,6 @@ SetTimer, BarTime, 3000
 SB_SetIcon("shell32.dll", 266)
 Gui, Default
 
-{
 Loop
 {
 	If A_Index  in 4,6,7,8,23,24
@@ -167,7 +161,7 @@ Loop
 		Gui, %A_Index%:Add, Button, x5 y85 w100 h30 , OK
 		Gui, %A_Index%:Add, Button, x115 y85 w100 h30 , Отмена
 		}
-	If A_Index > 24
+	If A_Index > 20
 		break
 }
 
@@ -277,7 +271,7 @@ Gui, 27:Add, Text, x167 yp+25 w40  , Скин
 Gui, 27:Add, DropDownList, xp+45 yp w190 vSkinName Sort, %Skins%
 Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
 Gui, 27:Add, Button, xp+150 yp w100 h30 , Отмена
-}
+
 VarSetCapacity(WI, 64)
 Sleep, 1024
 
@@ -366,6 +360,12 @@ IfExist, %A_WorkingDir%\Config.ini
 	MsgBox % e "ERROR code 1007 AutoUpdate"
 }
 Return
+
+#Include Data.ahk
+#Include Base64.ahk
+#Include GUI_Buttons.ahk
+#Include Conv_JPG.ahk
+
 ;================================GUI\===============================================================
 ;~ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 ;~ {
@@ -468,7 +468,7 @@ try {
 		yI := NumGet(WI, 16, UInt)
 		Gui, %GuiNum%:Show, x%xI% y%yI% h%GuiHigh% w300
 	}
-	DllCall("AnimateWindow", Ptr, hGui26, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+	DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 } catch e {
 	MsgBox % e "ERROR code 1006 DnD_Gui26"
 	}

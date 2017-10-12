@@ -85,17 +85,19 @@ SkinForm(Param1 = "Apply", DLL = "", SkinName = ""){
         DllCall(DLL . "\SkinH_AttachEx", AStr,SkinName, Str,"mhgd")
     }else if(Param1 = 0){
         DllCall(DLL . "\USkinExit")
-        }
+	}
 }
 ;===================================================================================================
-AllGUICancel()
-{
-	while j < 28
-	{
-		j := 2
-		j := j++
-		gui, %j%:Submit
+AllGUICancel() {
+	try{
+	f := 2
+	while(f < 28){
+		f := f++
+		gui, %f%:Submit
 	}
+}catch e {
+	return
+}
 }
 ;===================================================================================================
 ;================================FUNCTIONS==========================================================

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../pubtext/DjVuMessages.dtd">
+<!-- List of files to include to get the entire list of messages -->
+<!-- $Id: messages.xml,v 1.12 2001/07/19 16:48:16 mchen Exp $ -->
+<DjVuMessages>
+<HEAD>
+<!-- Message numbers 17000-19999 -->
+<INCLUDE name="../osi/en/djvutools-reference.xml" />
+<!-- Message numbers 10000-16999 -->
+<INCLUDE name="../osi/en/libdjvu++.xml" />
+<!-- Message numbers 20000-20999 -->
+<INCLUDE name="libimage.xml" />
+<!-- Message numbers 21000-21999 -->
+<INCLUDE name="djvutools-decode.xml" />
+<!-- Message numbers 41000-41999 -->
+<!-- INCLUDE name="djvutools-bitonal.xml" / -->
+<!-- Message numbers 42000-42999 -->
+<!-- INCLUDE name="djvutools-photo.xml" / -->
+<!-- Message numbers 43000-43999 -->
+<!-- INCLUDE name="djvutools-document.xml" / -->
+<!-- Message numbers 44000-44999 -->
+<!-- INCLUDE name="djvutools-combine.xml" / -->
+<!-- Message numbers 45000-45999 -->
+<INCLUDE name="djvutools-options.xml" />
+<!-- Message numbers 22000-22999 -->
+<INCLUDE name="djvutools-prototypes-djvutoxml.xml" />
+<!-- Message numbers 23000-23999 -->
+<INCLUDE name="libapi-libdjvubitonal.xml" />
+<!-- Message numbers 24000-24999 -->
+<INCLUDE name="libapi-libdjvudecode.xml" />
+<!-- Message numbers 25000-25999 -->
+<INCLUDE name="libapi-libdjvudocument.xml" />
+<!-- Message numbers 26000-26999 -->
+<INCLUDE name="libapi-libdjvumulti.xml" />
+<!-- Message numbers 27000-27999 -->
+<INCLUDE name="libapi-libdjvuphoto.xml" />
+<!-- Message numbers 28000-28999 -->
+<INCLUDE name="libapi-libdjvurtk.xml" />
+<!-- Message numbers 30000-34999 -->
+<INCLUDE name="libio++.xml" />
+<!-- Message numbers 29000-29999 -->
+<INCLUDE name="libjb2++.xml" />
+<!-- Message numbers 35000-39999 -->
+<INCLUDE name="libmaskfind++.xml" />
+<!-- Message numbers 40000-40999 -->
+<INCLUDE name="security.xml" />
+<!-- Message numbers 46000-46999 -->
+<INCLUDE name="verbose-messages.xml" />
+<!-- Message numbers 00000-19999 -->
+<INCLUDE name="../osi/en/unixgui-shared.xml" />
+<!-- Message numbers 20000-39999 -->
+<INCLUDE name="../osi/en/unixgui-viewer.xml" />
+<!-- Message numbers 40000-59999 -->
+<INCLUDE name="unixgui-editor.xml" />
+</HEAD>
+<BODY>
+</BODY>
+</DjVuMessages>

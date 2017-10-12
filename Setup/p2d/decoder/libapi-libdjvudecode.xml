@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libdjvudecode -->
+<!-- $Id: libapi-libdjvudecode.xml,v 1.3 2002/07/18 18:08:13 mrosen Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="DjVuDecode.bad_crop_win" number="24000"
+  value="[1-%0!05u!] Cropping window outside the bounds of the image" />
+<MESSAGE name="DjVuDecode.continued" number="24001"
+  value="[1-%0!05u!] Continued past error." />
+<MESSAGE name="DjVuDecode.crop_height" number="24002"
+  value="[1-%0!05u!] Crop height outside image boundary, reducing it to %1!d!" />
+<MESSAGE name="DjVuDecode.crop_width" number="24003"
+  value="[1-%0!05u!] Crop width outside image boundary, reducing it to %1!d!" />
+<MESSAGE name="DjVuDecode.decode_fail" number="24004"
+  value="[1-%0!05u!] Failed to decode page" />
+<MESSAGE name="DjVuDecode.no_decode" number="24005"
+  value="[1-%0!05u!] No pages have been decoded. Try verbose mode for details." />
+<MESSAGE name="DjVuDecode.no_mask" number="24006"
+  value="[1-%0!05u!] No mask layer. Skipping." />
+<MESSAGE name="DjVuDecode.output_open" number="24007"
+  value="[1-%0!05u!] Failed to open output page." />
+<MESSAGE name="DjVuDecode.unrecog_layer" number="24008"
+  value="[1-%0!05u!] Unrecognized layer" />
+<MESSAGE name="DjVuDecode.no_page" number="24009"
+  value="[1-%0!05u!] Failed to decode page %1!d!." />
+<MESSAGE name="DjVuProcess.bad_number" number="24100"
+  value="[1-%0!05u!] TARGET page number is out of range." />
+<MESSAGE name="DjVuProcess.bad_range" number="24101"
+  value="[1-%0!05u!] Invalid page range" />
+<MESSAGE name="DjVuProcess.dupl_init" number="24102"
+  value="[1-%0!05u!] DjVuProcess::init() called twice" />
+<MESSAGE name="DjVuProcess.missing_arg" number="24104"
+  value="[1-%0!05u!] Too few arguments" />
+<MESSAGE name="DjVuProcess.need_range" number="24105"
+  value="[1-%0!05u!] Page range is required with OLD_INDIRECT documents." />
+<MESSAGE name="DjVuProcess.neg_page" number="24106"
+  value="[1-%0!05u!] Page numbers must be positive." />
+<MESSAGE name="DjVuProcess.no_indirect" number="24107"
+  value="[1-%0!05u!] Indirect documents are not supported with djvu_import types." />
+<MESSAGE name="DjVuProcess.no_map" number="24108"
+  value="[1-%0!05u!] No source file map." />
+<MESSAGE name="DjVuProcess.not_djvu" number="24110"
+  value="[1-%0!05u!] Input %1!s! (type %2!s!) is not a DjVu file" />
+<MESSAGE name="DjVuProcess.null_filelist" number="24111"
+  value="[1-%0!05u!] NULL filelist" />
+<MESSAGE name="DjVuProcess.null_filename" number="24112"
+  value="[1-%0!05u!] NULL filename" />
+<MESSAGE name="DjVuProcess.illegal_profile" number="24113"
+  value="[1-%0!05u!] Illegal profile" />
+<MESSAGE name="DjVuTransform.bad_angle" number="24200"
+  value="[1-%0!05u!] The rotate angle must be a multiple of 90 degrees" />
+<MESSAGE name="DjVuTransform.bad_crop" number="24201"
+  value="[1-%0!05u!] Cropping window outside the bounds of the image" />
+<MESSAGE name="DjVuTransform.bad_dpi" number="24202"
+  value="[1-%0!05u!] DPI must be between 25 and 1200 inclusively." />
+<MESSAGE name="DjVuTransform.bad_resize" number="24203"
+  value="[1-%0!05u!] Incorrect resize specified." />
+<MESSAGE name="DjVuTransform.bad_subsample" number="24204"
+  value="[1-%0!05u!] Illegal subsample value" />
+<MESSAGE name="DjVuTransform.bad_upsample" number="24205"
+  value="[1-%0!05u!] Illegal upsample value" />
+<MESSAGE name="DjVuTransform.bad_geom" number="24206"
+  value="[1-%0!05u!] Crop option is badly formed or outside the bounds of the image" />
+<MESSAGE name="usage.decode" number="24300">
+Usage: (DjVu Version: %1!s!)
+        %2!s! [options] &lt;input&gt; &lt;output&gt; ... &lt;file|dir&gt;
+</MESSAGE>
+<MESSAGE name="--output-format" number="24301">
+  %1!s!=&lt;format&gt; Selected Desired output format of pnm, pgm,
+                pbm, bmp, tif, jpeg, ps, pict.
+</MESSAGE>
+<MESSAGE name="--layer" number="24302">
+  %1!s!=&lt;layer&gt;            Select the layer to decode.  One of all, mask,
+                foreground, background.
+</MESSAGE>
+<MESSAGE name="--config" number="24303"
+  value="  %1!s!=&lt;filename&gt;  Use a non-standard configuration file." />
+<MESSAGE name="--profile" number="24304"
+  value="  %1!s!=&lt;name&gt;     Use the options under 'name' profile." />
+<MESSAGE name="--verbose" number="24305"
+  value="  %1!s!            Print verbose messages." />
+<MESSAGE name="--help" number="24306"
+  value="  %1!s!               Print the usage instructions." />
+<MESSAGE name="--page-range" number="24308">
+  %1!s!=&lt;range&gt; Specify the ranges of pages to convert.
+                         Ranges are specified like &quot;1-5,10,11&quot;.
+</MESSAGE>
+<MESSAGE name="--dpi" number="24309"
+  value="  %1!s!=&lt;25-1200&gt;      Dots (pixels) Per Inch." />
+<MESSAGE name="--hflip" number="24310"
+  value="  %1!s!              Horizontally flips the output." />
+<MESSAGE name="--vflip" number="24311"
+  value="  %1!s!              Vertically flips the output." />
+<MESSAGE name="--rotate" number="24312">
+  %1!s!=&lt;angle&gt;     Rotate the output either 90, 180, or 270 clockwise.
+</MESSAGE>
+<MESSAGE name="--togray" number="24313"
+  value="  %1!s!             If input is color, reduce to gray scale." />
+<MESSAGE name="--tobitonal" number="24314"
+  value="  %1!s![=&lt;1-255&gt;] Reduces to bitonal, optional threshold." />
+<MESSAGE name="--upsample" number="24315"
+  value="  %1!s!=&lt;factor&gt;  Upsample the image by the specified factor." />
+<MESSAGE name="--subsample" number="24316"
+  value="  %1!s!=&lt;factor&gt; Subsample the image by the specified factor." />
+<MESSAGE name="--resize" number="24317">
+  %1!s!=&lt;width&gt;x&lt;height&gt; Resize the image to the specified size.
+</MESSAGE>
+<MESSAGE name="--crop" number="24318">
+  %1!s!=&lt;x0&gt;,&lt;y0&gt;,&lt;width&gt;x&lt;height&gt; Crop the image to the specified region.
+</MESSAGE>
+</BODY>
+</DjVuMessages>
+

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Usage messages -->
+<!-- $Id: djvutools-decode.xml,v 1.7 2002/01/30 01:17:14 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="djvudecodemain.illegaloutputformat" number="21001"
+  value="[1-%0!05u!] Illegal option --output-format specified." />
+<MESSAGE name="djvudecodemain.usehelp" number="21002"
+  value="Use --help for usage instructions." />
+<MESSAGE name="djvudecodemain.force_bitonal" number="21003"
+  value="[1-%0!05u!] Forcing gray and color to bitonal conversions.&#10;" />
+<MESSAGE name="djvudecodemain.force_mask" number="21004"
+  value="[1-%0!05u!] Forcing use of mask layer as input.&#10;" />
+<MESSAGE name="djvudecodemain.force_gray" number="21005"
+  value="[1-%0!05u!] Forcing color to gray scale conversions.&#10;" />
+<MESSAGE name="djvudecodemain.force_bitonal_mask" number="21006"
+  value="[1-%0!05u!] Forcing the use of the bitonal mask layer&#10;" />
+<MESSAGE name="djvudecodemain.force_fg" number="21007"
+  value="[1-%0!05u!] Forcing the use of the foreground layer&#10;" />
+<MESSAGE name="djvudecodemain.force_bg" number="21008"
+  value="[1-%0!05u!] Forcing the use of the background layer&#10;" />
+<MESSAGE name="djvudecodemain.removingoutput" number="21009"
+  value="[1-%0!05u!] Removing output file." />
+
+<MESSAGE name="djvutoxml.usage1" number="21100"
+  value="Use %1!s! --help for usage instructions." />
+<MESSAGE name="djvutoxml.usage0" number="21101">
+Usage: %1!s! &lt;input DjVu file&gt; [&lt;output xml file&gt;]
+
+%1!s! will create a DjVuXML file as &lt;output xml file&gt; from
+the specified &lt;input DjVu file&gt;.  If the &lt;output xml file&gt;
+is not specified, the XML file will be writting to standard output.
+</MESSAGE>
+<MESSAGE name="djvutoxml.invalidarguments" number="21102"
+  value="[1-%0!05u!] Invalid commandline arguments specified." />
+
+<MESSAGE name="djvuparsexml.usage0" number="21103">
+Usage: %1!s! &lt;input XML file&gt; ...
+
+%1!s! will parse the specified DjVuXML files, and update the
+referenced DjVu files.
+</MESSAGE>
+
+<MESSAGE name="djvutoxml.nopagesfound" number="21104" value="[1-%0!05u!] No text found to extract" />
+
+<MESSAGE name="djvutotext.usage" number="21105">
+Usage: %1!s! [--help] [--page=&lt;page number&gt;] &lt;inputfile.djvu&gt; [&lt;outputfile.txt&gt;]
+
+Displays the hidden text layer of a DjVu document upon which OCR has been performed.
+  The optional --page parameter allows extraction from a single page (1-based).
+  --help displays this message.
+</MESSAGE>
+<MESSAGE name="djvutotext.targetpagetoolarge" number="21106">
+Requested page does not exist in input document.
+</MESSAGE>
+<MESSAGE name="djvutotext.invalidarguments" number="21107"
+  value="[1-%0!05u!] Invalid commandline arguments specified." />
+<MESSAGE name="djvutotext.usehelp" number="21108"
+  value="Use %1!s! --help for usage instructions." />
+
+</BODY>
+</DjVuMessages>
+

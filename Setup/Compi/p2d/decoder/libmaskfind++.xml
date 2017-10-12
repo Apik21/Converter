@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libmaskfind++ -->
+<!-- $Id: libmaskfind++.xml,v 1.1 2001/06/25 18:24:44 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="Mcc_analysis.cc_problem" number="35000" value="[1-%0!05u!] CC analysis problem" />
+<MESSAGE name="Mcc_analysis.internal_cc" number="35001" value="[1-%0!05u!] internal error in CC analysis" />
+<MESSAGE name="Mcc_analysis.internal_x" number="35002" value="[1-%0!05u!] Internal error (x bounds)" />
+<MESSAGE name="Mcc_analysis.internal_y" number="35003" value="[1-%0!05u!] Internal error (y bounds)" />
+<MESSAGE name="Mcc_analysis.not_alloc" number="35004" value="[1-%0!05u!] run image must be allocated" />
+<MESSAGE name="Mcc_analysis.not_in_cc_order2" number="35005" value="[1-%0!05u!] runs must be cc ordered to perform this operation" />
+<MESSAGE name="Mcc_analysis.not_in_cc_order" number="35006" value="[1-%0!05u!] Runs must be in CC order" />
+<MESSAGE name="Mcc_analysis.not_in_yx_order2" number="35007" value="[1-%0!05u!] cc_analysis: Runs must be in YX order" />
+<MESSAGE name="Mcc_analysis.not_in_yx_order" number="35008" value="[1-%0!05u!] Inside a CC, runs must Y-X ordered" />
+<MESSAGE name="Mcc_analysis.not_y" number="35009" value="[1-%0!05u!] Not y ordered" />
+<MESSAGE name="Mcc_analysis.out_of_range" number="35010" value="[1-%0!05u!] Run out of range" />
+<MESSAGE name="Mcoding_cost.y_overflow" number="35100" value="[1-%0!05u!] Y overflow" />
+<MESSAGE name="Mfilter.bad_height" number="35200" value="[1-%0!05u!] pix images must have same height as run image" />
+<MESSAGE name="Mfilter.bad_width" number="35201" value="[1-%0!05u!] pix images must have same width  as run image" />
+<MESSAGE name="Mfilter.cca_not_alloc" number="35202" value="[1-%0!05u!] cca_runs must be allocated" />
+<MESSAGE name="Mfilter.dil_not_alloc" number="35203" value="[1-%0!05u!] dil_runs must be allocated" />
+<MESSAGE name="Mfilter.ero_not_alloc" number="35204" value="[1-%0!05u!] ero_runs must be allocated" />
+<MESSAGE name="Mfilter.not_300dpi" number="35205" value="[1-%0!05u!] input runs must be at least 300dpi" />
+<MESSAGE name="Mfilter.not_cc_or_yx" number="35206" value="[1-%0!05u!] ccs must CC or YX ordered" />
+<MESSAGE name="Mfilter.not_in_yx_order" number="35207" value="[1-%0!05u!] Runs must be in YX order" />
+<MESSAGE name="Mglobal.bad_proportion" number="35300" value="[1-%0!05u!] ratio_x: image and subimage must have proportionate width" />
+<MESSAGE name="Mglobal.bad_ratios" number="35301" value="[1-%0!05u!] image ratios must be the same along x and y" />
+<MESSAGE name="Mglobal.bad_resolution" number="35302" value="[1-%0!05u!] Image must have same x and y resolution" />
+<MESSAGE name="Mglobal.bad_subsample" number="35303" value="[1-%0!05u!] subimage subsampling factor must be a multiple of original subsampling" />
+<MESSAGE name="Mglobal.cant_copy" number="35304" value="[1-%0!05u!] not allowed to copy data if image is non allocable" />
+<MESSAGE name="Mglobal.cant_free" number="35305" value="[1-%0!05u!] Cannot free destination image" />
+<MESSAGE name="Mglobal.cant_resize" number="35306" value="[1-%0!05u!] Cannot resize borrowed data" />
+<MESSAGE name="Mglobal.cant_steal1" number="35307" value="[1-%0!05u!] not allowed to steal data if image is non allocable" />
+<MESSAGE name="Mglobal.cant_steal2" number="35308" value="[1-%0!05u!] not allowed to steal data if image is still locked" />
+<MESSAGE name="Mglobal.cant_steal3" number="35309" value="[1-%0!05u!] not allowed to steal data which was already borrowed!" />
+<MESSAGE name="Mglobal.dest_not_alloc" number="35310" value="[1-%0!05u!] Destination image must be allocable" />
+<MESSAGE name="Mglobal.high_resolution" number="35311" value="[1-%0!05u!] subimage resolution must be lower" />
+<MESSAGE name="Mglobal.neg_index" number="35312" value="[1-%0!05u!] negative item index" />
+<MESSAGE name="Mglobal.no_data_stream" number="35313" value="[1-%0!05u!] need to set data stream" />
+<MESSAGE name="Mglobal.not_bottom_up" number="35314" value="[1-%0!05u!] Not a bottom up image" />
+<MESSAGE name="Mglobal.not_directly" number="35315" value="[1-%0!05u!] class Mimage cannot be destroyed directly. Consider making this method virtual" />
+<MESSAGE name="Mglobal.not_enough" number="35316" value="[1-%0!05u!] not enough items allocated" />
+<MESSAGE name="Mglobal.only_borrowed" number="35317" value="[1-%0!05u!] can only shift idxs with borrowed data" />
+<MESSAGE name="Mglobal.still_locked" number="35318" value="[1-%0!05u!] Trying to free an image which is still locked" />
+<MESSAGE name="Mglobal.unknown_mode" number="35319" value="[1-%0!05u!] unknown allocation mode" />
+<MESSAGE name="Mhistogrid.bad_means" number="35400" value="[1-%0!05u!] Problem in the Markov mean estimation: BG and FG cannot have identical means" />
+<MESSAGE name="Mhistogrid.bad_overlap" number="35401" value="[1-%0!05u!] Unsupported block overlap scheme" />
+<MESSAGE name="Mhistogrid.diff" number="35402" value="[1-%0!05u!] diff&gt;MAX_HISTO" />
+<MESSAGE name="Mhistogrid.few_blocks" number="35403" value="[1-%0!05u!] Not enough blocks to choose threshold" />
+<MESSAGE name="Mhistogrid.max_val" number="35404" value="[1-%0!05u!] max_val&gt;=MAX_HISTO" />
+<MESSAGE name="Mhistogrid.min_val" number="35405" value="[1-%0!05u!] min_val&gt;=MAX_HISTO" />
+<MESSAGE name="Mhistogrid.missing_bins" number="35406" value="[1-%0!05u!] Histogram missing bins" />
+<MESSAGE name="Mhistogrid.not_300dpi" number="35407" value="[1-%0!05u!] image must be at least 300dpi" />
+<MESSAGE name="Mhistogrid.out_of_image" number="35408" value="[1-%0!05u!] block gets out of the allocated image" />
+<MESSAGE name="Mhistogrid.wrong_x" number="35409" value="[1-%0!05u!] wrong block x coordinates" />
+<MESSAGE name="Mhistogrid.wrong_y" number="35410" value="[1-%0!05u!] wrong block y coordinates" />
+<MESSAGE name="Mlibdjvu.bad_format" number="35500" value="[1-%0!05u!] RGB or BGR or GRAY" />
+<MESSAGE name="Mmasksub.diff_height" number="35600" value="[1-%0!05u!] image and mask must have same height" />
+<MESSAGE name="Mmasksub.diff_width" number="35601" value="[1-%0!05u!] image and mask must have same width" />
+<MESSAGE name="Mmorpho.bad_dilation" number="35700" value="[1-%0!05u!] output dilation must be smaller than dilation used to compute the color cost" />
+<MESSAGE name="Mmorpho.cc_too_high" number="35701" value="[1-%0!05u!] CC too high" />
+<MESSAGE name="Mmorpho.cc_too_large" number="35702" value="[1-%0!05u!] CC too large" />
+<MESSAGE name="Mmorpho.overlap" number="35703" value="[1-%0!05u!] pos and neg runs overlap" />
+<MESSAGE name="Mmorpho.too_small" number="35704" value="[1-%0!05u!] block size too small for dilation" />
+<MESSAGE name="Mpixel_image.bad_format" number="35800" value="[1-%0!05u!] RGB or BGR or GRAY" />
+<MESSAGE name="Mpixel_image.BGR_or_RGB" number="35801" value="[1-%0!05u!] BGR or RGB only" />
+<MESSAGE name="Mpixel_image.cant_unmap" number="35802" value="[1-%0!05u!] could not unmap memory" />
+<MESSAGE name="Mpixel_image.cant_unmap_image" number="35803" value="[1-%0!05u!] cannot unmap data of a image which is free_locked" />
+<MESSAGE name="Mpixel_image.color_only" number="35804" value="[1-%0!05u!] Color image only" />
+<MESSAGE name="Mpixel_image.diff_dimen" number="35805" value="[1-%0!05u!] Diff. image dimensions" />
+<MESSAGE name="Mpixel_image.insuff_height" number="35806" value="[1-%0!05u!] insufficient larger image height" />
+<MESSAGE name="Mpixel_image.insuff_width" number="35807" value="[1-%0!05u!] insufficient larger image width" />
+<MESSAGE name="Mpixel_image.lborder" number="35808" value="[1-%0!05u!] lborder must be &gt;0" />
+<MESSAGE name="Mpixel_image.map_failed" number="35809" value="[1-%0!05u!] memory map failed" />
+<MESSAGE name="Mpixel_image.no_image" number="35810" value="[1-%0!05u!] No image allocated" />
+<MESSAGE name="Mpixel_image.not_enough" number="35811" value="[1-%0!05u!] not enough items read" />
+<MESSAGE name="Mpixel_image.not_gray_1" number="35812" value="[1-%0!05u!] Not a grey image with 1 byte/pixel" />
+<MESSAGE name="Mpixel_image.not_gray" number="35813" value="[1-%0!05u!] Not a grey image" />
+<MESSAGE name="Mpixel_image.not_open" number="35814" value="[1-%0!05u!] file is not opened" />
+<MESSAGE name="Mpixel_image.P5_or_P6" number="35815" value="[1-%0!05u!] PNM should be P5 or P6" />
+<MESSAGE name="Mpixel_image.pixsize_1" number="35816" value="[1-%0!05u!] Pixsize must be 1" />
+<MESSAGE name="Mpixel_image.pixsize_3" number="35817" value="[1-%0!05u!] Pixsize must be 3" />
+<MESSAGE name="Mpixel_image.rborder" number="35818" value="[1-%0!05u!] rborder must be &gt;0" />
+<MESSAGE name="Mpixel_image.stream_not_open" number="35819" value="[1-%0!05u!] stream must be open" />
+<MESSAGE name="Mpixel_image.unk_color" number="35820" value="[1-%0!05u!] image has unknown color representation (neither RGB nor BGR)" />
+<MESSAGE name="Mpixel_image.unk_image" number="35821" value="[1-%0!05u!] unknown image type" />
+<MESSAGE name="Mpixel_image.unk_mode" number="35822" value="[1-%0!05u!] unknown allocation mode" />
+<MESSAGE name="Mrun_image.bad_y_order" number="35900" value="[1-%0!05u!] bad y order" />
+<MESSAGE name="Mrun_image.few_runs" number="35901" value="[1-%0!05u!] not enough runs allocated" />
+<MESSAGE name="Mrun_image.free_RunImage" number="35902" value="[1-%0!05u!] free RunImage before applying filter method" />
+<MESSAGE name="Mrun_image.no_overlap" number="35903" value="[1-%0!05u!] overlapping runs not allowed" />
+<MESSAGE name="Mrun_image.no_run_image" number="35904" value="[1-%0!05u!] run image must be allocated" />
+<MESSAGE name="Mrun_image.not_cc_order" number="35905" value="[1-%0!05u!] filter runs must be in CC order" />
+<MESSAGE name="Mrun_image.not_open" number="35906" value="[1-%0!05u!] file is not opened" />
+<MESSAGE name="Mrun_image.not_yx_order" number="35907" value="[1-%0!05u!] base Runs must be in YX order" />
+<MESSAGE name="Mrun_image.pixsize_1" number="35908" value="[1-%0!05u!] must have pixsize=1" />
+<MESSAGE name="Mrun_image.y_order" number="35909" value="[1-%0!05u!] Runs must be y ordered" />
+<MESSAGE name="Msegmenter.bad_image" number="36000" value="[1-%0!05u!] Color or grey image needed" />
+<MESSAGE name="Msegmenter.bad_ratio" number="36001" value="[1-%0!05u!] resolution ratio between grey and color image should be either 1 or bg_subsample" />
+<MESSAGE name="Msegmenter.bad_status" number="36002" value="[1-%0!05u!] image must be either allocated or attached to an opened stream" />
+<MESSAGE name="Msegmenter.need_raw" number="36003" value="[1-%0!05u!] Raw image needed" />
+<MESSAGE name="Msegmenter.no_image" number="36004" value="[1-%0!05u!] no image for masksub_foreground" />
+<MESSAGE name="Msegmenter.not_alloc" number="36005" value="[1-%0!05u!] image must be allocated" />
+<MESSAGE name="Msegmenter.segmenter" number="36006" value="[1-%0!05u!] segmenter output not OK for Wavelet and JB2 encoding" />
+<MESSAGE name="Msegmenter.too_wide" number="36007" value="[1-%0!05u!] Image width exceeds short integer range" />
+<MESSAGE name="Msubsampler.bad_dimens" number="36100" value="[1-%0!05u!] subimage has wrong dimensions" />
+<MESSAGE name="Msubsampler.bad_ymax" number="36101" value="[1-%0!05u!] ymax not a multiple of substep" />
+<MESSAGE name="Msubsampler.bad_ymin" number="36102" value="[1-%0!05u!] ymin not a multiple of substep" />
+<MESSAGE name="Msubsampler.need_color" number="36103" value="[1-%0!05u!] Require a real color image as sub_img" />
+<MESSAGE name="Msubsampler.not_compact" number="36104" value="[1-%0!05u!] grey image must be compact" />
+<MESSAGE name="Msubsampler.pixsize_3" number="36105" value="[1-%0!05u!] Require pixsize=3 for sub_img" />
+<MESSAGE name="Msubsampler.proprotions" number="36106" value="[1-%0!05u!] Grey and color image must have same proportions" />
+<MESSAGE name="Msubsampler.unk_color" number="36107" value="[1-%0!05u!] image has unknown color representation (neither RGB nor BGR)" />
+<MESSAGE name="Msubsampler.ymin_range2" number="36108" value="[1-%0!05u!] ymin is out of subimage range" />
+<MESSAGE name="Msubsampler.ymin_range3" number="36109" value="[1-%0!05u!] ymin is out of sub-mask range" />
+<MESSAGE name="Msubsampler.ymin_range" number="36110" value="[1-%0!05u!] ymin is out of range" />
+<MESSAGE name="Mthreshold.req_300dpi" number="36200" value="[1-%0!05u!] image must be at least 300dpi" />
+</BODY>
+</DjVuMessages>

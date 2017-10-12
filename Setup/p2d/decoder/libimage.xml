@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libimage -->
+<!-- $Id: libimage.xml,v 1.1 2001/06/25 18:24:44 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="PixImage.bad_color_size" number="20002" value="[1-%0!05u!] Pixel size too small for color image" />
+<MESSAGE name="PixImage.bad_datasize" number="20003" value="[1-%0!05u!] Bad bitonal data size" />
+<MESSAGE name="PixImage.bad_datasize2" number="20004" value="[1-%0!05u!] Bad grayscale data size" />
+<MESSAGE name="PixImage.bad_datasize3" number="20005" value="[1-%0!05u!] Bad color data size" />
+<MESSAGE name="PixImage.bad_gray_size" number="20006" value="[1-%0!05u!] Bad grayscale pixel size" />
+<MESSAGE name="PixImage.bad_hstretchraw" number="20007" value="[1-%0!05u!] Unable to stretch this image type" />
+<MESSAGE name="PixImage.bad_orient" number="20008" value="[1-%0!05u!] Image contains bad orientation type" />
+<MESSAGE name="PixImage.bad_rowsize" number="20009" value="[1-%0!05u!] Image row size is too small for data" />
+<MESSAGE name="PixImage.bad_subsample" number="20010" value="[1-%0!05u!] Incorrect subsample value" />
+<MESSAGE name="PixImage.bad_upsample" number="20011" value="[1-%0!05u!] Incorrect upsample or pixel size value" />
+<MESSAGE name="PixImage.data_size" number="20012" value="[1-%0!05u!] Internal error: data is outside allocated region" />
+<MESSAGE name="PixImage.no_image_data" number="20015" value="[1-%0!05u!] No image data" />
+<MESSAGE name="PixImage.unrecog_type" number="20016" value="[1-%0!05u!] Unrecognized image type" />
+</BODY>
+</DjVuMessages>

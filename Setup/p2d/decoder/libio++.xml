@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libio++ -->
+<!-- $Id: libio++.xml,v 1.3 2001/07/18 23:53:22 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="BmpStream.bad_1D_word" number="30100" value="[1-%0!05u!] Invalid 1D code word detected at offset 0x%1!x!" />
+<MESSAGE name="BmpStream.bad_bit_count" number="30101" value="[1-%0!05u!] cannot handle cBitCount: %1!d!" />
+<MESSAGE name="BmpStream.bad_BMP" number="30102" value="[1-%0!05u!] Unable to output more than one page to a BMP file." />
+<MESSAGE name="BmpStream.bad_comp_value" number="30103" value="[1-%0!05u!] invalid compression value: %1!d!" />
+<MESSAGE name="BmpStream.bad_file_header" number="30104" value="[1-%0!05u!] BMPlenfileheader: internal error!" />
+<MESSAGE name="BmpStream.bad_info_header" number="30105" value="[1-%0!05u!] BMPleninfoheader: internal error!" />
+<MESSAGE name="BmpStream.bad_line_length" number="30106" value="[1-%0!05u!] BMPlenline: internal error!" />
+<MESSAGE name="BmpStream.bad_rgb_header" number="30107" value="[1-%0!05u!] BMPlenrgbtable: internal error!" />
+<MESSAGE name="BmpStream.bad_row" number="30108" value="[1-%0!05u!] couldn&apos;t read row %1!d!" />
+<MESSAGE name="BmpStream.cant_handle" number="30111" value="[1-%0!05u!] don&apos;t know how to handle cPlanes=%1!d!" />
+<MESSAGE name="BmpStream.cant_read_Bitfield" number="30112" value="[1-%0!05u!] couldn&apos;t read Bitfield encoded file" />
+<MESSAGE name="BmpStream.cant_read_CCITT" number="30113" value="[1-%0!05u!] couldn&apos;t read CCITT Group 3 1D encoded file" />
+<MESSAGE name="BmpStream.cant_read_RLE24" number="30114" value="[1-%0!05u!] couldn&apos;t read RLE24 encoded file" />
+<MESSAGE name="BmpStream.cant_read_RLE4" number="30115" value="[1-%0!05u!] couldn&apos;t read RLE4 encoded file" />
+<MESSAGE name="BmpStream.cant_read_RLE8" number="30116" value="[1-%0!05u!] couldn&apos;t read RLE8 encoded file" />
+<MESSAGE name="BmpStream.CCITT_fail" number="30117" value="[1-%0!05u!] BITFIELDS compression specified on %1!d!-bit file!" />
+<MESSAGE name="BmpStream.not_a_bmp" number="30118" value="[1-%0!05u!] Input is not a BMP file" />
+<MESSAGE name="BmpStream.offset" number="30119" value="[1-%0!05u!] invalid BMPFILEHEADER has Bitmap Offset=0x%1!x! at 0x%2!x!" />
+<MESSAGE name="BmpStream.RLE24_fail" number="30120" value="[1-%0!05u!] RLE24 compression specified on %1!d!-bit file!" />
+<MESSAGE name="BmpStream.RLE4_fail" number="30121" value="[1-%0!05u!] RLE4 compression specified on %1!d!-bit file!" />
+<MESSAGE name="BmpStream.RLE8_fail" number="30122" value="[1-%0!05u!] RLE8 compression specified on %1!d!-bit file!" />
+<MESSAGE name="BmpStream.trunc" number="30123" value="[1-%0!05u!] file truncated" />
+<MESSAGE name="BmpStream.unsupported" number="30124" value="[1-%0!05u!] This BMP format is not supported yet." />
+<MESSAGE name="ByteStream.blocksize" number="30200" value="[1-%0!05u!] Requested block size must be less than %1!s! Kbytes" />
+<MESSAGE name="ByteStream.cant_read" number="30201" value="[1-%0!05u!] Cannot read from BSByteStream created for encoding" />
+<MESSAGE name="bufferstream.no_CMYK" number="30250" value="[1-%0!05u!] CMYK is not supported" />
+<MESSAGE name="bufferstream.unrecog_TWAIN" number="30251" value="[1-%0!05u!] File type is not defined in TWAIN 1.9" />
+<MESSAGE name="bufferstream.bad_chunktype" number="30252" value="[1-%0!05u!] Unrecognized chunk type" />
+<MESSAGE name="bufferstream.bad_check" number="30253" value="[1-%0!05u!] File identification bytes are unrecognized" />
+<MESSAGE name="bufferstream.bad_file" number="30254" value="[1-%0!05u!] Unable to output more than one page to a buffered file." />
+<MESSAGE name="Callback.no_callback" number="30300" value="[1-%0!05u!] No seek callback provided." />
+<MESSAGE name="Callback.no_input_fcn" number="30301" value="[1-%0!05u!] Input function required" />
+<MESSAGE name="Callback.no_output_fcn" number="30302" value="[1-%0!05u!] Output function required" />
+<MESSAGE name="Callback.read_only" number="30303" value="[1-%0!05u!] ByteStream is read only" />
+<MESSAGE name="Callback.write_only" number="30304" value="[1-%0!05u!] Callback is write only" />
+<MESSAGE name="convert_io.bad_size" number="30400" value="[1-%0!05u!] page_size incorrect should be like 11x8.5" />
+<MESSAGE name="DjVuExport.no_image" number="30501" value="[1-%0!05u!] Failed to specify image pointer" />
+<MESSAGE name="DjVuImport.unsupported" number="30601" value="[1-%0!05u!] PS/PDF import not supported on windows platform" />
+<MESSAGE name="DjVuIO.bad_format" number="30700" value="[1-%0!05u!] File IO attempted on an unrecognized or non supported format" />
+<MESSAGE name="DjVuIO.unsupported" number="30701" value="[1-%0!05u!] Unsupported IO format" />
+<MESSAGE name="ExecPsStream.child_failed" number="30800" value="[1-%0!05u!] Failed to open child output &apos;%1!s!&apos;" />
+<MESSAGE name="ExecPsStream.copy_failed" number="30801" value="[1-%0!05u!] Failed to copy input to tempfile" />
+<MESSAGE name="ExecPsStream.exit_status" number="30802" value="[1-%0!05u!] child exit status=%1!d!" />
+<MESSAGE name="ExecPsStream.fork_failed" number="30803" value="[1-%0!05u!] Fork failed" />
+<MESSAGE name="ExecPsStream.no_temp_file" number="30804" value="[1-%0!05u!] Can not create a temporary filename" />
+<MESSAGE name="ExecPsStream.pipe_failed" number="30805" value="[1-%0!05u!] Failed to open pipe" />
+<MESSAGE name="ExecPsStream.wait_failed" number="30806" value="[1-%0!05u!] Failed to wait for child" />
+<MESSAGE name="IOG4Codes.bad_value" number="30900" value="[1-%0!05u!] |a1b1| &gt; 3 ; Check the value of the input argument" />
+<MESSAGE name="IOTIFFStream.bad_image" number="31000" value="[1-%0!05u!] 8 and 24 bit images can not be compressed and stored" />
+<MESSAGE name="IOTIFFStream.bad_index" number="31001" value="[1-%0!05u!] Starting Index is not less than Ending Index" />
+<MESSAGE name="IOTIFFStream.cant_rewrite" number="31002" value="[1-%0!05u!] Couldn&apos;t re-write the IFD Start Data" />
+<MESSAGE name="IOTIFFStream.unsupported" number="31003" value="[1-%0!05u!] Feature SEEK_END not supported" />
+<MESSAGE name="JPEGStream.scanline_error" number="31100" value="[1-%0!05u!] Error in writing the scanlines" />
+<MESSAGE name="JPEGStream.unsupported" number="31101" value="[1-%0!05u!] JPEG support is not included in this library" />
+<MESSAGE name="JPEGStream.message" number="31102" value="[1-%0!05u!] JPEG processing generated a message (see logfile)" />
+<MESSAGE name="LibTiffStream.bad_format" number="31200" value="[1-%0!05u!] Only B/W, GRAY , RGB  and RGB Palette tiff images are supported" />
+<MESSAGE name="LibTiffStream.bad_photometric" number="31201" value="[1-%0!05u!] Bad photometric; can only handle RGB and Palette images." />
+<MESSAGE name="LibTiffStream.bad_samples1" number="31202" value="[1-%0!05u!] SamplesPerPixel == %1!d!.  Only values of 1,3, and 4 are supported." />
+<MESSAGE name="LibTiffStream.bad_samples2" number="31203" value="[1-%0!05u!] BitsPerSample == %1!d!.  Only values of are 1/4/8/16 supported." />
+<MESSAGE name="LibTiffStream.open_failed" number="31204" value="[1-%0!05u!] Unable to open ByteStream" />
+<MESSAGE name="LibTiffStream.unsupported" number="31205" value="[1-%0!05u!] Libtiff is not supported by this library." />
+<MESSAGE name="LibTiffStream.error" number="31206" value="[1-%0!05u!] Libtiff encountered an error." />
+<MESSAGE name="MTiffStream.bad_format" number="31300" value="[1-%0!05u!] Only B/W, GRAY and RGB tiff images are supported" />
+<MESSAGE name="MTiffStream.corrupt_header" number="31301" value="[1-%0!05u!] Corrupted G4/MMR header" />
+<MESSAGE name="MTiffStream.no_compression" number="31302" value="[1-%0!05u!] Couldn&apos;t find Compression Tag" />
+<MESSAGE name="MTiffStream.no_palette" number="31303" value="[1-%0!05u!] Paletted tif images are not supported" />
+<MESSAGE name="MTiffStream.not_tiff" number="31304" value="[1-%0!05u!] Not a Tiff Object" />
+<MESSAGE name="MTiffStream.unrecog_header" number="31305" value="[1-%0!05u!] Cannot recognize G4/MMR header" />
+<MESSAGE name="PictStream.bad_char_per_pixel" number="31400" value="[1-%0!05u!] bad unsigned chars per pixel in expand_buf" />
+<MESSAGE name="PictStream.bad_cmpCount" number="31401" value="[1-%0!05u!] sorry, cmpCount != 1" />
+<MESSAGE name="PictStream.bad_length" number="31402" value="[1-%0!05u!] can&apos;t do this length" />
+<MESSAGE name="PictStream.bad_opcode" number="31403" value="[1-%0!05u!] can&apos;t handle opcode" />
+<MESSAGE name="PictStream.bad_pattern" number="31404" value="[1-%0!05u!] unknown pattern type in read_pattern" />
+<MESSAGE name="PictStream.bad_pixel_value" number="31405" value="[1-%0!05u!] pixel value greater than color table size" />
+<MESSAGE name="PictStream.no_transfer" number="31407" value="[1-%0!05u!] No transfer function for code %1!s!, using srcCopy" />
+<MESSAGE name="PictStream.no_version" number="31408" value="[1-%0!05u!] No version number" />
+<MESSAGE name="PictStream.only_chunky" number="31409" value="[1-%0!05u!] sorry, I only do chunky format" />
+<MESSAGE name="PictStream.only_version_2" number="31410" value="[1-%0!05u!] can only do version 2, subcode 0xff" />
+<MESSAGE name="PictStream.size_error" number="31411" value="[1-%0!05u!] oops, pixelSize != cmpSize" />
+<MESSAGE name="PictStream.too_narrow" number="31412" value="[1-%0!05u!] input too narrow, must be &gt;= 8 pixels wide" />
+<MESSAGE name="PictStream.unk_version" number="31413" value="[1-%0!05u!] Unknown version" />
+<MESSAGE name="PictStream.IllegalBlit" number="31414" value="[1-%0!05u!] Illegal blit specification" />
+<MESSAGE name="PnmStream.bad_data" number="31500" value="[1-%0!05u!] Invalid PNM data.  Expect digit, got &apos;0x%1!x!&apos;" />
+<MESSAGE name="PnmStream.bad_file" number="31501" value="[1-%0!05u!] Invalid PNM file" />
+<MESSAGE name="PnmStream.bad_header" number="31502" value="[1-%0!05u!] Invalid header in PNM file" />
+<MESSAGE name="PnmStream.header_failed" number="31504" value="[1-%0!05u!] Failed writing header of PNM file" />
+<MESSAGE name="PnmStream.image_failed" number="31505" value="[1-%0!05u!] Failed writing image into PNM file" />
+<MESSAGE name="PnmStream.io_read" number="31506" value="[1-%0!05u!] Failed reading PNM file" />
+<MESSAGE name="PnmStream.no_input" number="31507" value="[1-%0!05u!] No input reading PNM file" />
+<MESSAGE name="PsStream.empty_image" number="31600" value="[1-%0!05u!] Attempt to print empty image." />
+<MESSAGE name="PsStream.unsupp_level_1" number="31602" value="[1-%0!05u!] Cannot generate PostScript level 1 code: NOT SUPPORTED." />
+<MESSAGE name="RawStream.no_more_output" number="31701" value="[1-%0!05u!] No more output pages allowed on this stream." />
+<MESSAGE name="RawStream.unsupp_append" number="31702" value="[1-%0!05u!] appendPage is not suported for this image type." />
+<MESSAGE name="UnGifStream.already_sent" number="31801" value="[1-%0!05u!] Screen Descriptor already been set" />
+<MESSAGE name="UnGifStream.bad_open" number="31802" value="[1-%0!05u!] Error opening GIF file handle" />
+<MESSAGE name="UnGifStream.bad_type" number="31803" value="[1-%0!05u!] Wrong record type detected" />
+<MESSAGE name="UnGifStream.close_fail" number="31804" value="[1-%0!05u!] Failed to close given file" />
+<MESSAGE name="UnGifStream.defective" number="31805" value="[1-%0!05u!] Image is defective, decoding aborted" />
+<MESSAGE name="UnGifStream.disk_full" number="31806" value="[1-%0!05u!] Write failed (disk full?)" />
+<MESSAGE name="UnGifStream.eof" number="31807" value="[1-%0!05u!] Image EOF detected before image complete" />
+<MESSAGE name="UnGifStream.excess_pixels" number="31808" value="[1-%0!05u!] #Pixels bigger than Width * Height" />
+<MESSAGE name="UnGifStream.no_gif" number="31809" value="[1-%0!05u!] GIF support was not included in this library." />
+<MESSAGE name="UnGifStream.no_gif_out" number="31810" value="[1-%0!05u!] Output of GIF images is not supported" />
+<MESSAGE name="UnGifStream.no_image" number="31811" value="[1-%0!05u!] No Image Descriptor detected" />
+<MESSAGE name="UnGifStream.no_map" number="31812" value="[1-%0!05u!] Neither Global Nor Local color map" />
+<MESSAGE name="UnGifStream.no_read" number="31813" value="[1-%0!05u!] Given file was not opened for read" />
+<MESSAGE name="UnGifStream.no_screen" number="31814" value="[1-%0!05u!] No Screen Descriptor detected" />
+<MESSAGE name="UnGifStream.not_gif" number="31815" value="[1-%0!05u!] Given file is NOT GIF file" />
+<MESSAGE name="UnGifStream.no_write" number="31816" value="[1-%0!05u!] Given file was not opened for write" />
+<MESSAGE name="UnGifStream.open_fail" number="31817" value="[1-%0!05u!] Failed to open given file" />
+<MESSAGE name="UnGifStream.read_fail" number="31818" value="[1-%0!05u!] Failed to Read from given file" />
+<MESSAGE name="UnGifStream.still_active" number="31819" value="[1-%0!05u!] Image Descriptor is still active" />
+<MESSAGE name="UnGifStream.unk_error" number="31820" value="[1-%0!05u!] Unknown libungif error" />
+<MESSAGE name="UnGifStream.unrecog_record" number="31821" value="[1-%0!05u!] Unrecognized record" />
+<MESSAGE name="UnGifStream.write_fail" number="31822" value="[1-%0!05u!] Failed to Write to given file" />
+<MESSAGE name="DjVu_Stream.noDjVuXMLsupported" number="31823"
+  value="[1-%0!05u!] DjVu to XML is not supported for non-DjVu documents." />
+</BODY>
+</DjVuMessages>

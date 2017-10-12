@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libdjvudocument -->
+<!-- $Id: libapi-libdjvudocument.xml,v 1.1 2001/06/25 18:24:44 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="DjVuForeground.bad_mode" number="25000"
+  value="[1-%0!05u!] Invalid JB2 mode of &apos;%1!s!&apos; specified" />
+<MESSAGE name="DocumentToDjVu.already_jb2" number="25100"
+  value="[1-%0!05u!] Using an already processed JB2 matcher" />
+<MESSAGE name="DocumentToDjVu.bad_dpi" number="25101"
+  value="[1-%0!05u!] Invalid dpi option" />
+<MESSAGE name="DocumentToDjVu.bad_format" number="25102"
+  value="[1-%0!05u!] Invalid image format." />
+<MESSAGE name="DocumentToDjVu.continued" number="25103"
+  value="[1-%0!05u!] Continued past error." />
+<MESSAGE name="DocumentToDjVu.failed_page" number="25104"
+  value="[1-%0!05u!] Failed to read page %1!d!" />
+<MESSAGE name="DocumentToDjVu.no_pages1" number="25105"
+  value="[1-%0!05u!] Unable to find pages in range %1!s! in the source stream." />
+<MESSAGE name="DocumentToDjVu.no_pages2" number="25106"
+  value="[1-%0!05u!] No pages found for decoding." />
+<MESSAGE name="DocumentToDjVu.no_subsample" number="25107"
+  value="[1-%0!05u!] Subsampling is not supported for bitonal documents." />
+<MESSAGE name="DocumentToDjVu.not_bitonal" number="25108"
+  value="[1-%0!05u!] Source image is not bitonal." />
+<MESSAGE name="DocumentToDjVu.no_upsample" number="25109"
+  value="[1-%0!05u!] Upsampling is not supported for bitonal documents." />
+<MESSAGE name="DocumentToDjVu.null_image" number="25110"
+  value="[1-%0!05u!] NULL image" />
+<MESSAGE name="DocumentToDjVu.only_one_chunk" number="25111"
+  value="[1-%0!05u!] Only one JPEG chunk is allowed with JPEG DjVu" />
+<MESSAGE name="DocumentToDjVu.skip_page" number="25112"
+  value="[1-%0!05u!] Skipping page %1!d!" />
+<MESSAGE name="DocumentToDjVu.unsupp_jb2" number="25113"
+  value="[1-%0!05u!] Unsupported jb2 format" />
+<MESSAGE name="DocumentToDjVu.unsupported" number="25114"
+  value="[1-%0!05u!] Unsupported" />
+<MESSAGE name="DocumentToDjVu.photoisbitonal" number="25115"
+  value="[1-%0!05u!] Cannot encode bitonal page as photo" />
+<MESSAGE name="usage.background" number="25201"
+  value="BACKGROUND:" />
+<MESSAGE name="usage.segmenter" number="25202"
+  value="SEGMENTER:" />
+<MESSAGE name="usage.text" number="25203"
+  value="TEXT:" />
+<MESSAGE name="usage.transform" number="25204"
+  value="TRANSFORM:" />
+<MESSAGE name="--background-floss" number="25205">
+  %1!s!   Use background color in the small intervals
+                         between characters.
+</MESSAGE>
+<MESSAGE name="--bg-subsample" number="25206"
+  value="  %1!s!=&lt;1-6&gt; Background image subsample ratio." />
+<MESSAGE name="--black-normalize" number="25207"
+  value="  %1!s!=&lt;-1,0-100&gt; Normalize by &lt;value&gt; % of black pixels." />
+<MESSAGE name="--fg-quality" number="25208"
+  value="  %1!s!=&lt;1-100&gt; Foreground quality (1 is lowest quality, 75 is default)." />
+<MESSAGE name="--fg-subsample" number="25209"
+  value="  %1!s!=&lt;1-12&gt; Foreground image subsample ratio." />
+<MESSAGE name="--inversion-level" number="25210"
+  value="  %1!s!=&lt;0-100&gt; Foreground inversion (0 means no inversion)." />
+<MESSAGE name="--mask-upsample" number="25212"
+  value="  %1!s!=&lt;1-3&gt; Mask and target DjVu image upsample ratio." />
+<MESSAGE name="--pix-filter-level" number="25213">
+  %1!s!=&lt;0-100&gt; Foreground pixel filter.
+                         (0 is maximum foreground.)
+</MESSAGE>
+<MESSAGE name="--resolution-multiplier" number="25214">
+  %1!s!=&lt;1,2&gt; Use 1 unless input resolution is above 450dpi.
+</MESSAGE>
+<MESSAGE name="--scale-normalize" number="25215"
+  value="  %1!s!=&lt;1-&gt; Use a scale other than 100 for normalized values." />
+<MESSAGE name="--shape-filter-level" number="25216">
+  %1!s!=&lt;0-100&gt; Foreground shape filter.
+                         (0 is maximum foreground.)
+</MESSAGE>
+<MESSAGE name="--subsample-refine" number="25217"
+  value="  %1!s!   Add interpolation heuristics to subsample." />
+<MESSAGE name="--threshold-level" number="25218">
+  %1!s!=&lt;0-100&gt; Foreground/background threshold.
+                         (0 is maximum foreground.)
+</MESSAGE>
+<MESSAGE name="--white-normalize" number="25219"
+  value="  %1!s!=&lt;-1,0-100&gt; Normalize by &lt;value&gt; % of white pixels." />
+<MESSAGE name="--jb2-format" number="25220">
+  %1!s!=&lt;B,C,N&gt; Encode the JB2Layer as B=&quot;Bitonal JB2&quot;
+                         or C=&quot;Color JB2;&quot;  Use "N" for no JB2 layer.
+</MESSAGE>
+</BODY>
+</DjVuMessages>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from security -->
+<!-- $Id: security.xml,v 1.4 2002/07/12 00:44:25 jhayes Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="security.VLS_enabled" number="40000" value="[1-%0!05u!] Unable to disable VLS Error Handling, dialog boxes may appear." />
+<MESSAGE name="security.library_init" number="40001" value="[1-%0!05u!] Unable to initialize license server library." />
+<MESSAGE name="security.expired" number="40002" value="[1-%0!05u!] The license for this machine has expired." />
+<MESSAGE name="security.machine_id" number="40003" value="[1-%0!05u!] Unable generate a Machine ID." />
+<MESSAGE name="security.hardware_tie" number="40004" value="[1-%0!05u!] Unable to tie license to hardware." />
+<MESSAGE name="security.locking_code" number="40005" value="[1-%0!05u!] Unable to generate a Locking Code for this machine." />
+<MESSAGE name="security.license_file" number="40006" value="[1-%0!05u!] Unable to create License file for write." />
+<MESSAGE name="security.ethernet" number="40007" value="[1-%0!05u!] Your ethernet card must be configured to eth0 for this code to work." />
+<MESSAGE name="security.status_code" number="40008" value="[1-%0!05u!] Status code: %1!d!&#10;" />
+<MESSAGE name="security.no_license" number="40009" value="[1-%0!05u!] Unable to find a valid license for %1!s!.&#10;&#10;" />
+<MESSAGE name="security.lock_code" number="40010" value="[1-%0!05u!] Please go to http://www.lizardtech.com/licensing with the following&#10;Locking Code to unlock %1!s!.&#10;&#10;Locking Code : %2!d!-%3!x!&#10;&#10;Enter your License (control-c to terminate)&#10;" />
+<MESSAGE name="security.not_closed" number="40011" value="[1-%0!05u!] File (%1!s!) was not properly closed&#10;" />
+<MESSAGE name="security.entered" number="40012" value="[1-%0!05u!] Your License number has been entered into the license file:&#10;&#09;%1!s!&#10;This file containing the License number from&#10;&#09;%2!s!&#10;is required every time you run this program.&#10;&#10;Relaunch %3!s!.&#10;&#10;" />
+<MESSAGE name="security.lock_code_usagemeter" number="40013" value="[1-%0!05u!] Please go to http://www.lizardtech.com/licensing with the following&#10;Locking Code and Express Cartridge Manager ID to unlock %1!s!.&#10;&#10;Locking Code : %2!d!-%3!x!&#10;Express Cartridge Manager ID : %4!s!&#10;&#10;Enter your License (control-c to terminate)&#10;" />
+</BODY>
+</DjVuMessages>

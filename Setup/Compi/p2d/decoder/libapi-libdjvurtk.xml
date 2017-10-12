@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libdjvurtk -->
+<!-- $Id: libapi-libdjvurtk.xml,v 1.5 2002/01/30 01:17:14 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="DjVuRTK.autorotate_done" number="28000" value="[1-%0!05u!] AUTOROTATEDONE: Autorotation has been successfully completed." />
+<MESSAGE name="DjVuRTK.badclient" number="28001" value="[1-%0!05u!] BADCLIENT: An invalid PRTKCLIENT was specified." />
+<MESSAGE name="DjVuRTK.badcodepage" number="28002" value="[1-%0!05u!] BADCODEPAGE: An invalid codepage was specified." />
+<MESSAGE name="DjVuRTK.bad_export_opt" number="28003" value="[1-%0!05u!] BADEXPORTOPT: An invalid Export option was specified." />
+<MESSAGE name="DjVuRTK.badimage" number="28004" value="[1-%0!05u!] BADIMAGE: An invalid PRTKIMAGE was specified." />
+<MESSAGE name="DjVuRTK.badindex" number="28005" value="[1-%0!05u!] BADINDEX: Specified index out of bounds." />
+<MESSAGE name="DjVuRTK.badline" number="28006" value="[1-%0!05u!] BADLINE: An invalid PRTKLINE was specified." />
+<MESSAGE name="DjVuRTK.badlocateopt" number="28007" value="[1-%0!05u!] BADLOCATEOPT: An invalid Location option was specified." />
+<MESSAGE name="DjVuRTK.badpage" number="28008" value="[1-%0!05u!] BADPAGE: An invalid PRTKPAGE was specified." />
+<MESSAGE name="DjVuRTK.badparam" number="28009" value="[1-%0!05u!] BADPARAM: An invalid parameter was passed." />
+<MESSAGE name="DjVuRTK.badpath" number="28010" value="[1-%0!05u!] BADPATH: The specified path could not be found." />
+<MESSAGE name="DjVuRTK.badrecogopt" number="28011" value="[1-%0!05u!] BADRECOGOPT: An invalid Recognize option was specified." />
+<MESSAGE name="DjVuRTK.badrect" number="28012" value="[1-%0!05u!] BADRECT: An invalid PRTKRECT was specified." />
+<MESSAGE name="DjVuRTK.badrgn" number="28013" value="[1-%0!05u!] BADRGN: An invalid PRTKRGN was specified." />
+<MESSAGE name="DjVuRTK.badtype" number="28014" value="[1-%0!05u!] BADTYPE: An invalid input or output file type was specified." />
+<MESSAGE name="DjVuRTK.binarize_done" number="28015" value="[1-%0!05u!] BINARIZEDONE: Binarization has been successfully completed." />
+<MESSAGE name="DjVuRTK.binarize_in_prog" number="28016" value="[1-%0!05u!] BINARIZE_INPROG: Called function invalid while Binarizing." />
+<MESSAGE name="DjVuRTK.cannot_init" number="28017" value="[1-%0!05u!] Cannot initialize RTK&#10;Please make rtk-path in rtk.conf:&#10;rtk-path=&apos;%1!s!&apos;&#10;contains the full pathname of the RTK directory." />
+<MESSAGE name="DjVuRTK.client_busy" number="28018" value="[1-%0!05u!] CLIENT_BUSY: Cannot create more than one client." />
+<MESSAGE name="DjVuRTK.deskew_done" number="28019" value="[1-%0!05u!] DESKEWDONE: Deskewing successfully completed." />
+<MESSAGE name="DjVuRTK.dict_notfound" number="28020" value="[1-%0!05u!] DICT_NOTFOUND: Cannot find &apos;GENERAL.US&apos;." />
+<MESSAGE name="DjVuRTK.disk_full" number="28021" value="[1-%0!05u!] DISKFULL: Disk full, cannot write temporary file." />
+<MESSAGE name="DjVuRTK.export" number="28022" value="[1-%0!05u!] EXPORT: Export encountered an error." />
+<MESSAGE name="DjVuRTK.export_timeout" number="28023" value="[1-%0!05u!] EXPORT_TIMEOUT: Not used." />
+<MESSAGE name="DjVuRTK.file_error" number="28024" value="[1-%0!05u!] Error in %1!s!" />
+<MESSAGE name="DjVuRTK.filenotfound" number="28025" value="[1-%0!05u!] FILENOTFOUND: The specified file could not be found." />
+<MESSAGE name="DjVuRTK.format_native" number="28026" value="[1-%0!05u!] FORMAT_NATIVE: The specified file is not a Native format file." />
+<MESSAGE name="DjVuRTK.image_bilevel" number="28027" value="[1-%0!05u!] IMAGE_BILEVEL: Image file is not 1-bit." />
+<MESSAGE name="DjVuRTK.image_compress_type" number="28028" value="[1-%0!05u!] IMAGE_COMPRESS_TYPE: Image file uses unsupported compression." />
+<MESSAGE name="DjVuRTK.image_discarded" number="28029" value="[1-%0!05u!] IMAGE_DISCARDED: The image has already been discarded." />
+<MESSAGE name="DjVuRTK.image_format" number="28030" value="[1-%0!05u!] IMAGE_FORMAT: Image file format is unknown or unsupported." />
+<MESSAGE name="DjVuRTK.image_height" number="28031" value="[1-%0!05u!] IMAGE_HEIGHT: Image height is out of range." />
+<MESSAGE name="DjVuRTK.image_load" number="28032" value="[1-%0!05u!] IMAGE_LOAD: Unable to load image file." />
+<MESSAGE name="DjVuRTK.image_locked" number="28033" value="[1-%0!05u!] IMAGE_LOCKED: Image cannot be discarded." />
+<MESSAGE name="DjVuRTK.image_nowhere" number="28034" value="[1-%0!05u!] IMAGE_NOWHERE: There is no image for process." />
+<MESSAGE name="DjVuRTK.image_res" number="28035" value="[1-%0!05u!] IMAGE_RESOLUTION: Not used anymore." />
+<MESSAGE name="DjVuRTK.image_toonarrow" number="28036" value="[1-%0!05u!] IMAGE_TOONARROW: Locate cannot process the image." />
+<MESSAGE name="DjVuRTK.image_tooshort" number="28037" value="[1-%0!05u!] IMAGE_TOOSHORT: Locate cannot process the image." />
+<MESSAGE name="DjVuRTK.image_toowide" number="28038" value="[1-%0!05u!] IMAGE_TOOWIDE: Locate cannot process the image." />
+<MESSAGE name="DjVuRTK.image_width" number="28039" value="[1-%0!05u!] IMAGE_WIDTH: Image width is out of range." />
+<MESSAGE name="DjVuRTK.init" number="28040" value="[1-%0!05u!] INIT: Unable to successfully initialize the RTK." />
+<MESSAGE name="DjVuRTK.internal_error" number="28041" value="[1-%0!05u!] Internal error: inconsistent band data" />
+<MESSAGE name="DjVuRTK.load_fail" number="28042" value="[1-%0!05u!] Failed to load function %1!s!() from Rtk.dll" />
+<MESSAGE name="DjVuRTK.loaduserdict" number="28043" value="[1-%0!05u!] LOADUSERDICT: Unable to load user dictionary." />
+<MESSAGE name="DjVuRTK.locate_done" number="28044" value="[1-%0!05u!] Locating has been successfully completed." />
+<MESSAGE name="DjVuRTK.locate_inprog" number="28045" value="[1-%0!05u!] LOCATE_INPROG: Called function invalid while Locate is in progress." />
+<MESSAGE name="DjVuRTK.no_error" number="28046" value="[1-%0!05u!] No Error." />
+<MESSAGE name="DjVuRTK.noimage4deskew" number="28047" value="[1-%0!05u!] NOIMAGE4DESKEW: PRTKPAGE does not have an PRTKIMAGE for Deskew." />
+<MESSAGE name="DjVuRTK.noimage4locate" number="28048" value="[1-%0!05u!] NOIMAGE4LOCATE: PRTKPAGE does not have PRTKIMAGE for Locating." />
+<MESSAGE name="DjVuRTK.no_root" number="28050" value="[1-%0!05u!] Failed to find %1!s!" />
+<MESSAGE name="DjVuRTK.not_dir" number="28051" value="[1-%0!05u!] %1!s! is not a directory" />
+<MESSAGE name="DjVuRTK.no_temp_dir" number="28052" value="[1-%0!05u!] No temp directory %1!s!" />
+<MESSAGE name="DjVuRTK.no_text" number="28053" value="[1-%0!05u!] NOTEXT: Specified PRTKPAGE has no text." />
+<MESSAGE name="DjVuRTK.no_text_region" number="28054" value="[1-%0!05u!] NO_TEXT_REGION: Cannot find any text region for process." />
+<MESSAGE name="DjVuRTK.only_bitonal" number="28055" value="[1-%0!05u!] Only bitonal images can be OCR&apos;ed" />
+<MESSAGE name="DjVuRTK.only_top_down" number="28056" value="[1-%0!05u!] Only Top Down, Left to Right documents with no rotation can be OCR&apos;ed" />
+<MESSAGE name="DjVuRTK.page_locked" number="28057" value="[1-%0!05u!] PAGE_LOCKED: Cannot continue because the page is locked." />
+<MESSAGE name="DjVuRTK.page_notlocked" number="28058" value="[1-%0!05u!] PAGE_NOTLOCKED: Page cannot be processed." />
+<MESSAGE name="DjVuRTK.page_offlimit" number="28059" value="[1-%0!05u!] PAGE_OFFLIMIT: Page number is out of bound when reading image file." />
+<MESSAGE name="DjVuRTK.recog_done" number="28061" value="[1-%0!05u!] RECOGNIZEDONE: Recognizing has been successfully completed." />
+<MESSAGE name="DjVuRTK.recog_in_prog" number="28062" value="[1-%0!05u!] RECOGNIZE_INPROG: Cannot cancel locate, recognition in progress." />
+<MESSAGE name="DjVuRTK.rtkdat_notfound" number="28063" value="[1-%0!05u!] RTKDAT_NOTFOUND: Cannot find &apos;RTK.DB&apos;." />
+<MESSAGE name="DjVuRTK.segment_done" number="28064" value="[1-%0!05u!] SEGMENTDONE: Segmentation has been successfully completed." />
+<MESSAGE name="DjVuRTK.segment_in_prog" number="28065" value="[1-%0!05u!] SEGMENT_INPROG: Cannot cancel Segmentation, Segmentation is in progress." />
+<MESSAGE name="DjVuRTK.term" number="28066" value="[1-%0!05u!] TERM: Unable to successfully terminate the RTK." />
+<MESSAGE name="DjVuRTK.too_big" number="28067" value="[1-%0!05u!] The DjVu image is too big. Width or height may not exceed 8192" />
+<MESSAGE name="DjVuRTK.too_small" number="28068" value="[1-%0!05u!] The DjVu image is too small. It should be at least 17x17" />
+<MESSAGE name="DjVuRTK.unknown" number="28069" value="[1-%0!05u!] UNKNOWN: RTK Error 0x%1!x! returned." />
+<MESSAGE name="DjVuRTK.wrong_custom_id" number="28070" value="[1-%0!05u!] WRONGCUSTOMID: Wrong customer ID." />
+<MESSAGE name="DjVuRTK.bad_locale" number="28071" value="[1-%0!05u!] OCR does not currently support the system locale" />
+<MESSAGE name="DjVuRTK.nomemory" number="28072" value="[1-%0!05u!] Insufficient memory to run OCR." />
+<MESSAGE name="DjVuRTK.pict_nomemory" number="28073" value="[1-%0!05u!] Not enough memory for picture region restore." />
+</BODY>
+</DjVuMessages>

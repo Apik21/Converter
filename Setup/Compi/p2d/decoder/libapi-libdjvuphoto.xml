@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libdjvuphoto -->
+<!-- $Id: libapi-libdjvuphoto.xml,v 1.2 2001/07/18 23:53:22 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="DjVuIW44Parse.bad_after_gamma" number="27000"
+  value="[1-%0!05u!] Invalid text after GAMMA specification" />
+<MESSAGE name="DjVuIW44Parse.bad_gamma" number="27001"
+  value="[1-%0!05u!] Invalid GAMMA specified" />
+<MESSAGE name="DjVuIW44Parse.bad_list2" number="27002"
+  value="[1-%0!05u!] Invalid %1!s! list.&#10;Must be list of float numbers separated by commas." />
+<MESSAGE name="DjVuIW44Parse.bad_list" number="27003"
+  value="[1-%0!05u!] Invalid %1!s! list.&#10;Must be list of integers separated by commas." />
+<MESSAGE name="DjVuIW44Parse.crcbdelay" number="27004"
+  value="[1-%0!05u!] The value for --crcbdelay option should be between 1 and 32 inclusive" />
+<MESSAGE name="DjVuIW44Parse.empty_list" number="27005"
+  value="[1-%0!05u!] Empty %1!s! list specified." />
+<MESSAGE name="DjVuIW44Parse.incompat_opt" number="27006"
+  value="[1-%0!05u!] Option %1!s! may not be used together with %2!s!." />
+<MESSAGE name="DjVuIW44Parse.neg_val" number="27007"
+  value="[1-%0!05u!] All values in %1!s! list must be positive." />
+<MESSAGE name="DjVuIW44Parse.quality" number="27008"
+  value="[1-%0!05u!] The value for --quality option should be between 1 and 100 inclusive" />
+<MESSAGE name="PhotoToDjVu.bad_dpi" number="27100"
+  value="[1-%0!05u!] Invalid dpi option" />
+<MESSAGE name="PhotoToDjVu.bad_format" number="27101"
+  value="[1-%0!05u!] Invalid image format." />
+<MESSAGE name="PhotoToDjVu.continued" number="27102"
+  value="[1-%0!05u!] Continued past error." />
+<MESSAGE name="PhotoToDjVu.decode_fail" number="27103"
+  value="[1-%0!05u!] Failed to decode page" />
+<MESSAGE name="PhotoToDjVu.no_page" number="27104"
+  value="[1-%0!05u!] No Page For Encoding" />
+<MESSAGE name="PhotoToDjVu.no_trans" number="27105"
+  value="[1-%0!05u!] Transformations are not allowed when using the --jpeg option." />
+<MESSAGE name="PhotoToDjVu.null_image" number="27106"
+  value="[1-%0!05u!] NULL image" />
+<MESSAGE name="PhotoToDjVu.one_chunk" number="27107"
+  value="[1-%0!05u!] Only one JPEG chunk is allowed with JPEG DjVu" />
+<MESSAGE name="--crcbdelay" number="27201"
+  value="  %1!s!=&lt;1-32&gt;   The chrominance delay effects color blurring and size." />
+<MESSAGE name="--crcbfull" number="27202"
+  value="  %1!s!           Full chrominance quality compression." />
+<MESSAGE name="--crcbhalf" number="27203"
+  value="  %1!s!           Half resolution chrominance compression." />
+<MESSAGE name="--crcbnone" number="27204"
+  value="  %1!s!           No chrominance will be used in the compression." />
+<MESSAGE name="--crcbnormal" number="27205"
+  value="  %1!s!         Normal chrominance quality compression." />
+<MESSAGE name="--decibels" number="27206"
+  value="  %1!s!=#.#,#.#,... A list float decibel minimums per chunk." />
+<MESSAGE name="--gamma" number="27207"
+  value="  %1!s!=&lt;0.3-5.0&gt;    Gamma factor (default 2.2)." />
+<MESSAGE name="--jpeg" number="27208"
+  value="  %1!s!               Output pseudo DjVu.  Input files must be JPEG." />
+<MESSAGE name="--quality" number="27209"
+  value="  %1!s!=&lt;1-100&gt;    Photo/Background Quality (1 lowest, default is 75)." />
+<MESSAGE name="--sizes" number="27210"
+  value="  %1!s!=#,#,...      A list of the minimum size (in bytes) per chunk." />
+<MESSAGE name="--slices" number="27211"
+  value="  %1!s!=#,#,...     A list of the minimum # of slices per chunk." />
+</BODY>
+</DjVuMessages>

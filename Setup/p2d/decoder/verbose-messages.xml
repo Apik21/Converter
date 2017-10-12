@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Verbose messages -->
+<!-- $Id: verbose-messages.xml,v 1.3 2001/07/18 23:53:22 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="cjb2.runs" number="46000" value="cjb2: %1!d! runs&#10;" />
+<MESSAGE name="cjb2.ccs_before" number="46001" value="cjb2: %1!d! ccs&#10;" />
+<MESSAGE name="cjb2.ccs_after" number="46002" value="cjb2: %1!d! ccs after preprocessing&#10;" />
+<MESSAGE name="cjb2.shapes" number="46003" value="cjb2: %1!d! shapes after matching (%2!d! are cross-coded)&#10;" />
+
+<MESSAGE name="cpaldjvu.quantizied" number="46004" value="cpaldjvu: image %1!d!x%2!d! quantized to %3!d! colors&#10;" />
+<MESSAGE name="cpaldjvu.bkgnd" number="46005" value="cpaldjvu: background color is #%1!02x!%2!02x!%3!02x!&#10;" />
+<MESSAGE name="cpaldjvu.color_runs" number="46006" value="cpaldjvu: %1!d! color runs&#10;" />
+<MESSAGE name="cpaldjvu.ccs_before" number="46007" value="cpaldjvu: %1!d! ccs&#10;" />
+<MESSAGE name="cpaldjvu.ccs_after" number="46008" value="cpaldjvu: %1!d! ccs after merging/splitting&#10;" />
+<MESSAGE name="cpaldjvu.cross_code" number="46009" value="cpaldjvu: %1!d! shapes after matching (%2!d! are cross-coded)&#10;" />
+
+<MESSAGE name="csepdjvu.summary" number="46010" value="csepdjvu:   %1!d!x%2!d! foreground, %3!d! colors, %4!d! runs&#10;" />
+<MESSAGE name="csepdjvu.analyzed" number="46011" value="csepdjvu:   %1!d! ccs after cc analysis&#10;" />
+<MESSAGE name="csepdjvu.merge_split" number="46012" value="csepdjvu:   %1!d! ccs after merging/splitting&#10;" />
+<MESSAGE name="csepdjvu.cross_code" number="46013" value="csepdjvu:   %1!d! shapes after matching (%2!d! are cross-coded)&#10;" />
+<MESSAGE name="csepdjvu.reduction" number="46014" value="csepdjvu:   found background (reduction=%1!d!)&#10;" />
+<MESSAGE name="csepdjvu.bilevel" number="46015" value="csepdjvu:   encoding as a bilevel image&#10;" />
+<MESSAGE name="csepdjvu.white_bg" number="46016" value="csepdjvu:   encoding with white background&#10;" />
+<MESSAGE name="csepdjvu.gray_bg" number="46017" value="csepdjvu:   encoding with gray-level background&#10;" />
+<MESSAGE name="csepdjvu.color" number="46018" value="csepdjvu:   encoding with full colors&#10;" />
+
+<MESSAGE name="color.color" number="46019" value="color" />
+<MESSAGE name="color.gray" number="46020" value="gray" />
+
+<MESSAGE name="d44.summary" number="46021">
+image: %1!s! %2!d! x %3!d!
+times: %4!d!ms (decoding) + %5!d!ms (rendering)
+memory: %6!d!kB (%7!d!% active coefficients)
+</MESSAGE>
+
+<MESSAGE name="ddjvu.decode" number="46022" value="Decoding time:    %1!lu! ms&#10;" />
+<MESSAGE name="ddjvu.compound" number="46023" value="This is a legal Compound DjVu image&#10;" />
+<MESSAGE name="ddjvu.photo" number="46024" value="This is a legal Photo DjVu image&#10;" />
+<MESSAGE name="ddjvu.bilevel" number="46025" value="This is a legal BiLevel DjVu image&#10;" />
+<MESSAGE name="ddjvu.memory" number="46026" value="Direct memory usage is %1!4.1f! Kb&#10;" />
+<MESSAGE name="ddjvu.render" number="46027" value="Rendering time:   %1!lu! ms&#10;" />
+
+<MESSAGE name="djthumb.size" number="46028" value="Image size=%1!d! pixels.&#10;" />
+<MESSAGE name="djthumb.new_size" number="46029" value="Document size: was %1!d!, became %2!d!, increase %3!d!%&#10;" />
+
+<MESSAGE name="djvutobitonalmain.force_bitonal" number="46036" value="Forcing gray and color to bitonal conversions.&#10;" />
+<MESSAGE name="djvutobitonalmain.force_mask" number="46037" value="Forcing use of mask layer as input.&#10;" />
+<MESSAGE name="djvutobitonalmain.force_gray" number="46038" value="Forcing color to gray scale conversions.&#10;" />
+<MESSAGE name="djvutobitonalmain.force_bitonal_mask" number="46039" value="Forcing the use of the bitonal mask layer&#10;" />
+<MESSAGE name="djvutobitonalmain.force_fg" number="46040" value="Forcing the use of the foreground layer&#10;" />
+<MESSAGE name="djvutobitonalmain.force_bg" number="46041" value="Forcing the use of the background layer&#10;" />
+<MESSAGE name="djvutobitonalmain.bad_option" number="46081" value="Illegal option --output_format specified&#10;" />
+
+<MESSAGE name="DjVuProcess.proc_import" number="46042" value="Processing Import Stream&#10;" />
+<MESSAGE name="DjVuProcess.proc_file" number="46043" value="Processing File %1!s!&#10;" />
+
+<MESSAGE name="BitonalToDjVu.page_info" number="46044" value="[page %1!d!] %2!d!x%3!d! dpi:%4!d!.&#10;" />
+
+<MESSAGE name="DjVuDecode.page" number="46045" value="   Page %1!d!&#10;" />
+<MESSAGE name="DjVuDecode.page_info" number="46046" value="%1!d!X%2!d! dpi:%3!d!&#10;" />
+<MESSAGE name="DjVuDecode.no_fg" number="46047" value="No foreground&#10;" />
+<MESSAGE name="DjVuDecode.no_mask_layer" number="46048" value="No mask layer.  Skipping.&#10;" />
+<MESSAGE name="DjVuDecode.no_bg" number="46049" value="No background&#10;" />
+<MESSAGE name="DjVuDecode.appending" number="46050" value="Appending&#10;" />
+<MESSAGE name="DjVuDecode.creating" number="46051" value="Creating&#10;" />
+<MESSAGE name="DjVuDecode.output" number="46052" value="Output=%1!s!&#10;" />
+
+<MESSAGE name="DjVuProcess.file_map" number="46053" value="Page %1!04d!. %2!s!&#09;-&gt; %3!s!&#10;" />
+<MESSAGE name="DjVuProcess.file_type" number="46064" value="File '%1!s!' : %2!s! file&#10;" />
+
+<MESSAGE name="DocumentToDjVu.page_no" number="46054" value="   [Page %1!d!]&#10;" />
+<MESSAGE name="DocumentToDjVu.copy_as" number="46055" value="Copying as page %1!d!&#10;" />
+<MESSAGE name="DocumentToDjVu.image_info" number="46056" value="Image: %1!d!x%2!d! dpi=%3!d!&#10;" />
+<MESSAGE name="DocumentToDjVu.mask_info" number="46057" value="Mask: %1!d!x%2!d! dpi=%3!d!&#10;" />
+<MESSAGE name="DocumentToDjVu.info" number="46058" value="Page: %1!d!x%2!d! dpi:%3!d!&#10;" />
+<MESSAGE name="DocumentToDjVu.times" number="46059" value="User Time(s)/image: Preprocess=%1!2.2f!   Segment=%2!2.2f!   JB2=%3!2.2f!   IW44=%4!2.2f!&#10;" />
+
+<MESSAGE name="PhotoToDjVu.not_jpeg" number="46060" value="Not in JPEG format. Skipping.&#10;" />
+<MESSAGE name="PhotoToDjVu.no_bitonal" number="46061" value="Can't accept bitonal data. Skipping.&#10;" />
+<MESSAGE name="PhotoToDjVu.page_info" number="46062" value="   Page %1!d!: %2!d!X%3!d! dpi:%4!d!.&#10;" />
+<MESSAGE name="PhotoToDjVu.page_copied" number="46063" value="   Page %1!d! copied from input.&#10;" />
+
+<MESSAGE name="ddjvu.no_info" number="46065" value="Cannot find INFO chunk. Aborting." />
+<MESSAGE name="ddjvu.failed" number="46066" value="Decoding failed. Nothing can be done." />
+<MESSAGE name="ddjvu.cant_render" number="46067" value="Cannot render the requested image" />
+<MESSAGE name="ddjvu.syntax" number="46068" value="Syntax error in geometry specification" />
+<MESSAGE name="ddjvu.no_scale" number="46069" value="No argument for option '-scale'" />
+<MESSAGE name="ddjvu.dupl_scale" number="46070" value="Duplicate scaling specification" />
+<MESSAGE name="ddjvu.bad_scale" number="46071" value="Illegal argument for option '-scale'" />
+<MESSAGE name="ddjvu.no_size" number="46072" value="No argument for option '-size'" />
+<MESSAGE name="ddjvu.dupl_size" number="46073" value="Duplicate size specification" />
+<MESSAGE name="ddjvu.bad_size" number="46074" value="Illegal argument for option '-size'" />
+<MESSAGE name="ddjvu.no_seg" number="46075" value="No argument for option '-segment'" />
+<MESSAGE name="ddjvu.dupl_seg" number="46076" value="Duplicate segment specification" />
+<MESSAGE name="ddjvu.dupl_render" number="46077" value="Duplicate rendering mode specification" />
+<MESSAGE name="ddjvu.no_page" number="46078" value="No argument for option '-page'" />
+<MESSAGE name="ddjvu.dupl_page" number="46079" value="Duplicate page specification" />
+<MESSAGE name="ddjvu.bad_page" number="46080" value="Page number must be positive." />
+
+<MESSAGE name="bitonaltodjvumain.removing" number="46082" value="Removing output" />
+</BODY>
+</DjVuMessages>

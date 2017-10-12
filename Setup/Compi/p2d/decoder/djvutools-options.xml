@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Option messages (obsolete and reserved) -->
+<!-- $Id: djvutools-options.xml,v 1.2 2001/06/26 21:12:15 fcrary Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="--block-overlap" number="45000" value="Obsolete option" />
+<MESSAGE name="--block-size" number="45001" value="Obsolete option" />
+<MESSAGE name="--blurring-size" number="45002" value="Obsolete option" />
+<MESSAGE name="--color-jb2" number="45003" value="Obsolete option" />
+<MESSAGE name="--dskw" number="45004" value="Obsolete option" />
+<MESSAGE name="--edge-size" number="45005" value="Obsolete option" />
+<MESSAGE name="--force" number="45006" value="Obsolete option" />
+<MESSAGE name="--high-variation-foreground" number="45007" value="Obsolete option" />
+<MESSAGE name="--inhibit-foreback-level" number="45008" value="Obsolete option" />
+<MESSAGE name="--input-format" number="45009" value="Obsolete option" />
+<MESSAGE name="--limit-mem-usage" number="45010" value="Obsolete option" />
+<MESSAGE name="--lines_only" number="45011" value="Obsolete option" />
+<MESSAGE name="--ln" number="45012" value="Obsolete option" />
+<MESSAGE name="--ls" number="45013" value="Obsolete option" />
+<MESSAGE name="--page-number" number="45015" value="Obsolete option" />
+<MESSAGE name="--page-size" number="45016" value="Obsolete option" />
+<MESSAGE name="--prefix" number="45017" value="Obsolete option" />
+<MESSAGE name="--print" number="45018" value="Obsolete option" />
+<MESSAGE name="--rdg" number="45019" value="Obsolete option" />
+<MESSAGE name="--rdqdm" number="45020" value="Obsolete option" />
+<MESSAGE name="--render-size" number="45021" value="Obsolete option" />
+<MESSAGE name="--rn" number="45022" value="Obsolete option" />
+<MESSAGE name="--target-subsample" number="45023" value="Obsolete option" />
+<MESSAGE name="--thickening" number="45024" value="Obsolete option" />
+<MESSAGE name="--tolerance-percent" number="45025" value="Obsolete option" />
+<MESSAGE name="--tolerance4-size" number="45026" value="Obsolete option" />
+<MESSAGE name="--tsa" number="45027" value="Obsolete option" />
+<MESSAGE name="--tsn" number="45028" value="Obsolete option" />
+<MESSAGE name="--trace" number="45029" value="Reserved for internal use" />
+</BODY>
+</DjVuMessages>

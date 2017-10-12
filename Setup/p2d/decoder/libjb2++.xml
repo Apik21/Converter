@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libjb2++ -->
+<!-- $Id: libjb2++.xml,v 1.3 2002/01/30 01:17:14 bcr Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="BitBitmap.diff_dimen" number="29000" value="[1-%0!05u!] Bitmaps do not have the same dimension!" />
+<MESSAGE name="JB2Matcher.bad_blit_num" number="29200" value="[1-%0!05u!] Blit number out of bounds!" />
+<MESSAGE name="JB2Matcher.bad_page_num" number="29201" value="[1-%0!05u!] Page number out of bounds!" />
+<MESSAGE name="JB2Matcher.cant_add" number="29202" value="[1-%0!05u!] Cannot add pages after calling process_pages()" />
+<MESSAGE name="JB2Matcher.image_not_ready" number="29203" value="[1-%0!05u!] Internal error: runimage is not ready" />
+<MESSAGE name="JB2Matcher.in_other_list" number="29204" value="[1-%0!05u!] Shape already belongs to another list!" />
+<MESSAGE name="JB2Matcher.insane" number="29205" value="[1-%0!05u!] Insane list %1!d!" />
+<MESSAGE name="JB2Matcher.must_be_in_list" number="29206" value="[1-%0!05u!] Shape must belong to this list" />
+<MESSAGE name="JB2Matcher.not_in_list" number="29207" value="[1-%0!05u!] Shape does not belong to this list!" />
+<MESSAGE name="JB2Matcher.only_once" number="29208" value="[1-%0!05u!] Cannot call process_pages() multiple times" />
+<MESSAGE name="JB2Matcher.process_pages" number="29209" value="[1-%0!05u!] Call process_pages() first" />
+<MESSAGE name="JB2Matcher.x_bounds" number="29210" value="[1-%0!05u!] Internal error (x bounds)" />
+<MESSAGE name="JB2Matcher.y_bounds" number="29211" value="[1-%0!05u!] Internal error (y bounds)" />
+<MESSAGE name="RunImage.cc_first" number="29301" value="[1-%0!05u!] Must first perform a cc analysis" />
+<MESSAGE name="RunImage.large_index" number="29303" value="[1-%0!05u!] Component color index exceeds palette size" />
+<MESSAGE name="RunImage.need_palette" number="29304" value="[1-%0!05u!] Cannot process component colors without a color palette" />
+<MESSAGE name="RunImage.not_int" number="29305" value="[1-%0!05u!] Reading bitmap: integer expected" />
+<MESSAGE name="RunImage.unsupported" number="29307" value="[1-%0!05u!] Only 4-connectivity and 8-connectivity are supported" />
+<MESSAGE name="RunImage.x_bounds" number="29308" value="[1-%0!05u!] Internal error (x bounds)" />
+<MESSAGE name="RunImage.y_bounds" number="29309" value="[1-%0!05u!] Internal error (y bounds)" />
+<MESSAGE name="TestJB2.bad_suffix" number="29400" value="[1-%0!05u!] Unrecognized suffix for output file" />
+</BODY>
+</DjVuMessages>

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libdjvumulti -->
+<!-- $Id: libapi-libdjvumulti.xml,v 1.16 2002/08/08 21:28:58 jhayes Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="DjVuCombine.bad_thumb" number="26000" value="[1-%0!05u!] Thumbnail size must be 0, or between 32 and 256 inclusively." />
+<MESSAGE name="DjVuCombine.failed_profile" number="26002" value="[1-%0!05u!] Failed to read the specified profile" />
+<MESSAGE name="DjVuCombine.few_args" number="26003" value="[1-%0!05u!] Too few arguments" />
+<MESSAGE name="DjVuCombine.output_exists" number="26005" value="[1-%0!05u!] Output already exists" />
+<MESSAGE name="DjVuCombine.skip_page" number="26006" value="[1-%0!05u!] Skipping page %1!s!" />
+<MESSAGE name="DjVuCombine.no_file" number="26007">
+[1-%0!05u!] The requested file '%1!s!' does not exist.
+</MESSAGE>
+<MESSAGE name="DjVuCombine.examining_file" number="26008">
+[1-%0!05u!] Examining file '%1!s!'.
+</MESSAGE>
+<MESSAGE name="DjVuCombine.insert_file" number="26009">
+[1-%0!05u!] Inserting file '%1!s!'.
+</MESSAGE>
+<MESSAGE name="DjVuOCRMain.decode_failed" number="26300" value="[1-%0!05u!] Decoding failed" />
+<MESSAGE name="DjVuOCRMain.no_ocr_lib" number="26301" value="[1-%0!05u!] No OCR library was found in your search path." />
+<MESSAGE name="DjVuOCRMain.only_single_page" number="26302" value="[1-%0!05u!] Only single page documents are supported" />
+<MESSAGE name="DjVuOCRMain.unrecog_opt" number="26303" value="[1-%0!05u!] Unrecognized option: %1!s!" />
+<MESSAGE name="DjVuOCR.Warning" number="26304" value="Warning (page %1!d!):" />
+<MESSAGE name="DjVuFileList.no_ocr_lib" number="26400" value="[1-%0!05u!] Unable to find an OCR interface library" />
+<MESSAGE name="DjVuReindex.already_new" number="26500" value="[1-%0!05u!] This document is already in the new format." />
+<MESSAGE name="DjVuReindex.cant_query" number="26501" value="[1-%0!05u!] Can not query %1!s!" />
+<MESSAGE name="DjVuReindex.caught" number="26502" value="[1-%0!05u!] Exception Caught" />
+<MESSAGE name="DjVuReindex.djvu_ext" number="26503" value="[1-%0!05u!] WARNING: The new index name %1!s! does not have a .djvu extension." />
+<MESSAGE name="DjVuReindex.exists" number="26505" value="[1-%0!05u!] %1!s! already exists" />
+<MESSAGE name="DjVuReindex.too_few" number="26508" value="[1-%0!05u!] Too few arguments" />
+<MESSAGE name="DjVuReindex.too_many" number="26509" value="[1-%0!05u!] Too many arguments" />
+<MESSAGE name="DjVuReindex.unrecog_fmt" number="26510" value="[1-%0!05u!] %1!s! is an unrecognized format" />
+<MESSAGE name="DjVuToText.decode_failed" number="26700" value="[1-%0!05u!] Failed to decode page." />
+<MESSAGE name="djvucombine.usage" number="26800">
+Usage: (DjVu Version: %1!s!)
+        %2!s! [options] &lt;file1&gt; &lt;file2&gt; ... &lt;fileN&gt; &lt;%3!s!&gt;
+
+All files listed on the command line or in the optional filelist file
+are added to &lt;%3!s!&gt;.  Files from other directories will be
+renamed if the names conflict with a file in the output directory.
+
+Valid options include:
+</MESSAGE>
+<MESSAGE name="djvucombine.newindex" number="26801" value="new index" />
+<MESSAGE name="djvucombine.newfile" number="26802" value="new file" />
+<MESSAGE name="--recover" number="26803"
+  value="  %1!s!=&lt;0-3&gt;     0==ABORT,1==SKIP PAGES,2==SKIP CHUNKS,3==KEEP ALL" />
+<MESSAGE name="--thumbsize" number="26804"
+   value="  %1!s!=&lt;0,64-256&gt; Specify the size of thumbnail images." />
+<MESSAGE name="--ocr" number="26805">
+  %1!s![=&lt;OCROptionsString&gt;] OCR all pages that have a bitonal layer.
+
+   If specified, the OCROptionsString is passed to the OCR Interface to set engine-
+   specific options.  The Expervision interface supports the following language 
+   recognition options: English, German, French, Dutch. These may be combined.
+</MESSAGE>
+<MESSAGE name="--version" number="26806"
+   value="  %1!s!            Display the build version number." />
+<MESSAGE name="djvucombine.version" number="26807">
+%4!s!: (DjVu Version %1!s!)
+   Product Creation (CVS TAG): %2!s!
+   Product Creation (CVS TAG): %3!s!
+</MESSAGE>
+<MESSAGE name="--filelist" number="26808">
+  %1!s!=&lt;filename&gt; Specify a text file containing a list of
+                       input files.
+</MESSAGE>
+
+<MESSAGE name="DjVuUsageMeter.unknown" number="26811" value="[1-%0!05u!] UNKNOWN: Express Cartridge Manager Error 0x%1!x! returned." />
+<MESSAGE name="DjVuUsageMeter.corrupt_database" number="26812" value="[1-%0!05u!] The Express Cartridge Manager database is corrupt (error 0x%1!x!).&#10;The database is located in %2!s!" />
+<MESSAGE name="DjVuUsageMeter.database_missing" number="26813" value="[1-%0!05u!] The Express Cartridge Manager database is missing.&#10;The database should be located in %1!s!" />
+<MESSAGE name="DjVuUsageMeter.insufficient_units" number="26814" value="[1-%0!05u!] You have insufficient pages in your Document &#10;Express Page Cartridge to encode this document.  If you would like to &#10;purchase additional page cartridges, please go to &#10;http://expresscartridge.lizardtech.com with the following Express &#10;Cartridge Manager ID.&#10;&#10;Express Cartridge Manager ID: %1!s!" />
+<MESSAGE name="DjVuUsageMeter.invalid_txn" number="26815" value="[1-%0!05u!] Invalid transaction ID." />
+<MESSAGE name="DjVuUsageMeter.invalid_argument_or_state" number="26816" value="[1-%0!05u!] Invalid state." />
+<MESSAGE name="DjVuUsageMeter.no_db_path_win32" number="26817" value="[1-%0!05u!] This product needs the Express Cartridge Manager to encode.  Please &#10; install the Express Cartridge Manager." />
+<MESSAGE name="DjVuUsageMeter.no_db_path_unix" number="26818" value="[1-%0!05u!] Please set &quot;LT_UMDB_PATH&quot; environment variable to the path of your Express Cartridge Manager database directory." />
+<MESSAGE name="DjVuUsageMeter.pages_low" number="26819" value="[1-%0!05u!] Warning:  you are running low on Document Express Pages.  If you would like to purchase additional page cartridges, please go to  http://expresscartridge.lizardtech.com with the following Express Cartridge Manager ID.&#10;&#10;Express Cartridge Manager ID: %1!s!&#10;Pages remaining:  %2!d!." />
+<MESSAGE name="DjVuUsageMeter.database_busy" number="26820" value="[1-%0!05u!] Express Cartridge Manager is busy.  Please try again." />
+
+</BODY>
+</DjVuMessages>

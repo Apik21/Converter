@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE DjVuMessages PUBLIC "-//W3C/DTD DjVuMessages 1.0//EN" "../../pubtext/DjVuMessages.dtd">
+<!-- Error messages from libdjvubitonal -->
+<!-- $Id: libapi-libdjvubitonal.xml,v 1.4 2002/07/16 22:20:27 mrosen Exp $ -->
+<DjVuMessages>
+<BODY>
+<MESSAGE name="BitonalToDjVu.bad_dpi" number="23000" value="[%0!05d!] Invalid dpi option" />
+<MESSAGE name="BitonalToDjVu.continued" number="23001" value="[%0!05d!] Continued past error." />
+<MESSAGE name="BitonalToDjVu.copying_page" number="23002" value="[%0!05d!] Copying page %1!d! as &apos;%2!s!&apos;" />
+<MESSAGE name="BitonalToDjVu.no_page" number="23003" value="[%0!05d!] No Page For Encoding" />
+<MESSAGE name="BitonalToDjVu.skipping_page" number="23004" value="[%0!05d!] Skipping page %1!d!" />
+<MESSAGE name="BitonalToDjVu.src_not_bitonal" number="23005" value="[%0!05d!] Source image is not bitonal." />
+<MESSAGE name="BitonalToDjVu.unsupported" number="23006" value="[%0!05d!] Unsupported" />
+<MESSAGE name="BitonalToDjVu.bad_matching_level" number="23007" value="[%0!05d!] matching-level must be between 0 and 100 inclusively." />
+<MESSAGE name="DjVuJB2Parse.bad_dict" number="23100" value="[%0!05d!] Pages per dictionary should be greater than zero" />
+<MESSAGE name="DjVuJB2Parse.bad_matching_level" number="23110" value="[%0!05d!] Matching level must be between 0 and 100" />
+<MESSAGE name="DjVuJB2Parse.bad_max_density" number="23120" value="[%0!05d!] Max density must be between 0 and 100" />
+<MESSAGE name="--aggressive" number="23201"
+  value="  %1!s!         Use aggressive compression." />
+<MESSAGE name="--conservative" number="23202"
+  value="  %1!s!       Use conservative compression." />
+<MESSAGE name="--disable-halftone" number="23203"
+  value="  %1!s!   Disable halftone detection." />
+<MESSAGE name="--invert" number="23204"
+  value="  %1!s!             If bitonal, swap black and white." />
+<MESSAGE name="--lossless" number="23205"
+  value="  %1!s!           Use lossless compression." />
+<MESSAGE name="--normal" number="23206"
+  value="  %1!s!             Use normal compression." />
+<MESSAGE name="--pages-per-dict" number="23207"
+  value="  %1!s!=&lt;value&gt; Number of pages per shared dictionary (default 10)." />
+<MESSAGE name="--pseudo" number="23208"
+  value="  %1!s!             Output pseudo DjVu.  Input files must be TIFF G4." />
+<MESSAGE name="--matching-level" number="23209"
+  value="  %1!s!=&lt;0-100&gt; Shape matching level (default 100)." />
+<MESSAGE name="--max-density" number="23210"
+  value="  %1!s!=&lt;0-100&gt; Component density above which JB1 (not JB2) encoding used to speed-up compression of watermarked or dithered images (default 75)." />
+</BODY>
+</DjVuMessages>

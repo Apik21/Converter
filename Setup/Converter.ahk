@@ -143,7 +143,7 @@ Loop
 		Gui, %A_Index%:Add, Button, x5 y70 w100 h30 , OK
 		Gui, %A_Index%:Add, Button, x115 y70 w100 h30 , Отмена
 	}
-	else
+	else if A_Index > 24
 		break
 }
 
@@ -157,16 +157,16 @@ Loop
 {
 	if A_Index in 15,16,17,18,19,20
 	{
-		Gui, 5:+hwndhGui5 +owner1 -Caption +Border
-		Gui, 5:Add, Edit, x5 y5 w50 h20 vZip , 85
-		Gui, 5:Add, Edit, x5 y35 w50 h20 vPage, 0
-		Gui, 5:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество) `n 1-max 99-min
-		Gui, 5:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-		Gui, 5:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-		Gui, 5:Add, Button, x5 y85 w100 h30 , OK
-		Gui, 5:Add, Button, x115 y85 w100 h30 , Отмена
+		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
+		Gui, %A_Index%:Add, Edit, x5 y5 w50 h20 vZip , 85
+		Gui, %A_Index%:Add, Edit, x5 y35 w50 h20 vPage, 0
+		Gui, %A_Index%:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество) `n 1-max 99-min
+		Gui, %A_Index%:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
+		Gui, %A_Index%:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
+		Gui, %A_Index%:Add, Button, x5 y85 w100 h30 , OK
+		Gui, %A_Index%:Add, Button, x115 y85 w100 h30 , Отмена
 	}
-	else
+	else if A_Index > 20
 		break
 }
 
@@ -179,11 +179,19 @@ Gui, 9:Add, Button, x84 y40 w80 h30 , Склеить
 Gui, 9:Add, Button, x166 y5 w75 h30 gMD, Изм. Мета.
 Gui, 9:Add, Button, x166 y40 w75 h30 gDSh, Защита
 
-Gui, 10:+hwndhGui10 +owner1 -Caption +Border
-Gui, 10:Add, Edit, x5 y10 w250 h25 vStran
-Gui, 10:Add, Text, x5 y30 w350 h30, Укажите сохраняемые страницы:1, 3-5, 8 Для поворота после страницы указать сторну поворота: left, right, down. См. справку.
-Gui, 10:Add, Button, x5 y70 w140 h30 gSplt, Сохранить выбранные страницы
-Gui, 10:Add, Button, x160 y70 w60 h30 , Отмена
+Loop
+{
+	if A_Index in 10,32
+	{
+		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
+		Gui, %A_Index%:Add, Edit, x5 y10 w290 h25 vStran
+		Gui, %A_Index%:Add, Text, x5 y40 w290 h40 HWNDHwndGui32, Укажите сохраняемые страницы:1, 3-5, 8 Для поворота после страницы указать сторну поворота: left, right, down. См. справку.
+		Gui, %A_Index%:Add, Button, x5 y85 w140 h30 gSplt%A_Index%, Сохранить выбранные страницы
+		Gui, %A_Index%:Add, Button, x160 y85 w60 h30 , Отмена
+	}
+	else if A_Index > 32
+		break
+}
 
 Gui, 11:+hwndhGui11 +owner1 -Caption +Border
 Gui, 11:Add, Text, x10 y5 w290 h20 , В какой формат будем конвертировать документ?
@@ -298,7 +306,7 @@ loop
 		Gui, %A_Index%:Add, Button, x5 y45 w140 h30 gSave%N%, Сохранить выбранные страницы
 		Gui, %A_Index%:Add, Button, x160 y45 w60 h30 , Отмена
 	}
-	else if A_Index >31
+	else if A_Index > 31
 		break
 }
 
@@ -322,7 +330,7 @@ global GuHi := [{GuiN: 1,  Hg: 190}
 			 , {GuiN: 7,  Hg: 105}
 			 , {GuiN: 8,  Hg: 105}
 			 , {GuiN: 9,  Hg: 80}
-			 , {GuiN: 10, Hg: 115}
+			 , {GuiN: 10, Hg: 120}
 			 , {GuiN: 11, Hg: 100}
 			 , {GuiN: 12, Hg: 85}
 			 , {GuiN: 13, Hg: 90}
@@ -343,7 +351,8 @@ global GuHi := [{GuiN: 1,  Hg: 190}
 			 , {GuiN: 28, Hg: 85}
 			 , {GuiN: 29, Hg: 80}
 			 , {GuiN: 30, Hg: 80}
-			 , {GuiN: 31, Hg: 80}]
+			 , {GuiN: 31, Hg: 80}
+			 , {GuiN: 32, Hg: 120}]
 
 Gui, Show, Center h190 w300, Конвертер
 
@@ -948,14 +957,43 @@ FileSelectFile, files, 3,,Конвертирование DjVu, Все файлы
 if files =
 	return
 WinWaitClose Конвертирование DjVu
+global GuiNum := % GuHi[32].GuiN
+global GuiHigh := % GuHi[32].Hg
+ControlSetText, , Укажите сохраняемые страницы: 1`,3-5`,8. При сохранении всех страниц оставьте поле пустым. ,ahk_id %HwndGui32%
+Sleep 500
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10003)) 
+} catch e {
+	MsgBox % e "ERROR code 1062 DVDTi"
+}
+return
+
+Splt32:
+try {
+GuiControlGet, Stran
+StringReplace, Stran1, Stran, %A_Space%,,All
+Value1 := "." 
+Value2 := ","
+StringReplace, Stran, Stran1, %Value1%,%Value2%,All
+Gui 32:Submit
 SplitPath, files, FiNam, Dir, Ext, Name
-conv = "%DVD%" --output-format=tif  "%files%" "%Dir%\%Name%.tiff" 
+If Stran =
+	conv = "%DVD%" --output-format=tif "%files%" "%Dir%\%Name%.tiff"
+else
+	conv = "%DVD%" --output-format=tif --page-range=%Stran% "%files%" "%Dir%\%Name%.tiff" 
 WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 } catch e {
-	MsgBox % e "ERROR code 1062 DVDTi"
+	MsgBox % e "ERROR code: 1062_DVD_Tif_Splt"
 }
+return
+
+32ButtonОтмена:
+Gui 32:Submit
 return
 
 DP:
@@ -2260,7 +2298,7 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
 return
 
-Splt:
+Splt10:
 GuiControlGet, Stran
 
 Value1 := ". " 

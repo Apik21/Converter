@@ -1098,8 +1098,8 @@ global GuiHigh := % GuHi[2].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-Gui, 2:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
-DllCall("AnimateWindow", Ptr, hGui2, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 Gui 12:Show, hide 
 Return
 
@@ -1340,8 +1340,8 @@ global GuiHigh := % GuHi[4].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-	Gui, 4:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
-	DllCall("AnimateWindow", Ptr, hGui4, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 Gui 12:Show, hide 
 return
 	
@@ -1440,8 +1440,8 @@ global GuiHigh := % GuHi[23].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-	Gui, 23:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
-DllCall("AnimateWindow", Ptr, hGui23, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 Gui 22:Show, hide 
 Return
 
@@ -1599,8 +1599,8 @@ global GuiHigh := % GuHi[24].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-		Gui, 24:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
-   DllCall("AnimateWindow", Ptr, hGui24, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 Gui 22:Show, hide 
 return
 	
@@ -1677,8 +1677,8 @@ global GuiHigh := % GuHi[3].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 3:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h70 w300"
-   DllCall("AnimateWindow", Ptr, hGui3, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 13:Submit
 return
 
@@ -1801,8 +1801,8 @@ global GuiHigh := % GuHi[5].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-Gui, 5:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-DllCall("AnimateWindow", Ptr, hGui5, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -1858,9 +1858,8 @@ global GuiHigh := % GuHi[15].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 15:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-
-   DllCall("AnimateWindow", Ptr, hGui15, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -1916,8 +1915,8 @@ global GuiHigh := % GuHi[16].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 16:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui16, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -1973,8 +1972,8 @@ global GuiHigh := % GuHi[17].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 17:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui17, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2030,8 +2029,8 @@ global GuiHigh := % GuHi[18].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 18:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui18, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2088,8 +2087,8 @@ global GuiHigh := % GuHi[19].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 19:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui19, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2145,8 +2144,8 @@ global GuiHigh := % GuHi[20].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 20:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-   DllCall("AnimateWindow", Ptr, hGui20, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ; выдвигаем/задвигаем окно-слайдер
 Gui 14:Submit
 return
 
@@ -2201,9 +2200,9 @@ global GuiHigh := % GuHi[6].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-      Gui, 6:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
-   DllCall("AnimateWindow", Ptr, hGui6, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
 	return
 
 6ButtonOK:
@@ -2294,8 +2293,8 @@ global GuiHigh := % GuHi[10].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 10:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w360"
-   DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 return
 
 Splt10:
@@ -2338,7 +2337,7 @@ global GuiHigh := % GuHi[8].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-      Gui, 8:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w300"
+      Gui, 8:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
    DllCall("AnimateWindow", Ptr, hGui8, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
 return
 
@@ -2515,11 +2514,10 @@ global GuiNum := % GuHi[7].GuiN
 global GuiHigh := % GuHi[7].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
-
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-	if i := !i
-		Gui, 7:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h 105"
-   DllCall("AnimateWindow", Ptr, hGui7, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 return
 
 7ButtonOK:
@@ -2557,9 +2555,9 @@ OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-   if i := !i
-      Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
-   DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x40000|(i ? 1 : 0x10002))    ;выдвигаем/задвигаем окно-слайдер
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 return
 
 11ButtonHtml:
@@ -2715,16 +2713,7 @@ Gui 11:Submit
 return
 ;===================================================================================================
 ;===================================================================================================
-AllGUICancel()
-{
-	Loop
-	{
-		If A_Index > 1 && A_Index < 32
-			Gui, %A_Index%:Submit
-		Else
-			break
-	}
-}
+
 ;===================================================================================================
 ;================================FUNNCTION/=========================================================
 GuiEscape:

@@ -15,7 +15,7 @@ pr:= a_scriptdir . "\SkinH_EL.dll"
 IniRead, aa1, %A_WorkingDir%\Config.ini , Skin , SkinPath
 aa1:= aa1
 SkinForm(Apply,pr,aa1)
-OnExit, GetOut
+OnExit, GuiClose
 try {
 	Skins = ==NO_SKIN==|
 	Loop, %A_WorkingDir%\she\*.she
@@ -105,20 +105,20 @@ Menu, pZip, add, TIFF, ZT
 Menu, Tray, add, Конвертация, :pConvert
 Menu, Tray, add, Сжатие, :pZip
 Menu, Tray, add
-Menu, Tray, add, Закрыть, TEX
+Menu, Tray, add, Закрыть, GuiClose
 Menu, Tray, Tip, Ковертер изображений
 Gui, Menu, MyMenuBar ; Присоединяем строку меню к окну:
 
 Gui, Add, GroupBox, x5 y0 w120 h125 cRed, Конвертирование из
 Gui, Add, GroupBox, x210 y0 w80 h120 cRed, Сжатие
-Gui, Add, Button, x12 y20 w50 h30 , JPG
+Gui, Add, Button, x12 y20 w50 h30 gCJPG, JPG
 Gui, Add, Button, x12 y52 w50 h30 , PDF
 Gui, Add, Button, x65 y20 w50 h30 , TIFF
 Gui, Add, Button, x65 y52 w50 h30 gDOC, DOC
 Gui, Add, Button, x12 y84 w50 h30 , PNG
 Gui, Add, Button, x65 y84 w50 h30 , DJVU
 Gui, Add, Progress, x5 y135 w200 h20 Smooth vProgr
-Gui, Add, Button, x230 y130 w60 h30 gTEX, Выход
+Gui, Add, Button, x230 y130 w60 h30 gGuiClose, Выход
 Gui, Add, Button, x225 y20 w50 h30 gZJ, J P G
 Gui, Add, Button, x225 y50 w50 h30 gZP, P D F
 Gui, Add, Button, x225 y80 w50 h30 gZT, T I F F
@@ -134,7 +134,7 @@ Gui, Default
 
 Loop
 {
-	if A_Index in 4,6,7,8,23,24
+	if A_Index in 2,4,6,7,8,23,24
 	{
 		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
 		Gui, %A_Index%:Add, Edit, x5 y5 w60 h25 vZip , 85
@@ -194,15 +194,15 @@ Loop
 }
 
 Gui, 11:+hwndhGui11 +owner1 -Caption +Border
-Gui, 11:Add, Text, x10 y5 w290 h20 , В какой формат будем конвертировать документ?
-Gui, 11:Add, Button, x5 y30 w60 h30 , HTML
-Gui, 11:Add, Button, x70 y30 w60 h30 , RTF
-Gui, 11:Add, Button, x135 y30 w60 h30 , MHT
-Gui, 11:Add, Button, x200 y30 w60 h30 gTxt, TXT
-Gui, 11:Add, Button, x200 y65 w60 h30 gXml, XML
-Gui, 11:Add, Button, x135 y65 w60 h30 gPdf, PDF
-Gui, 11:Add, Button, x70 y65 w60 h30 gXps, XPS
-Gui, 11:Add, Button, x5 y65 w60 h30 gFb2, FB2
+Gui, 11:Add, Text, x10    y5 w290 h20 , В какой формат будем конвертировать документ?
+Gui, 11:Add, Button, x5   y30 w60 h30 gCHtml, HTML
+Gui, 11:Add, Button, x70  y30 w60 h30 gCRtf, RTF
+Gui, 11:Add, Button, x135 y30 w60 h30 gCMht, MHT
+Gui, 11:Add, Button, x200 y30 w60 h30 gCTxt, TXT
+Gui, 11:Add, Button, x200 y65 w60 h30 gCXml, XML
+Gui, 11:Add, Button, x135 y65 w60 h30 gCPdf, PDF
+Gui, 11:Add, Button, x70  y65 w60 h30 gCXps, XPS
+Gui, 11:Add, Button, x5   y65 w60 h30 gCFb2, FB2
 
 Gui, 12: +hwndhGui12 +owner1 -Caption +Border
 Gui, 12:Add, Text, x12 y0 w230 h30 , В какой формат будем конвертировать?
@@ -863,7 +863,7 @@ if i := !i
 DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x40000|(i ? 1 : 0x10002))    ;выдвигаем/задвигаем влево окно-слайдер
 return
 ;==========================Конвертирование Jpg======================================================
-ButtonJPG:
+CJPG:
 DnDJpeg = ""
 BJPG:
 AllGUICancel()
@@ -1108,6 +1108,8 @@ try {
 GuiControlGet, del
 GuiControlGet, Zip
 Gui, 12:Submit
+Gui, 2:Submit
+
 If del = 1
 	conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -D -c 5 -q %Zip% -multi -o
 else
@@ -1132,7 +1134,7 @@ else
 	SplitPath, DnDJpeg,, Dir, Ext, Name
 	conv = %conv% "%Dir%\%Name%.pdf" "%DnDJpeg%"
 }
-Gui, 2:Submit
+
 
 WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
@@ -2543,7 +2545,9 @@ Return
 7ButtonОтмена:
 Gui 7:Submit 
 return
+;===================================================================================================
 ;===============================Конвертирование DOC файлов==========================================
+;===================================================================================================
 DOC:
 DnDDoc = ""
 BDOC:
@@ -2560,7 +2564,7 @@ if i := !i
 DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 return
 
-11ButtonHtml:
+CHtml:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2578,7 +2582,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-11ButtonRtf:
+CRtf:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2596,7 +2600,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-11ButtonMht:
+CMht:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2614,7 +2618,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Txt:
+CTxt:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2632,7 +2636,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Xml:
+CXml:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2650,7 +2654,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Pdf:
+CPdf:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2668,7 +2672,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Xps:
+CXps:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2686,7 +2690,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Fb2:
+CFb2:
 Gui 11:Submit
 If DnDDoc = ""
 { 
@@ -2719,14 +2723,14 @@ return
 GuiEscape:
 MsgBox, 308, Завершение работы, Вы точно хотите закрыть программу?
 IfMsgBox Yes
+{
+	FileRemoveDir, %A_Temp%\DBFFC.tmp
 	ExitApp
+}
+	
 Return
 
-GetOut:
-TEX:
 GuiClose:
-ButtonВыход:
-GEX:
 SkinForm(0)
 FileRemoveDir, %A_Temp%\DBFFC.tmp
 ExitApp

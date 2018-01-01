@@ -102,6 +102,6 @@
   <li>PdfTk (pdftk.exe, libiconv2.dll)</li>
   <li>Ildar Shaimordanov (doc.bat, doc2fb.xsl)</li>
   </ul>
-  <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=buyer&targets=&targets-hint=&default-sum=100.00&button-text=11&payment-type-choice=on&mobile-payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=410011019193217" width="450" height="279" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
 </body>
+<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=buyer&targets=&targets-hint=&default-sum=100.00&button-text=11&payment-type-choice=on&mobile-payment-type-choice=on&comment=on&hint=&successURL=&quickpay=shop&account=410011019193217" width="450" height="279" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
 </html>

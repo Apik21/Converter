@@ -7,19 +7,20 @@
 SendMode Input  ; для новых сценариев, обеспечение высокой скорости и надежности.
 SetWorkingDir %A_ScriptDir%  ; Обеспечивает согласованность c начальныv каталогом.
 FileCreateDir, %A_Temp%\DBFFC.tmp
-FileCreateDir, %A_AppData%\Конвертер\Logs
+IfNotExist %A_AppData%\Конвертер\Logs
+	FileCreateDir, %A_AppData%\Конвертер\Logs
 
-Gui, 26: Color, White
-Gui, 26: Font, cRed S16 W700
-Gui, 26: +AlwaysOnTop -border -Caption +Owner +ToolWindow
-Gui, 26: Add, text, ,`tЗагрузка...`n `n Подождите несколько секунд.`n`n`n`t`t©Apik21
-Gui, 26: Show, Center, app
+Gui, 33: Color, White
+Gui, 33: Font, cRed S16 W700
+Gui, 33: +AlwaysOnTop -border -Caption +Owner +ToolWindow
+Gui, 33: Add, text, ,`tЗагрузка...`n `n Подождите несколько секунд.`n`n`n`t`t©Apik21
+Gui, 33: Show, Center, app
 WinSet, TransColor, White, app
 gosub, Label1
 WinWaitActive, Конвертер
 WinActivate, Конвертер
 ControlFocus,,Конвертер
-Gui, 26: Submit
+Gui, 33: Submit
 return
 
 Label1:
@@ -41,7 +42,7 @@ if (sys = "win64"){
 ;***********************************************************************************************
 ;***************Переменные настройки************************************************************
 ;***********************************************************************************************
-sborka = 344                                  ; Номер сборки версии
+sborka = 347                                  ; Номер сборки версии
 dev_sborka = https://raw.githubusercontent.com/Apik21/Converter/master/sborka.txt ;Сборка с сайта
 Vers = v1.1.2								  ; Номер версисии комбайна
 PageN = 1251                                  ; Номер кодовой страницы
@@ -63,7 +64,7 @@ IfNotExist, %LogPath%\Config.ini
 	global PageN = 1251, global Period = 14
    	CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
 	RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
-	GuiControl,27:,Period, %Period% 
+	GuiControl,27:,Period, %Period%
 	IniWrite, %A_Temp%\DBFFC.tmp\she\Skins1.she, %LogPath%\Config.ini, Skin, SkinPath
 }
 else
@@ -289,13 +290,13 @@ aa1:= aa1
 SkinForm(Apply,pr,aa1)
 OnExit, GetOut
 try {
-	Skins =
+	Skins = =NO_SKIN=|
 	Loop, %A_Temp%\DBFFC.tmp\she\*.she
 		Skins .= A_LoopFileName "|"
 } catch e {
 	MsgBox % e "ERROR Code 1018 Skins_Read"
 }
-		
+
 ;***********************************************************************************************
 
 ;================================INCLUDE\===========================================================
@@ -311,7 +312,7 @@ Menu, HelpMenu, Add, &ChangeLog, Changelog
 Menu, MyMenuBar, Add, Параметры, :Option
 Menu, MyMenuBar, Add, Справка (F1), :HelpMenu ; Создаем строку меню, присоединяя к ней подменю:
 
-;Menu, Tray, NoStandard
+Menu, Tray, NoStandard
 Menu, Tray, MainWindow
 Menu, pConvert, add, Jpg->Pdf, JP
 Menu, pConvert, add, Pdf->Jpg, PJ
@@ -323,7 +324,7 @@ Menu, pZip, add, TIFF, ZT
 Menu, Tray, add, Конвертация, :pConvert
 Menu, Tray, add, Сжатие, :pZip
 Menu, Tray, add
-Menu, Tray, add, Закрыть, TEX
+Menu, Tray, add, Закрыть, GuiClose
 Menu, Tray, Tip, Ковертер изображений
 Gui, Menu, MyMenuBar ; Присоединяем строку меню к окну:
 
@@ -335,7 +336,7 @@ Gui, Add, Button, x65 y20 w50 h30 , TIFF
 Gui, Add, Button, x65 y52 w50 h30 gDOC, DOC
 Gui, Add, Button, x12 y84 w50 h30 , PNG
 Gui, Add, Progress, x5 y135 w200 h20 Smooth vProgr
-Gui, Add, Button, x230 y130 w60 h30 gTEX, Выход
+Gui, Add, Button, x230 y130 w60 h30 gGuiClose, Выход
 Gui, Add, Button, x225 y20 w50 h30 gZJ, J P G
 Gui, Add, Button, x225 y50 w50 h30 gZP, P D F
 Gui, Add, Button, x225 y80 w50 h30 gZT, T I F F
@@ -349,54 +350,43 @@ SetTimer, BarTime, 3000
 SB_SetIcon("shell32.dll", 266)
 Gui, Default
 
-Gui, 2:+hwndhGui2 +owner1 -Caption +Border
-Gui, 2:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 2:Add, Text, x70 y5 w150 h30 r2 , Степень сжатия (качество)`n 1-max 99-min
-Gui, 2:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 2:Add, Button, x5 y70 w100 h30 , OK
-Gui, 2:Add, Button, x115 y70 w100 h30 , Отмена
+Loop
+{
+	if A_Index in 2,4,6,7,8,23,24
+	{
+		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
+		Gui, %A_Index%:Add, Edit, x5 y5 w60 h25 vZip , 85
+		Gui, %A_Index%:Add, Text, x70 y5 w150 h30 r2 , Качество `n 99-max 1-min
+		Gui, %A_Index%:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
+		Gui, %A_Index%:Add, Button, x5 y70 w100 h30 , OK
+		Gui, %A_Index%:Add, Button, x115 y70 w100 h30 , Отмена
+	}
+	else if A_Index > 24
+		break
+}
 
 Gui, 3:+hwndhGui3 +owner1 -Caption +Border
 Gui, 3:Add, CheckBox, x5 y5 w200 h25 vDel, УДАЛИТЬ исходные файлы
 Gui, 3:Add, Button, x5 y40 w100 h30 , OK
 Gui, 3:Add, Button, x115 y40 w100 h30 , Отмена
 
-Gui, 4:+hwndhGui4 +owner1 -Caption +Border
-Gui, 4:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 4:Add, Text, x70 y5 w150 h30 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 4:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 4:Add, Button, x5 y70 w100 h30 , OK
-Gui, 4:Add, Button, x115 y70 w100 h30 , Отмена
 
-Gui, 5:+hwndhGui5 +owner1 -Caption +Border
-Gui, 5:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 5:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 5:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество) `n 1-max 99-min
-Gui, 5:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 5:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 5:Add, Button, x5 y85 w100 h30 , OK
-Gui, 5:Add, Button, x115 y85 w100 h30 , Отмена
-
-Gui, 6:+hwndhGui6 +owner1 -Caption +Border
-Gui, 6:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 6:Add, Text, x70 y5 w150 h30 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 6:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 6:Add, Button, x5 y70 w100 h30 , OK
-Gui, 6:Add, Button, x115 y70 w100 h30 , Отмена
-
-Gui, 7:+hwndhGui7 +owner1 -Caption +Border
-Gui, 7:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 7:Add, Text, x70 y5 w150 h30 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 7:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 7:Add, Button, x5 y70 w100 h30 , OK
-Gui, 7:Add, Button, x115 y70 w100 h30 , Отмена
-
-Gui, 8:+hwndhGui8 +owner1 -Caption +Border
-Gui, 8:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 8:Add, Text, x70 y5 w150 h30 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 8:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 8:Add, Button, x5 y70 w100 h30 , OK
-Gui, 8:Add, Button, x115 y70 w100 h30 , Отмена
+Loop
+{
+	if A_Index in 15,16,17,18,19,20
+	{
+		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
+		Gui, %A_Index%:Add, Edit, x5 y5 w50 h20 vZip , 85
+		Gui, %A_Index%:Add, Edit, x5 y35 w50 h20 vPage, 0
+		Gui, %A_Index%:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество) `n 99-max 1-min
+		Gui, %A_Index%:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
+		Gui, %A_Index%:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
+		Gui, %A_Index%:Add, Button, x5 y85 w100 h30 , OK
+		Gui, %A_Index%:Add, Button, x115 y85 w100 h30 , Отмена
+	}
+	else if A_Index > 20
+		break
+}
 
 Gui, 9:+hwndhGui9 +owner1 -Caption +Border
 Gui, 9:Add, Button, x2 y5 w80 h30 , Сжать
@@ -406,22 +396,30 @@ Gui, 9:Add, Button, x84 y40 w80 h30 , Склеить
 Gui, 9:Add, Button, x166 y5 w75 h30 gMD, Изм. Мета.
 Gui, 9:Add, Button, x166 y40 w75 h30 gDSh, Защита
 
-Gui, 10:+hwndhGui10 +owner1 -Caption +Border
-Gui, 10:Add, Edit, x5 y10 w250 h25 vStran
-Gui, 10:Add, Text, x5 y36 w300 h40, Укажите сохраняемые страницы:1, 3-5, 8 Для поворота после страницы указать сторну поворота: left, right, down. См. справку.
-Gui, 10:Add, Button, x5 y80 w140 h30 gSplt, Сохранить выбранные страницы
-Gui, 10:Add, Button, x160 y80 w60 h30 , Отмена
+Loop
+{
+	if A_Index in 10,32
+	{
+		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
+		Gui, %A_Index%:Add, Edit, x5 y10 w290 h25 vStran
+		Gui, %A_Index%:Add, Text, x5 y40 w290 h40 HWNDHwndGui32, Укажите сохраняемые страницы:1, 3-5, 8 Для поворота после страницы указать сторну поворота: left, right, down. См. справку.
+		Gui, %A_Index%:Add, Button, x5 y85 w140 h30 gSplt%A_Index%, Сохранить выбранные страницы
+		Gui, %A_Index%:Add, Button, x160 y85 w60 h30 , Отмена
+	}
+	else if A_Index > 32
+		break
+}
 
 Gui, 11:+hwndhGui11 +owner1 -Caption +Border
-Gui, 11:Add, Text, x10 y5 w290 h20 , В какой формат будем конвертировать документ?
-Gui, 11:Add, Button, x5 y30 w60 h30 , HTML
-Gui, 11:Add, Button, x70 y30 w60 h30 , RTF
-Gui, 11:Add, Button, x135 y30 w60 h30 , MHT
-Gui, 11:Add, Button, x200 y30 w60 h30 gTxt, TXT
-Gui, 11:Add, Button, x200 y65 w60 h30 gXml, XML
-Gui, 11:Add, Button, x135 y65 w60 h30 gPdf, PDF
-Gui, 11:Add, Button, x70 y65 w60 h30 gXps, XPS
-Gui, 11:Add, Button, x5 y65 w60 h30 gFb2, FB2
+Gui, 11:Add, Text, x10    y5 w290 h20 , В какой формат будем конвертировать документ?
+Gui, 11:Add, Button, x5   y30 w60 h30 gCHtml, HTML
+Gui, 11:Add, Button, x70  y30 w60 h30 gCRtf, RTF
+Gui, 11:Add, Button, x135 y30 w60 h30 gCMht, MHT
+Gui, 11:Add, Button, x200 y30 w60 h30 gCTxt, TXT
+Gui, 11:Add, Button, x200 y65 w60 h30 gCXml, XML
+Gui, 11:Add, Button, x135 y65 w60 h30 gCPdf, PDF
+Gui, 11:Add, Button, x70  y65 w60 h30 gCXps, XPS
+Gui, 11:Add, Button, x5   y65 w60 h30 gCFb2, FB2
 
 Gui, 12: +hwndhGui12 +owner1 -Caption +Border
 Gui, 12:Add, Text, x12 y0 w230 h30 , В какой формат будем конвертировать?
@@ -457,60 +455,6 @@ Gui, My:Add, Button, x5 y5, Сохранить
 Gui, My:Add, Button, x80 y5, Выход
 Gui, My:Add, Edit, x5 y40 W400 R30 vMeta,
 
-Gui, 15:+hwndhGui15 +owner1 -Caption +Border
-Gui, 15:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 15:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 15:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 15:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 15:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 15:Add, Button, x5 y85 w100 h30 , OK
-Gui, 15:Add, Button, x115 y85 w100 h30 , Отмена
-
-Gui, 16:+hwndhGui16 +owner1 -Caption +Border
-Gui, 16:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 16:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 16:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 16:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 16:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 16:Add, Button, x5 y85 w100 h30 , OK
-Gui, 16:Add, Button, x115 y85 w100 h30 , Отмена
-
-Gui, 17:+hwndhGui17 +owner1 -Caption +Border
-Gui, 17:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 17:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 17:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 17:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 17:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 17:Add, Button, x5 y85 w100 h30 , OK
-Gui, 17:Add, Button, x115 y85 w100 h30 , Отмена
-
-Gui, 18:+hwndhGui18 +owner1 -Caption +Border
-Gui, 18:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 18:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 18:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 18:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 18:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 18:Add, Button, x5 y85 w100 h30 , OK
-Gui, 18:Add, Button, x115 y85 w100 h30 , Отмена
-
-Gui, 19:+hwndhGui19 +owner1 -Caption +Border
-Gui, 19:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 19:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 19:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 19:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 19:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 19:Add, Button, x5 y85 w100 h30 , OK
-Gui, 19:Add, Button, x115 y85 w100 h30 , Отмена
-
-Gui, 20:+hwndhGui20 +owner1 -Caption +Border
-Gui, 20:Add, Edit, x5 y5 w50 h20 vZip , 85
-Gui, 20:Add, Edit, x5 y35 w50 h20 vPage, 0
-Gui, 20:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 20:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
-Gui, 20:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
-Gui, 20:Add, Button, x5 y85 w100 h30 , OK
-Gui, 20:Add, Button, x115 y85 w100 h30 , Отмена
-
 Gui, 21:+hwndhGui21 +owner1 -Caption +Border
 Gui, 21:Add, Text, x2 y0 w300 h40 , Изменение даты и времени создания/изменения/доступа к файлу.`nЧто будем менять?
 Gui, 21:Add, Text, x2 y45 w300 h20 , Введите значение нового времени по образцу:
@@ -530,20 +474,6 @@ Gui, 22:Add, Button, x60 y50 w50 h30 gPI, ICO
 Gui, 22:Add, Button, x115 y50 w50 h30 gPE, EMF
 Gui, 22:Add, Button, x170 y50 w50 h30 gPB, BMP
 
-Gui, 23:+hwndhGui23 +owner1 -Caption +Border
-Gui, 23:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 23:Add, Text, x70 y5 w150 h30 r2 , Степень сжатия (качество)`n 1-max 99-min
-Gui, 23:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 23:Add, Button, x5 y70 w100 h30 , OK
-Gui, 23:Add, Button, x115 y70 w100 h30 , Отмена
-
-Gui, 24:+hwndhGui24 +owner1 -Caption +Border
-Gui, 24:Add, Edit, x5 y5 w60 h25 vZip , 85
-Gui, 24:Add, Text, x70 y5 w150 h30 r2, Степень сжатия (качество)`n 1-max 99-min
-Gui, 24:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
-Gui, 24:Add, Button, x5 y70 w100 h30 , OK
-Gui, 24:Add, Button, x115 y70 w100 h30 , Отмена
-
 Int = 1
 Gui, 25:+hwndhGui25 +owner1 -Caption +Border
 Gui, 25:Add, Text, x2 y0 w300 h20 , Шифрование и дешифровка файлов по алгоритму Base64
@@ -552,6 +482,11 @@ Gui, 25:Add, Text, x30 y25 w270 h20  , Количество циклов де-/�
 Gui, 25:Add, Button, x5 y50 w70 h40 gBasE, Шифровать
 Gui, 25:Add, Button, x80 y50 w80 h40 gBasD, Дешифровать
 Gui, 25:Add, Button, x165 y50 w80 h40 gTb2bt, Шиф./Дешиф. текст
+
+Gui, 26:+hwndhGui26 +owner1 -Caption +Border
+Gui, 26:Add, Button, x5 y5 w100 h30 gDnd_Zip, Пакетное сжатие
+Gui, 26:Add, Button, xp+105 yp w100 h30 gDnd_Merge, Склеить выбранное
+Gui, 26:Add, Button, xp+105 yp w80 h30 gDnd_Cancel, Отмена
 
 Gui, 27:Add, GroupBox, x3 y10 w150 h180 , Кодовая страница
 Gui, 27:Add, ListBox, vPageCode x15 y46 Choose1 R6 h150 AltSubmit, 1251     - Windows|866       - Dos|28595   - ISO|20866   - KOI8-R|21866   - KOI8-U|10007   - Mac
@@ -568,46 +503,70 @@ Gui, 27:Add, Button, x100 y210 w100 h30 , Сохранить
 Gui, 27:Add, Button, xp+150 yp w100 h30 , Отмена
 
 Gui, 28:+hwndhGui28 +owner1 -Caption +Border
-Gui, 28:Add, Button, x5 y5 w100 h30 gDnd_Zip, Пакетное сжатие
-Gui, 28:Add, Button, xp+105 yp w100 h30 gDnd_Merge, Склеить выбранное
-Gui, 28:Add, Button, xp+105 yp w80 h30 gDnd_Cancel, Отмена
+Gui, 28:Add, Text, x12 y0 w230 h30 , В какой формат будем конвертировать?
+Gui, 28:Add, Button, x5 y15 w50 h30 gDJ, JPEG
+Gui, 28:Add, Button, x60 y15 w50 h30 gDPs, PS
+Gui, 28:Add, Button, x115 y15 w50 h30 gDTi, TIFF
+Gui, 28:Add, Button, x5 y50 w50 h30 gDP, PDF
+Gui, 28:Add, Button, x170 y15 w50 h30 gDB, BMP
+
+loop
+{
+	if A_Index in 29,30,31
+	{
+		N := A_Index-28
+		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
+		Gui, %A_Index%:Add, Edit, x5 y10 w50 h25 vPg
+		Gui, %A_Index%:Add, Text, x60 y10 w230 h30, Укажите номер сохраняемой страницы.
+		Gui, %A_Index%:Add, Button, x5 y45 w140 h30 gSave%N%, Сохранить выбранные страницы
+		Gui, %A_Index%:Add, Button, x160 y45 w60 h30 , Отмена
+	}
+	else if A_Index > 31
+		break
+}
 
 VarSetCapacity(WI, 64)
 Sleep, 1000
 
 global Arr := [{Perem: "Win",  Page: 1251,  Chek: "- 1251 Win"}
-			 , {Perem: "Dos",  Page: 866,   Chek: "- 866 Dos"}
-			 , {Perem: "Iso",  Page: 28595, Chek: "- 28595 ISO"}
-			 , {Perem: "Koir", Page: 20866, Chek: "- 20866 KOI8-R"}
-			 , {Perem: "Koiu", Page: 21866, Chek: "- 21866 KOI8-U"}
-			 , {Perem: "Mac", Page: 10007, Chek: "- 10007 Mac"}]
+			       , {Perem: "Dos",  Page: 866,   Chek: "- 866 Dos"}
+			       , {Perem: "Iso",  Page: 28595, Chek: "- 28595 ISO"}
+			       , {Perem: "Koir", Page: 20866, Chek: "- 20866 KOI8-R"}
+			       , {Perem: "Koiu", Page: 21866, Chek: "- 21866 KOI8-U"}
+			       , {Perem: "Mac",  Page: 10007, Chek: "- 10007 Mac"}]
 
-global GuHi := [{GuiN: 1,  Hg: 190}
-			 , {GuiN: 2,  Hg: 105}	
-			 , {GuiN: 3,  Hg: 70}
-			 , {GuiN: 4,  Hg: 105}			 
-			 , {GuiN: 5,  Hg: 115}
-			 , {GuiN: 6,  Hg: 105}
-			 , {GuiN: 7,  Hg: 105}
-			 , {GuiN: 8,  Hg: 105}
-			 , {GuiN: 9,  Hg: 80}
-			 , {GuiN: 10, Hg: 115}
-			 , {GuiN: 11, Hg: 100}
-			 , {GuiN: 12, Hg: 85}
-			 , {GuiN: 13, Hg: 90}
-			 , {GuiN: 14, Hg: 85}
-			 , {GuiN: 15, Hg: 115}
-			 , {GuiN: 16, Hg: 115}
-			 , {GuiN: 17, Hg: 115}
-			 , {GuiN: 18, Hg: 115}
-			 , {GuiN: 19, Hg: 115}
-			 , {GuiN: 20, Hg: 115}
-			 , {GuiN: 21, Hg: 140}
-			 , {GuiN: 22, Hg: 85}
-			 , {GuiN: 23, Hg: 105}
-			 , {GuiN: 24, Hg: 105}
-			 , {GuiN: 25, Hg: 100}
-			 , {GuiN: 28, Hg: 40}]
+		 global GuHi := [{GuiN: 1,  Hg: 190}
+						 			 , {GuiN: 2,  Hg: 105}
+						 			 , {GuiN: 3,  Hg: 70}
+						 			 , {GuiN: 4,  Hg: 105}
+						 			 , {GuiN: 5,  Hg: 115}
+						 			 , {GuiN: 6,  Hg: 105}
+						 			 , {GuiN: 7,  Hg: 105}
+						 			 , {GuiN: 8,  Hg: 105}
+						 			 , {GuiN: 9,  Hg: 80}
+						 			 , {GuiN: 10, Hg: 120}
+						 			 , {GuiN: 11, Hg: 100}
+						 			 , {GuiN: 12, Hg: 85}
+						 			 , {GuiN: 13, Hg: 90}
+						 			 , {GuiN: 14, Hg: 85}
+						 			 , {GuiN: 15, Hg: 115}
+						 			 , {GuiN: 16, Hg: 115}
+						 			 , {GuiN: 17, Hg: 115}
+						 			 , {GuiN: 18, Hg: 115}
+						 			 , {GuiN: 19, Hg: 115}
+						 			 , {GuiN: 20, Hg: 115}
+						 			 , {GuiN: 21, Hg: 140}
+						 			 , {GuiN: 22, Hg: 85}
+						 			 , {GuiN: 23, Hg: 105}
+						 			 , {GuiN: 24, Hg: 105}
+						 			 , {GuiN: 25, Hg: 100}
+						 			 , {GuiN: 26, Hg: 40}
+						 			 , {GuiN: 27, Hg: 40}
+						 			 , {GuiN: 28, Hg: 85}
+						 			 , {GuiN: 29, Hg: 80}
+						 			 , {GuiN: 30, Hg: 80}
+						 			 , {GuiN: 31, Hg: 80}
+						 			 , {GuiN: 32, Hg: 120}]
 
 Gui, Show, Center h190 w300, Конвертер
 ;================АВТООБНОВЛЕНИЕ=====================================
@@ -616,7 +575,7 @@ IfExist, %LogPath%\Config.ini
 {
 	IniRead, DataIzm, %LogPath%\Config.ini, Options, DataIzm
 	Delta = %A_YDay% - %DataIzm%
-	
+
 	If Delta >= %Period%
 	{
 		IfExist, %A_Temp%\DBFFC.tmp\sborka.txt
@@ -644,11 +603,11 @@ IfExist, %LogPath%\Config.ini
 			}
 			else
 				FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
-		}	
-		else 
+		}
+		else
 			Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 	}
-} 
+}
 } catch e {
 	MsgBox % e "ERROR code 1007 AutoUpdate"
 }
@@ -658,7 +617,7 @@ Return
 
 GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 {
-	If A_EventInfo = 1 
+	If A_EventInfo = 1
 	{
 		for i, Files in FileArray
 		{
@@ -682,7 +641,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 				RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 				FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
 				WaitProgress(0, %A_LastError%, %ErrorLevel%)
-			} 
+			}
 			else if (( Ext = "tiff" || Ext = "tif" ) && ( A_GuiControl = "T I F F" || A_GuiControl = "P D F" || A_GuiControl = "J P G" || A_GuiControl = "Сжатие" ))
 			{
 				conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_#.tiff" "%Files%"
@@ -716,7 +675,7 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 				DnDPng = %Files%
 				gosub, BPNG
 			}
-			else 
+			else
 			{
 				MsgBox, 4148, Ошибка, Файлы перемещены не в блок обработки`, либо данный тип файлов не поддерживается. Открыть справку "Функция Drag-and-Drop"?
 				IfMsgBox Yes
@@ -728,25 +687,25 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y)
 		}
 		}
 	}
-	
+
 	If (A_EventInfo > 1)
 	{
 		try {
-		global FileList := A_GuiControlEvent 
-		Sort, FileList 
-		gosub, allguicancel
-		gosub, g28
+		global FileList := A_GuiControlEvent
+		Sort, FileList
+		AllGUICancel()
+		gosub, g26
 		return
 	} catch e {
 		MsgBox % e "ERROR code 1005 DnD_General_Event"
 		}
 	}
-Return	
+Return
 }
-G28:
+G26:
 try {
-	global GuiNum := 28
-	global GuiHigh := 40
+	global GuiNum := % GuHi[26].GuiN
+	global GuiHigh := % GuHi[26].Hg
 	OnMessage(0x0003, "FuncGui")
 	OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 	DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
@@ -756,19 +715,19 @@ try {
 		yI := NumGet(WI, 16, UInt)
 		Gui, %GuiNum%:Show, x%xI% y%yI% h%GuiHigh% w300
 	}
-	DllCall("AnimateWindow", Ptr, hGui28, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
+	DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 } catch e {
 	MsgBox % e "ERROR code 1006 DnD_Gui28"
 	}
 return
 
 Dnd_Cancel:
-Gui 28:Submit
+Gui 26:Submit
 ControlClick, JPG,Конвертер, , LEFT
 return
 
 Dnd_Zip:
-Gui 28:Submit
+Gui 26:Submit
 Loop, parse, FileList, `n
 {
 	try {
@@ -780,7 +739,7 @@ Loop, parse, FileList, `n
 		WaitProgress(1)
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		WaitProgress(0)
-	} 
+	}
 	else if Ext in pdf,PDF
 	{
 		FileCreateDir, %A_Temp%\DBFFC.tmp\ZipPdfFile
@@ -791,7 +750,7 @@ Loop, parse, FileList, `n
 		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 		FileRemoveDir, %A_Temp%\DBFFC.tmp\ZipPdfFile, 1
 		WaitProgress(0)
-	} 
+	}
 	else if Ext in tiff,tif
 	{
 		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out tiff -c 5 -q 50 -multi -o "%Dir%\%Name%_zip.tiff" "%Files%"
@@ -802,13 +761,13 @@ Loop, parse, FileList, `n
 	} catch e {
 		MsgBox % e "ERROR code 1002 DnD_Zip"
 	}
-	
+
 }
 Return
 
 Dnd_Merge:
 {
-Gui 28:Submit
+Gui 26:Submit
 try {
 Loop, parse, FileList, `n
 {
@@ -844,7 +803,7 @@ else If mark in tif,tiff
 	WaitProgress(0)
 }
 else MsgBox, "Тип файлов не поддерживается данной программой `nОбратитесь к разработчику для добавления нового типа файлов."
-	
+
 Dnd_merge_files = ""
 mark = ""
 } catch e {
@@ -859,7 +818,7 @@ SB_SetText(A_Hour . ":" . A_Min, 3)
 return
 
 Changelog:
-MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 344.`n`nФУНКЦИЯ Drag and Drop:`n- Добавлено пакетное сжатие jpg`, pdf и tiff файлов`;`n- При перенесении нескольких файлов jpg`, tiff или pdf появляются варианты действий сжать/склеить`;`n- При выборе склеить pdf и tiff слеивается в один файл`, а jpg конвертируеся в многостраничный pdf.`n`nМЕНЮ`n- В меню Справка добавлен ChangeLog используемой сборки.`n`nПРОЧЕЕ`n- Отредактировано сбрасывание стартовой заставки`, которая в некоторых случаях "зависала"`n- Изменено окно настроек и добавлена поддержка скинов рабочих окон.
+MsgBox, 64, CHANGELOG, #CHANGELOG`nИзменения сборки 347.`n`nСжатие PDF: `n - Добавлено пакетное сжатие через меню блока сжатия.
 return
 ;================================MAIN/=========================================================
 
@@ -876,18 +835,21 @@ GuiControlGet PeriodIzm,,Period
 GuiControlGet PageCode,,PageCode
 GuiControlGet SkinName,,SkinName
 Gui 27:Submit
-IniWrite, %A_Temp%\DBFFC.tmp\she\%SkinName%, %LogPath%\Config.ini, Skin, SkinPath
-IniWrite, %PeriodIzm%, %LogPath%\Config.ini, Options, Period
+If SkinName != "NO_SKIN"
+	IniWrite, %A_WorkingDir%\she\%SkinName%, %A_WorkingDir%\Config.ini, Skin, SkinPath
+else
+	IniWrite, %A_WorkingDir%\she\, %A_WorkingDir%\Config.ini, Skin, SkinPath
+IniWrite, %PeriodIzm%, %A_WorkingDir%\Config.ini, Options, Period
 If Period != % PeriodIzm
-	IniWrite, %A_YDay%, %LogPath%\Config.ini, Options, DataIzm
+	IniWrite, %A_YDay%, %A_WorkingDir%\Config.ini, Options, DataIzm
 global PageN := % Arr[PageCode].Page
-IniWrite, %PageN%, %LogPath%\Config.ini, Options, PageN
+IniWrite, %PageN%, %A_WorkingDir%\Config.ini, Options, PageN
 CmdLog = echo %LogLine% >>"%LogPath%`%date`%.log" 2>>&1 && chcp %PageN% >>"%LogPath%`%date`%.log" 2>>&1
 RunWait, %comspec% /c %CmdLog%,, Hide UseErrorLevel
 } catch e {
 	MsgBox "ERROR code 1019 Save_Btn_27"
 }
-WinSet , Redraw,, Конвертер 
+WinSet , Redraw,, Конвертер
 return
 
 27ButtonОтмена:
@@ -938,8 +900,8 @@ If ConnectedToInternet()
 		MsgBox,,Поздравляю!,Вы используете последнюю версию программы.
 		FileDelete, %A_Temp%\DBFFC.tmp\sborka.txt
 	}
-}	
-else 
+}
+else
 {
 	Msgbox, 48, Ошибка подключения, Нет подключения к Интернету. Обратитесь к администратору вашей сети!
 }
@@ -950,7 +912,7 @@ Return
 
 ;==========================Дата===================================================================
 Dt:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[21].GuiN
 global GuiHigh := % GuHi[21].Hg
 OnMessage(0x0003, "FuncGui")
@@ -1025,7 +987,7 @@ return
 ;===================================================================================================
 ;==========================Шифрование===============================================================
 Bas:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[25].GuiN
 global GuiHigh := % GuHi[25].Hg
 OnMessage(0x0003, "FuncGui")
@@ -1044,7 +1006,7 @@ if files =
 	return
 WinWaitClose Зашифровать файл
 SplitPath, files, FiNam, Dir, Ext, Name
-base = "%A_Temp%\DBFFC.tmp\bsed.exe" -e "%files%" "%A_Temp%\DBFFC.tmp\%FiNam%" 
+base = "%A_Temp%\DBFFC.tmp\bsed.exe" -e "%files%" "%A_Temp%\DBFFC.tmp\%FiNam%"
 GuiControlGet, Int,, Int
 WaitProgress(1)
 Loop %Int%
@@ -1071,7 +1033,7 @@ FileSelectFile, files, 3,,Дешифровать файл, Все файлы (*.
 	}
 WinWaitClose Дешифровать файл
 SplitPath, files, FiNam, Dir, Ext, Name
-base = "%A_Temp%\DBFFC.tmp\bsed.exe" -d "%files%" "%A_Temp%\DBFFC.tmp\%FiNam%" 
+base = "%A_Temp%\DBFFC.tmp\bsed.exe" -d "%files%" "%A_Temp%\DBFFC.tmp\%FiNam%"
 GuiControlGet, Int,, Int
 WaitProgress(1)
 Loop %Int%
@@ -1100,7 +1062,7 @@ Return
 ButtonPNG:
 DnDPng = ""
 BPNG:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[22].GuiN
 global GuiHigh := % GuHi[22].Hg
 OnMessage(0x3, "FuncGui")
@@ -1114,7 +1076,7 @@ return
 ButtonJPG:
 DnDJpeg = ""
 BJPG:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[12].GuiN
 global GuiHigh := % GuHi[12].Hg
 OnMessage(0x3, "FuncGui")
@@ -1128,7 +1090,7 @@ return
 ButtonPDF:
 DnDPdf = ""
 BPDF:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[13].GuiN
 global GuiHigh := % GuHi[13].Hg
 OnMessage(0x0003, "FuncGui")
@@ -1142,7 +1104,7 @@ return
 ButtonTIFF:
 DnDTiff = ""
 BTIFF:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[14].GuiN
 global GuiHigh := % GuHi[14].Hg
 OnMessage(0x0003, "FuncGui")
@@ -1151,7 +1113,184 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
    if i := !i
       Gui, 14:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h85 w300"
    DllCall("AnimateWindow", Ptr, hGui14, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))   ; выдвигаем/задвигаем окно-слайдер
-return 
+return
+;=============================Конвертирование DJVU =================================================
+ButtonDJVU:
+AllGUICancel()
+global GuiNum := % GuHi[28].GuiN
+global GuiHigh := % GuHi[28].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем влево окно-слайдер
+return
+
+DJ:
+try {
+Gui 28:Submit
+FileSelectFile, files, 3,,Конвертирование DjVu, Все файлы (*.djvu)
+if files =
+	return
+WinWaitClose Конвертирование DjVu
+global GuiNum := % GuHi[29].GuiN
+global GuiHigh := % GuHi[29].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+} catch e {
+	MsgBox % e "ERROR code 1061 DVDJ"
+}
+return
+
+Save1:
+GuiControlGet, pg
+Gui 29:Submit
+SplitPath, files, FiNam, Dir, Ext, Name
+conv = "%DVD%" --output-format=jpeg --page-range=%pg% "%files%" "%Dir%\%Name%.jpg"
+WaitProgress(1)
+RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+return
+
+29ButtonОтмена:
+Gui 29:Submit
+return
+
+DTi:
+try {
+Gui 28:Submit
+FileSelectFile, files, 3,,Конвертирование DjVu, Все файлы (*.djvu)
+if files =
+	return
+WinWaitClose Конвертирование DjVu
+global GuiNum := % GuHi[32].GuiN
+global GuiHigh := % GuHi[32].Hg
+ControlSetText, , Укажите сохраняемые страницы: 1`,3-5`,8. При сохранении всех страниц оставьте поле пустым. ,ahk_id %HwndGui32%
+Sleep 500
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10003))
+} catch e {
+	MsgBox % e "ERROR code 1062 DVDTi"
+}
+return
+
+Splt32:
+try {
+GuiControlGet, Stran
+StringReplace, Stran1, Stran, %A_Space%,,All
+Value1 := "."
+Value2 := ","
+StringReplace, Stran, Stran1, %Value1%,%Value2%,All
+Gui 32:Submit
+SplitPath, files, FiNam, Dir, Ext, Name
+If Stran =
+	conv = "%DVD%" --output-format=tif "%files%" "%Dir%\%Name%.tiff"
+else
+	conv = "%DVD%" --output-format=tif --page-range=%Stran% "%files%" "%Dir%\%Name%.tiff"
+WaitProgress(1)
+RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+} catch e {
+	MsgBox % e "ERROR code: 1062_DVD_Tif_Splt"
+}
+return
+
+32ButtonОтмена:
+Gui 32:Submit
+return
+
+DP:
+;~ try {
+Gui 28:Submit
+FileSelectFile, files, 3,,Конвертирование DjVu, Все файлы (*.djvu)
+if files =
+	return
+WinWaitClose Конвертирование DjVu
+SplitPath, files, FiNam, Dir, Ext, Name
+conv1 = "%DVD%" --output-format=tif  "%files%" "%A_Temp%\DBFFC.tmp\%Name%.tiff"
+conv2 = "%A_WorkingDir%\Sourse\%cv%" -out pdf -c 5 -q 50 -multi -o "%Dir%\%Name%.pdf" "%A_Temp%\DBFFC.tmp\%Name%.tiff"
+WaitProgress(1)
+RunWait, %comspec% /c %CmdLog% && %conv1% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+RunWait, %comspec% /c %CmdLog% && %conv2% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+FileDelete, "%A_Temp%\DBFFC.tmp\%Name%.tiff"
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+;~ } catch e {
+	;~ MsgBox % e "`n ERROR code 1063 DVDP"
+;~ }
+return
+
+DPs:
+try {
+Gui 28:Submit
+FileSelectFile, files, 3,,Конвертирование DjVu, Все файлы (*.djvu)
+if files =
+	return
+WinWaitClose Конвертирование DjVu
+global GuiNum := % GuHi[30].GuiN
+global GuiHigh := % GuHi[30].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+} catch e {
+	MsgBox % e "ERROR code 1064 DVDPs"
+}
+return
+
+Save2:
+GuiControlGet, pg
+Gui 30:Submit
+SplitPath, files, FiNam, Dir, Ext, Name
+conv = "%DVD%" --output-format=ps --page-range=%pg% "%files%" "%Dir%\%Name%.ps"
+WaitProgress(1)
+RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+return
+
+30ButtonОтмена:
+Gui 30:Submit
+return
+
+DB:
+try {
+Gui 28:Submit
+FileSelectFile, files, 3,,Конвертирование DjVu, Все файлы (*.djvu)
+if files =
+	return
+WinWaitClose Конвертирование DjVu
+global GuiNum := % GuHi[31].GuiN
+global GuiHigh := % GuHi[31].Hg
+OnMessage(0x3, "FuncGui")
+OnMessage(0x112, "FuncGui")
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
+} catch e {
+	MsgBox % e "ERROR code 1065 DVDB"
+}
+return
+
+Save3:
+GuiControlGet, pg
+Gui 31:Submit
+SplitPath, files, FiNam, Dir, Ext, Name
+conv = "%DVD%" --output-format=bmp --page-range=%pg% "%files%" "%Dir%\%Name%.bmp"
+WaitProgress(1)
+RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+return
+
+31ButtonОтмена:
+Gui 31:Submit
+return
 ;==========================Конвертирование Jpg =====================================================
 
 ;==========================Конвертирование Jpg to Pdf===============================================
@@ -1171,7 +1310,7 @@ OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 2:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 DllCall("AnimateWindow", Ptr, hGui2, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
-Gui 12:Show, hide 
+Gui 12:Show, hide
 Return
 
 2ButtonOK:
@@ -1183,7 +1322,7 @@ If del = 1
 	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -multi -o
 else
     conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q %Zip% -multi -o
-	
+
 if DnDJpeg = ""
 {
 	Loop, parse, files, `n
@@ -1215,7 +1354,7 @@ ControlClick, JPG,Конвертер, , LEFT
 Return
 
 2ButtonОтмена:
-Gui 2:Submit 
+Gui 2:Submit
 Return
 ;==========================Конвертирование Jpg to Ps================================================
 JPs:
@@ -1414,9 +1553,9 @@ OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 4:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 	DllCall("AnimateWindow", Ptr, hGui4, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
-Gui 12:Show, hide 
+Gui 12:Show, hide
 return
-	
+
 4ButtonOK:
 try {
 Gui, 12:Submit
@@ -1437,7 +1576,7 @@ IF DnDJpeg = ""
 			conv=%conv% "%path%\`%.tiff" "
 		}
 		else
-			conv = %conv%%path%\%A_LoopField%" " 
+			conv = %conv%%path%\%A_LoopField%" "
 	}
 	StringTrimRight, conv, conv, 2
 }
@@ -1453,10 +1592,10 @@ ControlClick, JPG,Конвертер, , LEFT
 } catch e {
 	MsgBox % e "ERROR code 1016 JT_Module"
 }
-Return	
+Return
 
 4ButtonОтмена:
-Gui 4:Submit 
+Gui 4:Submit
 return
 ;==========================Конвертирование Jpg to Bmp================================================
 JB:
@@ -1493,7 +1632,7 @@ ControlClick, JPG,Конвертер, , LEFT
 } catch e {
 	MsgBox % e "ERROR code 1017 JB_Module"
 }
-return                                                                                           
+return
 ;==========================Конвертирование PNG======================================================================================
 
 ;==========================Конвертирование PNG to Pdf===============================================================================
@@ -1512,7 +1651,7 @@ OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 	Gui, 23:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
 DllCall("AnimateWindow", Ptr, hGui23, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x00010008))
-Gui 22:Show, hide 
+Gui 22:Show, hide
 Return
 
 23ButtonOK:
@@ -1523,7 +1662,7 @@ If del = 1
 	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -o
 else
     conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q %Zip% -o
-	
+
 if DnDPng = ""
 {
 	SplitPath, files,, dir,,name
@@ -1543,7 +1682,7 @@ ControlClick, JPG,Конвертер, , LEFT
 Return
 
 23ButtonОтмена:
-Gui 23:Submit 
+Gui 23:Submit
 Return
 ;==========================Конвертирование Png to Ps================================================
 PPs:
@@ -1553,7 +1692,7 @@ IF DnDPng = ""
 	FileSelectFile, files, 3,,Конвертация PNG to PS, Изображения (*.png)
 	if files =
 		return
-	WinWaitClose Конвертация PNG to PS 
+	WinWaitClose Конвертация PNG to PS
 	SplitPath, files,, dir,,name
 	conv = "%A_Temp%\DBFFC.tmp\%cv%" -out ps -c 5 -o "%dir%\%name%.ps" "%files%"
 }
@@ -1616,7 +1755,7 @@ PI:
 Gui, 22:Submit
 IF DnDPng = ""
 {
-	FileSelectFile, files, 3,,Конвертация PNG to ICO, Изображения (*.png) 
+	FileSelectFile, files, 3,,Конвертация PNG to ICO, Изображения (*.png)
 	if files =
 		return
 	WinWaitClose Конвертация PNG to ICO
@@ -1671,9 +1810,9 @@ OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 		Gui, 24:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " w300 h105"
    DllCall("AnimateWindow", Ptr, hGui24, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
-Gui 22:Show, hide 
+Gui 22:Show, hide
 return
-	
+
 24ButtonOK:
 Gui, 22:Submit
 GuiControlGet, Del
@@ -1697,17 +1836,17 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 24ButtonОтмена:
-Gui 24:Submit 
+Gui 24:Submit
 return
 ;==========================Конвертирование Png to Bmp================================================
 PB:
 Gui, 22:Submit
 IF DnDPng = ""
 {
-	FileSelectFile, files, 3,,Конвертация PNG to BMP, Изображения (*.png) 
+	FileSelectFile, files, 3,,Конвертация PNG to BMP, Изображения (*.png)
 	if files =
 		return
 	WinWaitClose Конвертация PNG to BMP
@@ -1724,10 +1863,10 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-return                                                
+return
 ;===========================Конвертирование Pdf=====================================================================================
 
-;===========================Конвертирование Pdf to Jpg============================================================================  
+;===========================Конвертирование Pdf to Jpg============================================================================
 PJ:
 IF DnDPdf = ""
 {
@@ -1767,12 +1906,12 @@ RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide U
 	else
 		ControlClick, JPG,Конвертер, , LEFT
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
-Return	
+Return
 
 3ButtonОтмена:
-Gui 3:Submit 
+Gui 3:Submit
 return
-;===========================Конвертирование Pdf to Tiff(цветной)==============================================  
+;===========================Конвертирование Pdf to Tiff(цветной)==============================================
 PTc:
 IF DnDPdf = ""
 {
@@ -1793,7 +1932,7 @@ RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide U
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
-;===========================Конвертирование Pdf to Tiff(ч/б)==============================================  
+;===========================Конвертирование Pdf to Tiff(ч/б)==============================================
 PTb:
 IF DnDPdf = ""
 {
@@ -1814,7 +1953,7 @@ RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide U
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
-;===========================Конвертирование Pdf to Txt==============================================  
+;===========================Конвертирование Pdf to Txt==============================================
 PTx:
 IF DnDPdf = ""
 {
@@ -1823,7 +1962,7 @@ IF DnDPdf = ""
 		return
 	SplitPath, files,, dir,,name
 	conv = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=txtwrite -dNOPAUSE -r150  -sOutputFile="%dir%\%name%.txt" "%files%" -c quit
-	
+
 }
 else
 {
@@ -1836,7 +1975,7 @@ RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide U
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
-;===========================Конвертирование Pdf to DJVU==============================================  
+;===========================Конвертирование Pdf to DJVU==============================================
 PD:
 IF DnDPdf = ""
 {
@@ -1844,12 +1983,12 @@ IF DnDPdf = ""
 	if files =
 		return
 	SplitPath, files,, dir,,name
-	conv = "%A_WorkingDir%\p2d\pdf2djvu.exe" -o "%dir%\%name%.djvu"   --verbatim-metadata --page-id-template=nb{dpage:04*}.djvu "%files%" 
+	conv = "%A_WorkingDir%\p2d\pdf2djvu.exe" -o "%dir%\%name%.djvu"   --verbatim-metadata --page-id-template=nb{dpage:04*}.djvu "%files%"
 }
 else
 {
 	SplitPath, DnDPdf,, Dir, Ext, Name
-	conv = "%A_WorkingDir%\p2d\pdf2djvu.exe" -o "%dir%\%name%.djvu"   --verbatim-metadata --page-id-template=nb{dpage:04*}.djvu "%DnDPdf%" 
+	conv = "%A_WorkingDir%\p2d\pdf2djvu.exe" -o "%dir%\%name%.djvu"   --verbatim-metadata --page-id-template=nb{dpage:04*}.djvu "%DnDPdf%"
 }
 Gui 13:Submit
 WaitProgress(1)
@@ -1909,10 +2048,10 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,, Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 5ButtonОтмена:
-Gui 5:Submit 
+Gui 5:Submit
 return
 ;=============================Конвертирование Tiff to Ps===========================================
 TPs:
@@ -1966,10 +2105,10 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 15ButtonОтмена:
-Gui 15:Submit 
+Gui 15:Submit
 return
 ;=============================Конвертирование Tiff to PNG===========================================
 TPn:
@@ -2023,10 +2162,10 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 16ButtonОтмена:
-Gui 16:Submit 
+Gui 16:Submit
 return
 ;=============================Конвертирование Tiff to PDF===========================================
 TP:
@@ -2054,9 +2193,9 @@ Gui, 17:Submit
 if Page = 0
 {
 	if Del =1
-		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -xall -o ; 
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -xall -o ;
 	else
-		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q %Zip% -xall -o    ; 
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -c 5 -q %Zip% -xall -o    ;
 }
 else
 {
@@ -2070,7 +2209,7 @@ if DnDTiff = ""
 {
 	SplitPath, files,, dir,,name
 	conv = %conv% "%dir%\%name%-#.pdf" "%files%"
-}	
+}
 else
 {
 	SplitPath, DnDTiff,, Dir, Ext, Name
@@ -2080,10 +2219,10 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 17ButtonОтмена:
-Gui 17:Submit 
+Gui 17:Submit
 return
 ;=============================Конвертирование Tiff to Ico===========================================
 TI:
@@ -2127,7 +2266,7 @@ if DnDTiff = ""
 {
 	SplitPath, files,, dir,,name
 	conv = %conv% "%dir%\%name%-#.ico" "%files%"
-}	
+}
 else
 {
 	SplitPath, DnDTiff,, Dir, Ext, Name
@@ -2138,10 +2277,10 @@ RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide U
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 sleep 500
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 18ButtonОтмена:
-Gui 18:Submit 
+Gui 18:Submit
 return
 ;=============================Конвертирование Tiff to EMF===========================================
 TE:
@@ -2185,7 +2324,7 @@ if DnDTiff = ""
 {
 	SplitPath, files,, dir,,name
 	conv = %conv% "%dir%\%name%-#.emf" "%files%"
-}	
+}
 else
 {
 	SplitPath, DnDTiff,, Dir, Ext, Name
@@ -2195,10 +2334,10 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 19ButtonОтмена:
-Gui 19:Submit 
+Gui 19:Submit
 return
 ;=============================Конвертирование Tiff to BMP===========================================
 TB:
@@ -2252,14 +2391,14 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 20ButtonОтмена:
-Gui 20:Submit 
+Gui 20:Submit
 return
 ;=============================Сжатие Jpg============================================================
 ZJ:
-gosub, allguicancel
+AllGUICancel()
 FileSelectFile, files, M3,,Сжатие JPG, Изображения (*.jpg; *.jpeg)
 if files =
     return
@@ -2301,14 +2440,14 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 6ButtonОтмена:
-Gui 6:Submit 
+Gui 6:Submit
 return
 ;==============================Блок сжатия и т.д. Pdf===============================================
 ZP:
-gosub, allguicancel
+AllGUICancel()
 global GuiNum := % GuHi[9].GuiN
 global GuiHigh := % GuHi[9].Hg
 OnMessage(0x3, "FuncGui")
@@ -2336,7 +2475,7 @@ Loop, parse, files, `n
 		temp = %merge%"%path%\#%A_LoopField%"
 		merge = %temp% "%path%\%A_LoopField%"
 	}
-	else	
+	else
 		merge = %merge% "%path%\%A_LoopField%"
 }
 WaitProgress(1)
@@ -2360,16 +2499,16 @@ OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 Gui, 10:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h115 w300"
-DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
+DllCall("AnimateWindow", Ptr, hGui10, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 return
 
-Splt:
+Splt10:
 GuiControlGet, Stran
 
-Value1 := ". " 
+Value1 := ". "
 Value2 := ", "
 Value3 := "/ "
-Value4 := "." 
+Value4 := "."
 Value5 := ","
 Value6 := "/"
 StringReplace, Stran1, Stran, %Value1%,%A_Space%, All
@@ -2391,43 +2530,52 @@ Return
 9ButtonСжать:
 Gui 9:Submit
 
-FileSelectFile, files,3,,Сжатие PDF, Изображения (*.pdf)
+FileSelectFile, files,M3,,Сжатие PDF, Изображения (*.pdf)
 if files =
     return
-SplitPath, files,, dir,,name
-FileCreateDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}
-export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\{41243843A44243E4402042643E4392041643843221}\%name%`%02d.jpg" "%files%" -c quit
 
 WinWaitClose Сжатие PDF
 global GuiNum := % GuHi[8].GuiN
 global GuiHigh := % GuHi[8].Hg
 OnMessage(0x3, "FuncGui")
-OnMessage(0x112, "FuncGui")   ; WM_SYSCOMMAND = 0x112
+OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-Gui, 8:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h105 w300"
-DllCall("AnimateWindow", Ptr, hGui8, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008)) 
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") " h" GuiHigh " w300"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 return
 
 8ButtonOK:
 GuiControlGet, Del
 GuiControlGet, Zip
-conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -multi -o "%dir%\%name%#.pdf" "%A_Temp%\{41243843A44243E4402042643E4392041643843221}\*.jpg"
-Gui, 8:Submit
+
 WaitProgress(1)
-	RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
-    RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
-	FileRemoveDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}, 1
-WaitProgress(0, %A_LastError%, %ErrorLevel%)
-	If del = 1
+Loop, parse, files, `n
+{
+    if (a_index = 1)
+		path = %A_LoopField%
+	else if (a_index >= 2)
 	{
-		FileSetAttrib, -R, %files%
-		FileDelete, %files%
-		sleep 500
-		ControlClick, JPG, Конвертер, , LEFT
+		FileCreateDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}
+		SplitPath, A_LoopField,,,,name
+		export = "%A_Temp%\DBFFC.tmp\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\{41243843A44243E4402042643E4392041643843221}\%name%`%02d.jpg" "%path%\%A_LoopField%" -c quit
+		RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
+		conv = "%A_Temp%\DBFFC.tmp\%cv%" -out pdf -D -c 5 -q %Zip% -multi -o "%path%\%name%#.pdf" "%A_Temp%\{41243843A44243E4402042643E4392041643843221}\*.jpg"
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
+		FileRemoveDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}, 1
+
+		If del = 1
+		{
+			FileSetAttrib, -R, %path%\%A_LoopField%
+			FileDelete, %path%\%A_LoopField%
+			sleep 500
+		}
 	}
-	else
-		ControlClick, JPG, Конвертер, , LEFT
-Return	
+}
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+
+Gui, %GuiNum%:Submit
+ControlClick, JPG, Конвертер, , LEFT
+Return
 
 ;===================================================================================================
 MD:
@@ -2456,7 +2604,7 @@ If ErrorLevel <> 0
 {
 	MsgBox Нельзя открыть метаданные.
     return
-} 
+}
 Gui, My:Show,, METADATA
 Gui, My:Default
 WinWait, METADATA
@@ -2502,8 +2650,8 @@ return
 
 MyButtonВыход:
 MyGuiClose: ; при нажатии кнопки закрытия окна
-MyGuiEscape: ; при нажатии кнопки ESC  
-FileDelete, %A_Temp%\DBFFC.tmp\metadata.txt 
+MyGuiEscape: ; при нажатии кнопки ESC
+FileDelete, %A_Temp%\DBFFC.tmp\metadata.txt
 Gui My:Submit
 GUI Default
 sleep 500
@@ -2567,11 +2715,11 @@ Gui 10:Submit
 9ButtonОтмена:
 Gui 9:Submit
 8ButtonОтмена:
-Gui 8:Submit 
+Gui 8:Submit
 return
 ;===============================Сжатие Tiff=========================================================
 ZT:
-gosub, allguicancel
+AllGUICancel()
 FileSelectFile, files, 3,,Сжатие TIFF, Изображения (*.tiff; *.tif)
 if files =
     return
@@ -2605,16 +2753,16 @@ WaitProgress(1)
 RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
 WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
-Return	
+Return
 
 7ButtonОтмена:
-Gui 7:Submit 
+Gui 7:Submit
 return
 ;===============================Конвертирование DOC файлов==========================================
 DOC:
 DnDDoc = ""
 BDOC:
-gosub, allguicancel
+AllGUICancel()
 VarSetCapacity(WI, 64)
 global GuiNum := % GuHi[11].GuiN
 global GuiHigh := % GuHi[11].Hg
@@ -2626,7 +2774,7 @@ if i := !i
 DllCall("AnimateWindow", Ptr, hGui11, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))    ;выдвигаем/задвигаем окно-слайдер
 return
 
-11ButtonHtml:
+CHtml:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2644,7 +2792,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-11ButtonRtf:
+CRtf:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2662,7 +2810,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-11ButtonMht:
+CMht:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2680,7 +2828,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Txt:
+CTxt:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2698,7 +2846,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Xml:
+CXml:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2716,7 +2864,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Pdf:
+CPdf:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2734,7 +2882,7 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Xps:
+CXps:
 Gui 11:Submit
 If DnDDoc = ""
 {
@@ -2752,10 +2900,10 @@ WaitProgress(0, %A_LastError%, %ErrorLevel%)
 ControlClick, JPG,Конвертер, , LEFT
 return
 
-Fb2:
+CFb2:
 Gui 11:Submit
 If DnDDoc = ""
-{ 
+{
 	FileSelectFile, files, 3,,Конвертирование документов, Поддерживаемые форматы (*.doc; *.docx; *.rtf; *.html; *.xml (WordML); *.mht; *.txt)
 	if files =
 		return
@@ -2779,7 +2927,7 @@ Gui 11:Submit
 return
 ;===================================================================================================
 ;===================================================================================================
-allguicancel:
+AllGUICancel()
 {
 	gui, 9:Submit
 	gui, 11:Submit
@@ -2804,7 +2952,6 @@ IfMsgBox Yes
 Return
 
 GetOut:
-TEX:
 GuiClose:
 ButtonВыход:
 GEX:

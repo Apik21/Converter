@@ -2,16 +2,16 @@
 ; ОБРАТИТЕСЬ К СПРАВОЧНОЙ ДОКУМЕНТАЦИИ, ЧТОБЫ ИСПОЛЬЗОВАТЬ ВСЕ ВОЗМОЖНОСТИ INNO SETUP!
 
 #define MyAppName "Конвертер"
-#define MyAppVersion "1.1.2.346"
+#define MyAppVersion "1.1.2.347"
 #define MyAppPublisher "Pavel Krezub"
 #define MyAppURL "https://github.com/Apik21/Converter"
-#define MyAppExeName "converter.exe"
+#define MyAppExeName "Converter.exe"
 
 [Setup]
 ; Примечание: Значение AppId является уникальным идентификатором для этого приложения.
 ; Не используйте одно и тоже значение AppId для разных приложений.
 ; (Для создания нового значения GUID, выберите в меню "Инструменты" пункт "Создать GUID".)
-AppId={{7A68008F-615D-435A-8C34-B298FC68FAF2}
+AppId={{B728FEF6-1C4B-4F52-B172-F3F91234A984}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -40,7 +40,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "D:\AHK\GitHub\Converter\Setup\converter.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AHK\GitHub\Converter\Setup\Converter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\AHK\GitHub\Converter\Setup\Compi\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\AHK\GitHub\Converter\Setup\License.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; Примечание: Не используйте флаги "ignoreversion" для общих системных файлов.

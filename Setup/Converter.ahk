@@ -8,7 +8,8 @@
 SendMode Input  ; для новых сценариев, обеспечение высокой скорости и надежности.
 SetWorkingDir %A_ScriptDir%  ; Обеспечивает согласованность c начальныv каталогом.
 FileCreateDir, %A_Temp%\DBFFC.tmp
-FileCreateDir, %A_AppData%\Конвертер\Logs
+IfNotExist, %A_AppData%\Конвертер\Logs
+	FileCreateDir, %A_AppData%\Конвертер\Logs
 
 ;***********************************************************************************************
 pr:= a_scriptdir . "\SkinH_EL.dll"
@@ -136,7 +137,7 @@ Loop
 	{
 		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
 		Gui, %A_Index%:Add, Edit, x5 y5 w60 h25 vZip , 85
-		Gui, %A_Index%:Add, Text, x70 y5 w150 h30 r2 , Степень сжатия (качество)`n 1-max 99-min
+		Gui, %A_Index%:Add, Text, x70 y5 w150 h30 r2 , Степень сжатия (ухудшение качества) 1-max 99-min
 		Gui, %A_Index%:Add, CheckBox, x5 y40 w150 h25 vDel, УДАЛИТЬ исходные файлы
 		Gui, %A_Index%:Add, Button, x5 y70 w100 h30 , OK
 		Gui, %A_Index%:Add, Button, x115 y70 w100 h30 , Отмена
@@ -157,7 +158,7 @@ Loop
 		Gui, %A_Index%:+hwndhGui%A_Index% +owner1 -Caption +Border
 		Gui, %A_Index%:Add, Edit, x5 y5 w50 h20 vZip , 85
 		Gui, %A_Index%:Add, Edit, x5 y35 w50 h20 vPage, 0
-		Gui, %A_Index%:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (качество) `n 1-max 99-min
+		Gui, %A_Index%:Add, Text, x70 y5 w210 h20 r2, Степень сжатия (ухудшение качества) 1-max 99-min
 		Gui, %A_Index%:Add, Text, x70 y35 w180 h25 , Номер конвертируемой страницы `n 0-все страницы
 		Gui, %A_Index%:Add, CheckBox, x5 y60 w200 h20 vDel, УДАЛИТЬ исходные файлы
 		Gui, %A_Index%:Add, Button, x5 y85 w100 h30 , OK
@@ -2180,12 +2181,9 @@ return
 9ButtonСжать:
 Gui 9:Submit
 
-FileSelectFile, files,3,,Сжатие PDF, Изображения (*.pdf)
+FileSelectFile, files,M3,,Сжатие PDF, Изображения (*.pdf)
 if files =
     return
-SplitPath, files,, dir,,name
-FileCreateDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}
-export = "%A_WorkingDir%\Sourse\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\{41243843A44243E4402042643E4392041643843221}\%name%`%02d.jpg" "%files%" -c quit
 
 WinWaitClose Сжатие PDF
 global GuiNum := % GuHi[8].GuiN
@@ -2193,29 +2191,41 @@ global GuiHigh := % GuHi[8].Hg
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
-		Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
+Gui, %GuiNum%:Show, % "x" NumGet(WI, 20, "UInt") " y" NumGet(WI, 16, "UInt") "w300 h" GuiHigh
 DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 300, UInt, 0x00040000|(i ? 1 : 0x10008))
 return
 
 8ButtonOK:
 GuiControlGet, Del
 GuiControlGet, Zip
-conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -D -c 5 -q %Zip% -multi -o "%dir%\%name%#.pdf" "%A_Temp%\{41243843A44243E4402042643E4392041643843221}\*.jpg"
-Gui, 8:Submit
+
 WaitProgress(1)
-	RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
-    RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
-	FileRemoveDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}, 1
-WaitProgress(0, %A_LastError%, %ErrorLevel%)
-	If del = 1
+Loop, parse, files, `n
+{
+    if (a_index = 1)
+		path = %A_LoopField%
+	else if (a_index >= 2)
 	{
-		FileSetAttrib, -R, %files%
-		FileDelete, %files%
-		sleep 500
-		ControlClick, JPG, Конвертер, , LEFT
+		FileCreateDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}
+		SplitPath, A_LoopField,,,,name
+		export = "%A_WorkingDir%\Sourse\%gs%"  -sDEVICE=jpeg -dNOPAUSE -r150  -sOutputFile="%A_Temp%\{41243843A44243E4402042643E4392041643843221}\%name%`%02d.jpg" "%path%\%A_LoopField%" -c quit
+		RunWait, %comspec% /c %CmdLog% && %export% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
+		conv = "%A_WorkingDir%\Sourse\%cv%" -out pdf -D -c 5 -q %Zip% -multi -o "%path%\%name%#.pdf" "%A_Temp%\{41243843A44243E4402042643E4392041643843221}\*.jpg"	
+		RunWait, %comspec% /c %CmdLog% && %conv% >>"%LogPath%`%date`%.log" 2>>&1,,Hide UseErrorLevel
+		FileRemoveDir, %A_Temp%\{41243843A44243E4402042643E4392041643843221}, 1
+		
+		If del = 1
+		{
+			FileSetAttrib, -R, %path%\%A_LoopField%
+			FileDelete, %path%\%A_LoopField%
+			sleep 500
+		}
 	}
-	else
-		ControlClick, JPG, Конвертер, , LEFT
+}
+WaitProgress(0, %A_LastError%, %ErrorLevel%)
+
+Gui, %GuiNum%:Submit
+ControlClick, JPG, Конвертер, , LEFT
 Return	
 
 ;===================================================================================================

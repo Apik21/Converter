@@ -303,7 +303,20 @@ try {
 
 
 ;================================GUI/===============================================================
-Gui, +hwndhGui1 + OwnDialogs +lastfound
+Gui, +hwndhGui1 + OwnDialogs +lastfound +e0x80 +Toolwindow
+loop, 32
+{
+	If A_Index = 1
+	{
+		Gui, Color, Gray
+		Gui, font, cFFFFFF
+	}
+	else
+	{
+		Gui, %A_Index%:Color, Gray
+		Gui, %A_Index%:font, cFFFFFF
+	}
+}
 Menu, Option, Add, &Открыть логи, LogOpen
 Menu, Option, Add, &Настройки, Options
 Menu, Option, Add, О&бновление, Update

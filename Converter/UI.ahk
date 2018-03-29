@@ -22,6 +22,7 @@ hBitmap3 := DllCall("LoadImage", UInt, hModule
                               , Int, 217, Int, 160  
                               , Uint, 0x8000)
 DllCall("FreeLibrary", UInt, hModule)
+MsgBox,,UI, % hBitmap1 " , " hBitmap2 " , " hBitmap3 " , " hModule   ; TEST
 
 Gui, Add, GroupBox, x3 y10 w220 h165 hwndh_GB, Перетащите сюда файлы
 Gui, Add, Picture, xp+1 yp+3 hwndh_Pic3 +0xE

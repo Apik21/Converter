@@ -22,8 +22,7 @@ if (sys = "win64"){
 	cv := "convert.exe"
 }
 
-
-#Include user_interface.ahk
+#Include UI.ahk ; Пользовательский интерфейс
 
 global Ext := ""
 global Dir := ""
@@ -33,7 +32,10 @@ global extArray := ["jpg", "jpeg", "pdf", "tif", "tiff", "png", "ico", "bmp", "t
 VarSetCapacity(WI, 64)
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
+
 Return
+
+#Include main.ahk ; Описания событий интерфейса
 
 GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Функция перетаскивания 
 {
@@ -105,7 +107,7 @@ if i := !i
 DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 return
 
-#Include main.ahk
+
  
 GExit: ; Gui Закрыть
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
@@ -170,14 +172,15 @@ WM_CTLCOLOR(wParam, lParam) {
 	Return hBrush 
 }
 
-;~ *******************************Перетаскивание окна мышью*****************************************
+;~ ***************************************************Перетаскивание окна мышью*****************************************
 WM_LBUTTONDOWN() {
 	WM_NCLBUTTONDOWN := 0xA1, HTCAPTION := 2
 	PostMessage, WM_NCLBUTTONDOWN, HTCAPTION
 }
 
-;~ **************************************************************************************************
+;~ ***************************************************Изменение кнопки при наведении курсора*****************************
 WM_MOUSEMOVE(wp, lp, msg)  {
+	MsgBox,,WM_MOUSEMOVE, % hBitmap1 " , " hBitmap2 ; TEST
 	CoordMode, ToolTip, Window 
 	static hover := {}
 	if (msg = "timer")  {

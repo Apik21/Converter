@@ -1,8 +1,19 @@
-п»ї;~ ********************************************************************************************
-;~ *******************************РіР»Р°РІРЅРѕРµ РѕРєРЅРѕ РІС‹Р±РѕСЂР° РґРµР№СЃС‚РІРёР№*********************************
+;~ ***************************************************Справка в заголовке окна*****************************
+Help:
+	Gui, Readme:New, +ToolWindow +Owner1 +AlwaysOnTop +LastFound +hwndhReadme -DPIScale
+	Gui, Readme:Default
+	Gui, Color, White
+	Gui, Margin, 0, 0
+	Gui, Font, s9, Tahoma
+	Gui, Add, Edit, ReadOnly, % Readme
+	ShowOwnerWindow("Readme", hReadme)
+	PostMessage, EM_SETSEL, 0, 0, Edit1
+return
+;~ ********************************************************************************************
+;~ *******************************главное окно выбора действий*********************************
 ;~ ********************************************************************************************
 
-GConvFile:
+GConvFile:  ; Конвертирование файлов
 gosub, GExit
 global GuiNum = 5
 global PrevNum = 2
@@ -54,11 +65,11 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 ;~ **********************************************************************************************************
-GZipFile:
+GZipFile:   ; Сжатий файлов
 gosub, GExit
 global GuiNum = 9
 global PrevNum = 2
@@ -66,11 +77,11 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 ;~ ******************************************************************************************************
-GProtectFile:
+GProtectFile:    ; Установка защиты на файл шифрованием в Base64
 gosub, GExit
 global GuiNum = 4
 global PrevNum = 2
@@ -78,11 +89,11 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 ;~ ****************************************************************************************************************
-GProperFile:
+GProperFile:    ; Изменение атрибутов файлов
 gosub, GExit
 global GuiNum = 3
 global PrevNum := 2
@@ -90,11 +101,11 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 ;~ ******************************************************************************************************************
-GEditPDF:
+GEditPDF:    ; Редактирование PDF файлов
 gosub, GExit
 global GuiNum = 6
 global PrevNum = 2
@@ -105,16 +116,16 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 
 ;~ ********************************************************************************************
-;~ *******************************Р РµРґР°РєС‚РѕСЂ СЃРІРѕР№СЃС‚РІ РґР°С‚С‹****************************************
+;~ *******************************Редактор свойств даты****************************************
 ;~ ********************************************************************************************
 
-VI:
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+VI:    ; Изменение даты изменения файла
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 GuiControlGet, Vremya,, hVremya, Vremya
 if coolIFiles = 1
 	FileSetTime, %Vremya%, %OneFile%, M
@@ -122,11 +133,11 @@ else {
 	Loop, parse, AreaFile, `n 
 		FileSetTime, %Vremya%, %A_LoopField%, M
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
-VS:
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+VS:    ; Изменение даты создания файла
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 GuiControlGet, Vremya,, hVremya, Vremya
 if coolIFiles = 1
 	FileSetTime, %Vremya%, %OneFile%, C
@@ -134,11 +145,11 @@ else {
 	Loop, parse, AreaFile, `n 
 		FileSetTime, %Vremya%, %A_LoopField%, C
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
-VD:
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+VD:		; Изменение даты последнего открытия файла
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 GuiControlGet, Vremya,, hVremya, Vremya
 if coolIFiles = 1
 	FileSetTime, %Vremya%, %OneFile%, A
@@ -146,15 +157,15 @@ else {
 	Loop, parse, AreaFile, `n 
 		FileSetTime, %Vremya%, %A_LoopField%, A
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
 ;~ ********************************************************************************************
-;~ *******************************Р—Р°С‰РёС‚Р° С€РёС„СЂРѕРІР°РЅРёРµРј*******************************************
+;~ *******************************Защита шифрованием*******************************************
 ;~ ********************************************************************************************
 
-BasE:
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+BasE:    ; Шифрование файла
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 GuiControlGet, IntNum
 if (coolFiles = 1) {
 	SplitPath, OneFile, FiNam, Dir, Ext, Name
@@ -183,11 +194,11 @@ if (coolFiles = 1) {
 		}
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
-BasD:
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+BasD:    ; Расшифровка файла
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 GuiControlGet, IntNum
 global OneFile
 if (coolFiles = 1) {
@@ -216,13 +227,13 @@ if (coolFiles = 1) {
 		}
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x0000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, F97B71 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x0000) ; 0xA2EEA9 - зеленый, F97B71 - красный
 return
 ;~ ********************************************************************************************
-;~ *******************************Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ PDF*******************************************
+;~ *******************************Редактирование PDF*******************************************
 ;~ ********************************************************************************************
-MergePdfFile:
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; РќР°С‡Р°Р»Рѕ РѕРїРµСЂР°С†РёРё
+MergePdfFile:    ; Склеить выбранные файлы
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; Начало операции
 merge = "%A_WorkingDir%\bin\%gs%" -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pdfwrite -sOutputFile=
 
 Loop, parse, AreaFile, `n
@@ -237,10 +248,10 @@ Loop, parse, AreaFile, `n
 		merge = %merge% "%A_LoopField%"
 }
 RunWait, %comspec% /c %CodePage% && %merge%,, Hide UseErrorLevel
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; РљРѕРЅРµС† РѕРїРµСЂР°С†РёРё
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; Конец операции
 return
 
-SavePdfPage:
+SavePdfPage:    ; Сохранить в отдельный файл выбранные страницы
 gosub, GExit
 global GuiNum = 8
 global PrevNum = 6
@@ -248,11 +259,11 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 
-ProtectPdfFile:
+ProtectPdfFile:    ; Защита PDF файла
 gosub, GExit
 global GuiNum = 7
 global PrevNum = 6
@@ -260,14 +271,14 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 
-EProtectPdf:
+EProtectPdf:     ; Защитить зайл
 pass := "", Sh := ""
-InputBox, pass, Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ, Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё Р·Р°С‰РёС‚С‹:,HIDE,250,130
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+InputBox, pass, Введите пароль, Введите пароль для установки защиты:,HIDE,250,130
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 if (coolFiles = 1) {
 	SplitPath, OneFile, FiNam, Dir,, Name
 	Sh= "%A_WorkingDir%\bin\pdftk.exe" "%OneFile%" output "%Dir%\%Name%-Lock.pdf" owner_pw %pass%
@@ -280,13 +291,13 @@ if (coolFiles = 1) {
 		RunWait, %comspec% /c "%Sh%" ,, Hide UseErrorLevel
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
-DProtectPdf:
+DProtectPdf:     ; Снять защиту с файла
 pass := "", DeSh := ""
-InputBox, pass, Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ, Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ РґР»СЏ СЃРЅСЏС‚РёСЏ Р·Р°С‰РёС‚С‹:,HIDE,250,130
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+InputBox, pass, Введите пароль, Введите пароль для снятия защиты:,HIDE,250,130
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 if (coolFiles = 1) {
 	SplitPath, OneFile, FiNam, Dir,, Name
 	DeSh= "%A_WorkingDir%\bin\pdftk.exe" "%OneFile%" input_pw %pass% output "%Dir%\%Name%-Unlock.pdf"
@@ -299,10 +310,10 @@ if (coolFiles = 1) {
 		RunWait, %comspec% /c "%DeSh%" ,, Hide UseErrorLevel
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
-Prev:
+Prev:    ; Обработка события кнопки НАЗАД
 gosub, GExit
 Gui, %GuiNum%:Submit
 if GuiNum = %PrevNum%
@@ -312,14 +323,14 @@ DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:Default
 return
 
-FixPdfFile:
+FixPdfFile:     ; Восстановление поврежденного PDF файла
 global OneFile
 global AreaFile
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 if (coolFiles = 1) {
 	SplitPath, OneFile, FiNam, Dir,, Name
 	fix= "%A_WorkingDir%\bin\pdftk.exe" "%OneFile%" output "%Dir%\%Name%-Fixed.pdf"
@@ -332,10 +343,10 @@ if (coolFiles = 1) {
 		RunWait, %comspec% /c "%fix%" ,, Hide UseErrorLevel
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - Р·РµР»РµРЅС‹Р№, 1010F1 - РєСЂР°СЃРЅС‹Р№
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; 0xA2EEA9 - зеленый, 1010F1 - красный
 return
 
-Splt:
+Splt:     ; Склеивание PDF файлов. Событие кнопки СКЛЕИТЬ
 GuiControlGet, Stran
 Value1 := ". " , Value2 := ", " , Value3 := "/ "
 Value4 := "."  , Value5 := ","  , Value6 := "/"
@@ -347,7 +358,7 @@ Loop, 6 {
 		StringReplace, Stran%A_Index%, % Stran%N%, % Value%A_Index%, %A_Space%, All
 }
 
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; РќР°С‡Р°Р»Рѕ РѕРїРµСЂР°С†РёРё
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; Начало операции
 if (coolFiles = 1) {
 	SplitPath, OneFile, FiNam, Dir,, Name
 	split= "%A_WorkingDir%\bin\pdftk.exe" "%OneFile%" cat %Stran6% output "%Dir%\%Name%_new.pdf"
@@ -360,18 +371,18 @@ if (coolFiles = 1) {
 		RunWait, %comspec% /c "%split%" ,, Hide UseErrorLevel
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; РљРѕРЅРµС† РѕРїРµСЂР°С†РёРё
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; Конец операции
 return
 
 ;~ ********************************************************************************************
-;~ *******************************РЎР¶Р°С‚РёРµ С„Р°Р№Р»РѕРІ************************************************
+;~ *******************************Сжатие файлов************************************************
 ;~ ********************************************************************************************
-RunZipFile:
+RunZipFile:     ; Сжатие JPG, PGF или TIF файлов
 GuiControlGet, Qualily
 GuiControlGet, DelStatus
 Gui 9:Submit
-if (coolFiles = 1) { 					 ; Р•СЃР»Рё РїРµСЂРµРґР°РЅ РѕРґРёРЅ С„Р°Р№Р»
-SetControlColor(h_GB, 0x1010F1, 0x000000) ; РќР°С‡Р°Р»Рѕ РѕРїРµСЂР°С†РёРё
+if (coolFiles = 1) { 					 ; Если передан один файл
+SetControlColor(h_GB, 0x1010F1, 0x000000) ; Начало операции
 	SplitPath, OneFile,, Dir, Ext, Name
 	If Ext in jpg,jpeg,JPG,JPEG
 	{
@@ -407,7 +418,7 @@ SetControlColor(h_GB, 0x1010F1, 0x000000) ; РќР°С‡Р°Р»Рѕ РѕРїРµСЂР°С†РёРё
 			sleep 500
 		}
 	}
-} else {                  ; Р•СЃР»Рё РїРµСЂРµРґР°РЅРѕ Р±РѕР»РµРµ РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р°
+} else {                  ; Если передано более одного файла
 	Loop, parse, AreaFile, `n
 	{
 		SplitPath, A_LoopField,, Dir,Ext, Name
@@ -447,9 +458,71 @@ SetControlColor(h_GB, 0x1010F1, 0x000000) ; РќР°С‡Р°Р»Рѕ РѕРїРµСЂР°С†РёРё
 		}
 	}
 }
-SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; РљРѕРЅРµС† РѕРїРµСЂР°С†РёРё
+SetControlColor(h_GB, 0xA2EEA9, 0x000000) ; Конец операции
 return
 
 ;~ ********************************************************************************************
-;~ *******************************РљРѕРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёРµ JPG******************************************
+;~ *******************************Конвертирование JPG******************************************
 ;~ ********************************************************************************************
+C_Jpg:
+gosub, GExit
+global GuiNum = 10
+global PrevNum = 5
+DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
+if i := !i
+	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
+				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
+Gui, %GuiNum%:Default
+return
+
+Conv_jpg:
+return
+
+C_Png:
+return
+
+C_Ico:
+return
+
+C_Ps:
+return
+
+C_Emf:
+return
+
+C_Bmp:
+return
+
+C_Tif_Color:
+return
+
+C_Tif_BnW:
+return
+
+C_Djvu:
+return
+
+C_Pdf:
+return
+
+C_Xpf:
+return
+
+C_Fb2:
+return
+
+C_Html:
+return
+
+C_Rtf:
+return
+
+C_Mht:
+return
+
+C_Txt:
+return
+
+C_Xml:
+return

@@ -1,59 +1,69 @@
-п»їDetectHiddenWindows, On
+Readme =
+(
+Данный скрипт представляет собой графическую оболочку для 
+консольных программ конвертирования файлов изображений.
+Таких как: NConverter, GScript, PdfTk, Doc2Html, Pdf2Djvu.
+
+Выше перечисленные оригинальные бинарные файлы идут в 
+комплексе с данным скриптом и находятся в папках /bin и /p2d.
+
+)
+DetectHiddenWindows, On
 #NoEnv
-#SingleInstance Force 
+#SingleInstance Force
+#Persistent
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 FileCreateDir, %A_Temp%\DBFFC.tmp
-Global Ctrl := []
 CodePage = chcp 866
+
 OnMessage(WM_CTLCOLOREDIT := 0x133, "WM_CTLCOLOR")
 OnMessage(WM_CTLCOLORSTATIC := 0x138, "WM_CTLCOLOR")
-OnMessage(0x201, "WM_LBUTTONDOWN") ; РїРµСЂРµС‚Р°СЃРєРёРІР°РЅРёРµ РѕРєРЅР° РјС‹С€СЊСЋ
-OnMessage(0x200, "WM_MOUSEMOVE") ; РЅР°РІРµРґРµРЅРёРµ РјС‹С€СЊСЋ
+OnMessage(0x201, "WM_LBUTTONDOWN") ; перетаскивание окна мышью
+OnMessage(0x200, "WM_MOUSEMOVE") ; наведение мышью
 
-global gs, cv, FileList, PrevNum, GuiNum
+Global Ctrl := []
+global gs, cv, FileList, PrevNum, GuiNum, hReadme, hGui1
+global Ext := ""
+global Dir := ""
+global Name := ""
+global extArray := ["jpg", "jpeg", "pdf", "tif", "tiff", "png", "ico", "bmp", "txt", "doc", "docx", "rtf", "html", "xml", "mht", "djvu"] ; Глобальный массив расширений принимаемых файлов для конвертирования и сжатия
 
 Architectura()
 if (sys = "win64"){
 	gs := "gswin64c.exe"
 	cv := "convert64.exe"
-}else if (sys = "win32"){
+} else if (sys = "win32"){
 	gs := "gswin32c.exe"
 	cv := "convert.exe"
 }
 
-#Include UI.ahk ; РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РёРЅС‚РµСЂС„РµР№СЃ
-
-global Ext := ""
-global Dir := ""
-global Name := ""
-global extArray := ["jpg", "jpeg", "pdf", "tif", "tiff", "png", "ico", "bmp", "txt", "doc", "docx", "rtf", "html", "xml", "mht", "djvu"] ; Р“Р»РѕР±Р°Р»СЊРЅС‹Р№ РјР°СЃСЃРёРІ СЂР°СЃС€РёСЂРµРЅРёР№ РїСЂРёРЅРёРјР°РµРјС‹С… С„Р°Р№Р»РѕРІ РґР»СЏ РєРѕРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёСЏ Рё СЃР¶Р°С‚РёСЏ
+#Include UI.ahk ; Пользовательский интерфейс
 
 VarSetCapacity(WI, 64)
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
-
 Return
 
-#Include main.ahk ; РћРїРёСЃР°РЅРёСЏ СЃРѕР±С‹С‚РёР№ РёРЅС‚РµСЂС„РµР№СЃР°
+#Include main.ahk ; Описания событий интерфейса
 
-GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Р¤СѓРЅРєС†РёСЏ РїРµСЂРµС‚Р°СЃРєРёРІР°РЅРёСЏ 
+GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Функция перетаскивания 
 {
 	Loop, 30 {
 		if A_Index > 2
 			Gui, %A_Index%:Submit
 	}
 	
-	global coolFiles := FileArray.MaxIndex()    ; РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ Р±СЂРѕС€РµРЅС‹С… С„Р°Р№Р»РѕРІ
-	If coolFiles = 1   ; Р•СЃР»Рё Р±СЂРѕС€РµРЅ РѕРґРёРЅ С„Р°Р№Р»
+	global coolFiles := FileArray.MaxIndex()    ; Получаем количество брошеных файлов
+	If coolFiles = 1   ; Если брошен один файл
 	{
 		global OneFile := A_GuiControlEvent
 		Ext := "" , global search := ""
 		SplitPath, OneFile,, Dir, Ext, Name
 		for i, value in extArray
-			search := Ext = value ? true : search = true ? true : "" ; РўРµСЂРЅР°СЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ РїСЂРѕРІРµСЂРєРё СЂР°СЃС€РёСЂРµРЅРёСЏ РїРѕР»СѓС‡РµРЅРЅРѕРіРѕ С„Р°Р№Р»Р° СЃ РјР°СЃСЃРёРІРѕРј
+			search := Ext = value ? true : search = true ? true : "" ; Тернарная операция проверки расширения полученного файла с массивом
 		search := search = "" ? false : true
-		gosub, gGui2 ; РџРµСЂРµС…РѕРґ РЅР° РѕС‚РєСЂС‹С‚РёРµ Р±РѕРєРѕРІРѕРіРѕ РѕРєРЅР° РІС‹Р±РѕСЂР° РґРµР№СЃС‚РІРёСЏ Gui2
+		gosub, gGui2 ; Переход на открытие бокового окна выбора действия Gui2
 	}
 	else if coolFiles > 1
 	{
@@ -70,14 +80,14 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Р¤СѓРЅРєС†РёСЏ РїРµСЂРµС‚Р°СЃ
 			{
 				SplitPath, A_LoopField,,, ExtN
 				If (Ext != ExtN)
-					MsgBox "РџРµСЂРµРґР°РЅС‹ С„Р°Р№Р»С‹ СЃ СЂР°Р·Р»РёС‡РЅС‹РјРё СЂР°СЃС€РёСЂРµРЅРёСЏРјРё, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ СЃ С„Р°Р№Р»Р°РјРё РѕРґРЅРѕРіРѕ С‚РёРїР° СЂР°СЃС€РёСЂРµРЅРёСЏ." , return
+					MsgBox "Переданы файлы с различными расширениями, повторите попытку с файлами одного типа расширения." , return
 				FileList .= ", '"   A_LoopField "' "
 			}
 		}
 		for i, value in extArray
-			search := Ext = value ? true : search = true ? true : "" ; РўРµСЂРЅР°СЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ РїСЂРѕРІРµСЂРєРё СЂР°СЃС€РёСЂРµРЅРёСЏ РїРѕР»СѓС‡РµРЅРЅС‹С… С„Р°Р№Р»РѕРІ СЃ РјР°СЃСЃРёРІРѕРј
+			search := Ext = value ? true : search = true ? true : "" ; Тернарная операция проверки расширения полученных файлов с массивом
 		search := search = "" ? false : true
-		gosub, gGui2 ; РџРµСЂРµС…РѕРґ РЅР° РѕС‚РєСЂС‹С‚РёРµ Р±РѕРєРѕРІРѕРіРѕ РѕРєРЅР° РІС‹Р±РѕСЂР° РґРµР№СЃС‚РІРёСЏ Gui2
+		gosub, gGui2 ; Переход на открытие бокового окна выбора действия Gui2
 		return
 	}
 	return
@@ -90,31 +100,31 @@ global Ext
 GuiControl, %GuiNum%:Disable, %hBt1%
 GuiControl, %GuiNum%:Disable, %hBt2%
 GuiControl, %GuiNum%:Disable, %hBt3%
-if (search != 0) ;Р•СЃР»Рё С„Р°Р№Р»С‹ РёР· СЃРїРёСЃРєР° РїРѕРґРґРµСЂР¶РёРІР°РµРјС‹С…
+if (search != 0) ;Если файлы из списка поддерживаемых
 	GuiControl, %GuiNum%:Enable, %hBt1%
-If (Ext = "jpg" || Ext = "jpeg" || Ext = "pdf" || Ext = "tif" || Ext = "tiff") ; Р•СЃР»Рё С„Р°Р№Р» РёРјРµРµС‚ СЌС‚Рё СЂР°СЃС€РёСЂРµРЅРёСЏ
+If (Ext = "jpg" || Ext = "jpeg" || Ext = "pdf" || Ext = "tif" || Ext = "tiff") ; Если файл имеет эти расширения
 	GuiControl, %GuiNum%:Enable, %hBt2%
-If (Ext = "pdf") ; Р•СЃР»Рё С„Р°Р№Р» pdf
+If (Ext = "pdf") ; Если файл pdf
 	GuiControl, %GuiNum%:Enable, %hBt3%
 
-msg_Info := "РџРµСЂРµРґР°РЅРѕ " coolFiles " С„Р°Р№Р»(РѕРІ) СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј " Ext
+msg_Info := "Передано " coolFiles " файл(ов) с расширением " Ext
 GuiControl,2:, Info, %msg_Info%
 
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 return
 
 
  
-GExit: ; Gui Р—Р°РєСЂС‹С‚СЊ
+GExit: ; Gui Закрыть
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; РІС‹РґРІРёРіР°РµРј/Р·Р°РґРІРёРіР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; выдвигаем/задвигаем окно-слайдер
 Gui, %GuiNum%:submit
 Gui, Default
 return
@@ -125,7 +135,7 @@ FileRemoveDir, %A_Temp%\DBFFC.tmp, 1
 DllCall("DeleteObject", UInt, hBitmap)
 ExitApp
 
-; ***********************************РџСЂРѕРІРµСЂРєР° Р°СЂС…РёС‚РµРєС‚СѓСЂС‹ СЃРёСЃС‚РµРјС‹**************************************
+; ***********************************Проверка архитектуры системы**************************************
 Architectura() {
 	ThisProcess := DllCall("GetCurrentProcess")
 	if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
@@ -134,28 +144,28 @@ Architectura() {
 	return %Sys%
 }
 
-;~ ***********************Р¤СѓРЅРєС†РёСЏ РїР»Р°РІРЅРѕРіРѕ РѕС‚РєСЂС‹С‚РёСЏ/Р·Р°РєСЂС‹С‚РёСЏ С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹С… РѕРєРѕРЅ************************
+;~ ***********************Функция плавного открытия/закрытия функциональных окон************************
 FuncGui(wp, lp, msg, hwnd) {
-   global hGui1, WI, i
+   global hGui1, WI, i, GuiNum
    static k
+   if GuiNum = 
+		GuiNum := 1
    if (msg = 0x112)
    {
       if (wp = 0xF020 && k := 1)   
-         Gui, %GuiNum%:Show, Hide   ; СЃРєСЂС‹РІР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ, РµСЃР»Рё РѕРЅРѕ РІС‹РґРІРёРЅСѓС‚Рѕ, РїСЂРё РјРёРЅРёРјРёР·Р°С†РёРё РѕСЃРЅРѕРІРЅРѕРіРѕ РѕРєРЅР°
+         Gui, %GuiNum%:Show, Hide   ; скрываем окно-слайдер, если оно выдвинуто, при минимизации основного окна
       
       if (wp = 0xF120 && !(k := 0) && i)   
-         Gui, %GuiNum%:Show   ; РїРѕРєР°Р·С‹РІР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ, РµСЃР»Рё РѕРЅРѕ Р±С‹Р»Рѕ РІС‹РґРІРёРЅСѓС‚Рѕ, РїСЂРё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРё РѕСЃРЅРѕРІРЅРѕРіРѕ РѕРєРЅР°
+         Gui, %GuiNum%:Show   ; показываем окно-слайдер, если оно было выдвинуто, при восстановлении основного окна
    }
-   
    if (!i || hwnd != hGui1 || k = 1)
       return
-
-   DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)  ; РїСЂРёРІСЏР·С‹РІР°РµРј РѕРєРЅРѕ-СЃР»Р°Р№РґРµСЂ Рє РїСЂР°РІРѕР№ РіСЂР°РЅРёС†Рµ РѕСЃРЅРѕРІРЅРѕРіРѕ РѕРєРЅР°   
+   DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)  ; привязываем окно-слайдер к правой границе основного окна   
    Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt")
                . " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " NA"
 }
 
-;~ **************************Р¤СѓРЅРєС†РёРё РґР»СЏ РїРµСЂРµРєСЂР°С€РёРІР°РЅРёСЏ GroupBox РІРѕ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёР№*************************
+;~ **************************Функции для перекрашивания GroupBox во время выполнения операций*************************
 SetControlColor(hwnd, BG, FG) { 
 	Ctrl[hwnd] := {BG:BG,FG:FG}
 	WM_CTLCOLOR(DllCall("GetDC", "Ptr", hwnd), hwnd)
@@ -172,15 +182,14 @@ WM_CTLCOLOR(wParam, lParam) {
 	Return hBrush 
 }
 
-;~ ***************************************************РџРµСЂРµС‚Р°СЃРєРёРІР°РЅРёРµ РѕРєРЅР° РјС‹С€СЊСЋ*****************************************
+;~ ***************************************************Перетаскивание окна мышью*****************************************
 WM_LBUTTONDOWN() {
 	WM_NCLBUTTONDOWN := 0xA1, HTCAPTION := 2
 	PostMessage, WM_NCLBUTTONDOWN, HTCAPTION
 }
 
-;~ ***************************************************РР·РјРµРЅРµРЅРёРµ РєРЅРѕРїРєРё РїСЂРё РЅР°РІРµРґРµРЅРёРё РєСѓСЂСЃРѕСЂР°*****************************
+;~ ***************************************************Изменение кнопки при наведении курсора*****************************
 WM_MOUSEMOVE(wp, lp, msg)  {
-	MsgBox,,WM_MOUSEMOVE, % hBitmap1 " , " hBitmap2 ; TEST
 	CoordMode, ToolTip, Window 
 	static hover := {}
 	if (msg = "timer")  {
@@ -197,9 +206,26 @@ WM_MOUSEMOVE(wp, lp, msg)  {
 		if ( !hover[hText] && InStr(A_GuiControl, "BtClose") )  {
 			hover[hText] := true
 			GuiControl,, BtClose, % "HBITMAP:*" hBitmap2
-			ToolTip, Р—Р°РєСЂС‹С‚СЊ РїСЂРѕРіСЂР°РјРјСѓ
+			ToolTip, Закрыть программу
 			timer := Func(A_ThisFunc).Bind(A_Gui, hText, "timer")
 			SetTimer, % timer, 100
 		}
 	}
+}
+;~ ***************************************************Справка***********************************************************
+
+ShowOwnerWindow(Title, hWnd)
+{
+   WinGetPos, X_Main, Y_Main, W_Main,, ahk_id %hGui1%
+   Gui, Show, Hide, % Title
+   DetectHiddenWindows, On
+   WinGetPos,,, W,, ahk_id %hWnd%
+   Gui, Show, % "Hide x" X_Main - W " y" Y_Main
+   WinGetPos, X, Y, W, H, ahk_id %hWnd%
+   (X < 0 && X := X_Main + W_Main)
+   (X + W > A_ScreenWidth && X := A_ScreenWidth - W)
+   (Y < 0 && Y := 0)
+   (Y + H > A_ScreenHeight && Y := A_ScreenHeight - H)
+   WinMove, ahk_id %hWnd%,, X, Y, W, H
+   Gui, Show
 }

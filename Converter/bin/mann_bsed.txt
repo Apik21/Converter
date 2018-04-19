@@ -1,0 +1,13 @@
+base64  --  Encode/decode file as base64.  Call:
+            base64 [-e / -d] [options] [infile] [outfile]
+
+Options:
+           --copyright       Print copyright information
+           -d, --decode      Decode base64 encoded file
+           -e, --encode      Encode file into base64
+           -n, --noerrcheck  Ignore errors when decoding
+           -u, --help        Print this message
+           --version         Print version number
+
+by John Walker
+http://www.fourmilab.ch/

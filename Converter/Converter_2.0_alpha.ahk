@@ -1,11 +1,11 @@
-Readme =
+ï»¿Readme =
 (
-Äàííûé ñêðèïò ïðåäñòàâëÿåò ñîáîé ãðàôè÷åñêóþ îáîëî÷êó äëÿ 
-êîíñîëüíûõ ïðîãðàìì êîíâåðòèðîâàíèÿ ôàéëîâ èçîáðàæåíèé.
-Òàêèõ êàê: NConverter, GScript, PdfTk, Doc2Html, Pdf2Djvu.
+Ð”Ð°Ð½Ð½Ñ‹Ð¹ ÑÐºÑ€Ð¸Ð¿Ñ‚ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÑÐµÑ‚ ÑÐ¾Ð±Ð¾Ð¹ Ð³Ñ€Ð°Ñ„Ð¸Ñ‡ÐµÑÐºÑƒÑŽ Ð¾Ð±Ð¾Ð»Ð¾Ñ‡ÐºÑƒ Ð´Ð»Ñ 
+ÐºÐ¾Ð½ÑÐ¾Ð»ÑŒÐ½Ñ‹Ñ… Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼ ÐºÐ¾Ð½Ð²ÐµÑ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ñ„Ð°Ð¹Ð»Ð¾Ð² Ð¸Ð·Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ð¹.
+Ð¢Ð°ÐºÐ¸Ñ… ÐºÐ°Ðº: NConverter, GScript, PdfTk, Doc2Html, Pdf2Djvu.
 
-Âûøå ïåðå÷èñëåííûå îðèãèíàëüíûå áèíàðíûå ôàéëû èäóò â 
-êîìïëåêñå ñ äàííûì ñêðèïòîì è íàõîäÿòñÿ â ïàïêàõ /bin è /p2d.
+Ð’Ñ‹ÑˆÐµ Ð¿ÐµÑ€ÐµÑ‡Ð¸ÑÐ»ÐµÐ½Ð½Ñ‹Ðµ Ð¾Ñ€Ð¸Ð³Ð¸Ð½Ð°Ð»ÑŒÐ½Ñ‹Ðµ Ð±Ð¸Ð½Ð°Ñ€Ð½Ñ‹Ðµ Ñ„Ð°Ð¹Ð»Ñ‹ Ð¸Ð´ÑƒÑ‚ Ð² 
+ÐºÐ¾Ð¼Ð¿Ð»ÐµÐºÑÐµ Ñ Ð´Ð°Ð½Ð½Ñ‹Ð¼ ÑÐºÑ€Ð¸Ð¿Ñ‚Ð¾Ð¼ Ð¸ Ð½Ð°Ñ…Ð¾Ð´ÑÑ‚ÑÑ Ð² Ð¿Ð°Ð¿ÐºÐ°Ñ… /bin Ð¸ /p2d.
 
 )
 DetectHiddenWindows, On
@@ -19,15 +19,15 @@ CodePage = chcp 866
 
 OnMessage(WM_CTLCOLOREDIT := 0x133, "WM_CTLCOLOR")
 OnMessage(WM_CTLCOLORSTATIC := 0x138, "WM_CTLCOLOR")
-OnMessage(0x201, "WM_LBUTTONDOWN") ; ïåðåòàñêèâàíèå îêíà ìûøüþ
-OnMessage(0x200, "WM_MOUSEMOVE") ; íàâåäåíèå ìûøüþ
+OnMessage(0x201, "WM_LBUTTONDOWN") ; Ð¿ÐµÑ€ÐµÑ‚Ð°ÑÐºÐ¸Ð²Ð°Ð½Ð¸Ðµ Ð¾ÐºÐ½Ð° Ð¼Ñ‹ÑˆÑŒÑŽ
+OnMessage(0x200, "WM_MOUSEMOVE") ; Ð½Ð°Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ Ð¼Ñ‹ÑˆÑŒÑŽ
 
 Global Ctrl := []
 global gs, cv, FileList, PrevNum, GuiNum, hReadme, hGui1
 global Ext := ""
 global Dir := ""
 global Name := ""
-global extArray := ["jpg", "jpeg", "pdf", "tif", "tiff", "png", "ico", "bmp", "txt", "doc", "docx", "rtf", "html", "xml", "mht", "djvu"] ; Ãëîáàëüíûé ìàññèâ ðàñøèðåíèé ïðèíèìàåìûõ ôàéëîâ äëÿ êîíâåðòèðîâàíèÿ è ñæàòèÿ
+global extArray := ["jpg", "jpeg", "pdf", "tif", "tiff", "png", "ico", "bmp", "txt", "doc", "docx", "rtf", "html", "xml", "mht", "djvu"] ; Ð“Ð»Ð¾Ð±Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð² Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ð¹ Ð¿Ñ€Ð¸Ð½Ð¸Ð¼Ð°ÐµÐ¼Ñ‹Ñ… Ñ„Ð°Ð¹Ð»Ð¾Ð² Ð´Ð»Ñ ÐºÐ¾Ð½Ð²ÐµÑ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¸ ÑÐ¶Ð°Ñ‚Ð¸Ñ
 
 Architectura()
 if (sys = "win64"){
@@ -38,32 +38,32 @@ if (sys = "win64"){
 	cv := "convert.exe"
 }
 
-#Include UI.ahk ; Ïîëüçîâàòåëüñêèé èíòåðôåéñ
+#Include UI.ahk ; ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÑÐºÐ¸Ð¹ Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ
 
 VarSetCapacity(WI, 64)
 OnMessage(0x3, "FuncGui")
 OnMessage(0x112, "FuncGui")
 Return
 
-#Include main.ahk ; Îïèñàíèÿ ñîáûòèé èíòåðôåéñà
+#Include main.ahk ; ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ñ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ð¹ Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹ÑÐ°
 
-GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Ôóíêöèÿ ïåðåòàñêèâàíèÿ 
+GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Ð¤ÑƒÐ½ÐºÑ†Ð¸Ñ Ð¿ÐµÑ€ÐµÑ‚Ð°ÑÐºÐ¸Ð²Ð°Ð½Ð¸Ñ 
 {
 	Loop, 30 {
 		if A_Index > 2
 			Gui, %A_Index%:Submit
 	}
 	
-	global coolFiles := FileArray.MaxIndex()    ; Ïîëó÷àåì êîëè÷åñòâî áðîøåíûõ ôàéëîâ
-	If coolFiles = 1   ; Åñëè áðîøåí îäèí ôàéë
+	global coolFiles := FileArray.MaxIndex()    ; ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð±Ñ€Ð¾ÑˆÐµÐ½Ñ‹Ñ… Ñ„Ð°Ð¹Ð»Ð¾Ð²
+	If coolFiles = 1   ; Ð•ÑÐ»Ð¸ Ð±Ñ€Ð¾ÑˆÐµÐ½ Ð¾Ð´Ð¸Ð½ Ñ„Ð°Ð¹Ð»
 	{
 		global OneFile := A_GuiControlEvent
 		Ext := "" , global search := ""
 		SplitPath, OneFile,, Dir, Ext, Name
 		for i, value in extArray
-			search := Ext = value ? true : search = true ? true : "" ; Òåðíàðíàÿ îïåðàöèÿ ïðîâåðêè ðàñøèðåíèÿ ïîëó÷åííîãî ôàéëà ñ ìàññèâîì
+			search := Ext = value ? true : search = true ? true : "" ; Ð¢ÐµÑ€Ð½Ð°Ñ€Ð½Ð°Ñ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ñ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð½Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð° Ñ Ð¼Ð°ÑÑÐ¸Ð²Ð¾Ð¼
 		search := search = "" ? false : true
-		gosub, gGui2 ; Ïåðåõîä íà îòêðûòèå áîêîâîãî îêíà âûáîðà äåéñòâèÿ Gui2
+		gosub, gGui2 ; ÐŸÐµÑ€ÐµÑ…Ð¾Ð´ Ð½Ð° Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ðµ Ð±Ð¾ÐºÐ¾Ð²Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð° Ð²Ñ‹Ð±Ð¾Ñ€Ð° Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ Gui2
 	}
 	else if coolFiles > 1
 	{
@@ -80,14 +80,14 @@ GuiDropFiles(GuiHwnd, FileArray, CtrlHwnd, X, Y) ; Ôóíêöèÿ ïåðåòàñêèâàíèÿ
 			{
 				SplitPath, A_LoopField,,, ExtN
 				If (Ext != ExtN)
-					MsgBox "Ïåðåäàíû ôàéëû ñ ðàçëè÷íûìè ðàñøèðåíèÿìè, ïîâòîðèòå ïîïûòêó ñ ôàéëàìè îäíîãî òèïà ðàñøèðåíèÿ." , return
+					MsgBox "ÐŸÐµÑ€ÐµÐ´Ð°Ð½Ñ‹ Ñ„Ð°Ð¹Ð»Ñ‹ Ñ Ñ€Ð°Ð·Ð»Ð¸Ñ‡Ð½Ñ‹Ð¼Ð¸ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸ÑÐ¼Ð¸, Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð¸Ñ‚Ðµ Ð¿Ð¾Ð¿Ñ‹Ñ‚ÐºÑƒ Ñ Ñ„Ð°Ð¹Ð»Ð°Ð¼Ð¸ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ñ‚Ð¸Ð¿Ð° Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ñ." , return
 				FileList .= ", '"   A_LoopField "' "
 			}
 		}
 		for i, value in extArray
-			search := Ext = value ? true : search = true ? true : "" ; Òåðíàðíàÿ îïåðàöèÿ ïðîâåðêè ðàñøèðåíèÿ ïîëó÷åííûõ ôàéëîâ ñ ìàññèâîì
+			search := Ext = value ? true : search = true ? true : "" ; Ð¢ÐµÑ€Ð½Ð°Ñ€Ð½Ð°Ñ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ñ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð½Ñ‹Ñ… Ñ„Ð°Ð¹Ð»Ð¾Ð² Ñ Ð¼Ð°ÑÑÐ¸Ð²Ð¾Ð¼
 		search := search = "" ? false : true
-		gosub, gGui2 ; Ïåðåõîä íà îòêðûòèå áîêîâîãî îêíà âûáîðà äåéñòâèÿ Gui2
+		gosub, gGui2 ; ÐŸÐµÑ€ÐµÑ…Ð¾Ð´ Ð½Ð° Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ðµ Ð±Ð¾ÐºÐ¾Ð²Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð° Ð²Ñ‹Ð±Ð¾Ñ€Ð° Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ Gui2
 		return
 	}
 	return
@@ -100,31 +100,31 @@ global Ext
 GuiControl, %GuiNum%:Disable, %hBt1%
 GuiControl, %GuiNum%:Disable, %hBt2%
 GuiControl, %GuiNum%:Disable, %hBt3%
-if (search != 0) ;Åñëè ôàéëû èç ñïèñêà ïîääåðæèâàåìûõ
+if (search != 0) ;Ð•ÑÐ»Ð¸ Ñ„Ð°Ð¹Ð»Ñ‹ Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ° Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶Ð¸Ð²Ð°ÐµÐ¼Ñ‹Ñ…
 	GuiControl, %GuiNum%:Enable, %hBt1%
-If (Ext = "jpg" || Ext = "jpeg" || Ext = "pdf" || Ext = "tif" || Ext = "tiff") ; Åñëè ôàéë èìååò ýòè ðàñøèðåíèÿ
+If (Ext = "jpg" || Ext = "jpeg" || Ext = "pdf" || Ext = "tif" || Ext = "tiff") ; Ð•ÑÐ»Ð¸ Ñ„Ð°Ð¹Ð» Ð¸Ð¼ÐµÐµÑ‚ ÑÑ‚Ð¸ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ñ
 	GuiControl, %GuiNum%:Enable, %hBt2%
-If (Ext = "pdf") ; Åñëè ôàéë pdf
+If (Ext = "pdf") ; Ð•ÑÐ»Ð¸ Ñ„Ð°Ð¹Ð» pdf
 	GuiControl, %GuiNum%:Enable, %hBt3%
 
-msg_Info := "Ïåðåäàíî " coolFiles " ôàéë(îâ) ñ ðàñøèðåíèåì " Ext
+msg_Info := "ÐŸÐµÑ€ÐµÐ´Ð°Ð½Ð¾ " coolFiles " Ñ„Ð°Ð¹Ð»(Ð¾Ð²) Ñ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸ÐµÐ¼ " Ext
 GuiControl,2:, Info, %msg_Info%
 
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; âûäâèãàåì/çàäâèãàåì îêíî-ñëàéäåð
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; Ð²Ñ‹Ð´Ð²Ð¸Ð³Ð°ÐµÐ¼/Ð·Ð°Ð´Ð²Ð¸Ð³Ð°ÐµÐ¼ Ð¾ÐºÐ½Ð¾-ÑÐ»Ð°Ð¹Ð´ÐµÑ€
 return
 
 
  
-GExit: ; Gui Çàêðûòü
+GExit: ; Gui Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ
 DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)
 if i := !i
 	Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt") 
 				. " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " hide"
-DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; âûäâèãàåì/çàäâèãàåì îêíî-ñëàéäåð
+DllCall("AnimateWindow", Ptr, hGui%GuiNum%, UInt, 400, UInt, 0x40000|(i ? 1 : 0x10002))   ; Ð²Ñ‹Ð´Ð²Ð¸Ð³Ð°ÐµÐ¼/Ð·Ð°Ð´Ð²Ð¸Ð³Ð°ÐµÐ¼ Ð¾ÐºÐ½Ð¾-ÑÐ»Ð°Ð¹Ð´ÐµÑ€
 Gui, %GuiNum%:submit
 Gui, Default
 return
@@ -135,7 +135,7 @@ FileRemoveDir, %A_Temp%\DBFFC.tmp, 1
 DllCall("DeleteObject", UInt, hBitmap)
 ExitApp
 
-; ***********************************Ïðîâåðêà àðõèòåêòóðû ñèñòåìû**************************************
+; ***********************************ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð°Ñ€Ñ…Ð¸Ñ‚ÐµÐºÑ‚ÑƒÑ€Ñ‹ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹**************************************
 Architectura() {
 	ThisProcess := DllCall("GetCurrentProcess")
 	if !DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process)
@@ -144,7 +144,7 @@ Architectura() {
 	return %Sys%
 }
 
-;~ ***********************Ôóíêöèÿ ïëàâíîãî îòêðûòèÿ/çàêðûòèÿ ôóíêöèîíàëüíûõ îêîí************************
+;~ ***********************Ð¤ÑƒÐ½ÐºÑ†Ð¸Ñ Ð¿Ð»Ð°Ð²Ð½Ð¾Ð³Ð¾ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ñ/Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¸Ñ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¾Ð½Ð°Ð»ÑŒÐ½Ñ‹Ñ… Ð¾ÐºÐ¾Ð½************************
 FuncGui(wp, lp, msg, hwnd) {
    global hGui1, WI, i, GuiNum
    static k
@@ -153,19 +153,19 @@ FuncGui(wp, lp, msg, hwnd) {
    if (msg = 0x112)
    {
       if (wp = 0xF020 && k := 1)   
-         Gui, %GuiNum%:Show, Hide   ; ñêðûâàåì îêíî-ñëàéäåð, åñëè îíî âûäâèíóòî, ïðè ìèíèìèçàöèè îñíîâíîãî îêíà
+         Gui, %GuiNum%:Show, Hide   ; ÑÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ Ð¾ÐºÐ½Ð¾-ÑÐ»Ð°Ð¹Ð´ÐµÑ€, ÐµÑÐ»Ð¸ Ð¾Ð½Ð¾ Ð²Ñ‹Ð´Ð²Ð¸Ð½ÑƒÑ‚Ð¾, Ð¿Ñ€Ð¸ Ð¼Ð¸Ð½Ð¸Ð¼Ð¸Ð·Ð°Ñ†Ð¸Ð¸ Ð¾ÑÐ½Ð¾Ð²Ð½Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð°
       
       if (wp = 0xF120 && !(k := 0) && i)   
-         Gui, %GuiNum%:Show   ; ïîêàçûâàåì îêíî-ñëàéäåð, åñëè îíî áûëî âûäâèíóòî, ïðè âîññòàíîâëåíèè îñíîâíîãî îêíà
+         Gui, %GuiNum%:Show   ; Ð¿Ð¾ÐºÐ°Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ð¾ÐºÐ½Ð¾-ÑÐ»Ð°Ð¹Ð´ÐµÑ€, ÐµÑÐ»Ð¸ Ð¾Ð½Ð¾ Ð±Ñ‹Ð»Ð¾ Ð²Ñ‹Ð´Ð²Ð¸Ð½ÑƒÑ‚Ð¾, Ð¿Ñ€Ð¸ Ð²Ð¾ÑÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ð¸ Ð¾ÑÐ½Ð¾Ð²Ð½Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð°
    }
    if (!i || hwnd != hGui1 || k = 1)
       return
-   DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)  ; ïðèâÿçûâàåì îêíî-ñëàéäåð ê ïðàâîé ãðàíèöå îñíîâíîãî îêíà   
+   DllCall("GetWindowInfo", Ptr, hGui1, Ptr, &WI)  ; Ð¿Ñ€Ð¸Ð²ÑÐ·Ñ‹Ð²Ð°ÐµÐ¼ Ð¾ÐºÐ½Ð¾-ÑÐ»Ð°Ð¹Ð´ÐµÑ€ Ðº Ð¿Ñ€Ð°Ð²Ð¾Ð¹ Ð³Ñ€Ð°Ð½Ð¸Ñ†Ðµ Ð¾ÑÐ½Ð¾Ð²Ð½Ð¾Ð³Ð¾ Ð¾ÐºÐ½Ð°   
    Gui, %GuiNum%:Show, % "x" NumGet(WI, 12, "UInt") " y" NumGet(WI, 24, "UInt")
                . " h" NumGet(WI, 32, "UInt") - NumGet(WI, 24, "UInt") " NA"
 }
 
-;~ **************************Ôóíêöèè äëÿ ïåðåêðàøèâàíèÿ GroupBox âî âðåìÿ âûïîëíåíèÿ îïåðàöèé*************************
+;~ **************************Ð¤ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÐºÑ€Ð°ÑˆÐ¸Ð²Ð°Ð½Ð¸Ñ GroupBox Ð²Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹*************************
 SetControlColor(hwnd, BG, FG) { 
 	Ctrl[hwnd] := {BG:BG,FG:FG}
 	WM_CTLCOLOR(DllCall("GetDC", "Ptr", hwnd), hwnd)
@@ -182,13 +182,13 @@ WM_CTLCOLOR(wParam, lParam) {
 	Return hBrush 
 }
 
-;~ ***************************************************Ïåðåòàñêèâàíèå îêíà ìûøüþ*****************************************
+;~ ***************************************************ÐŸÐµÑ€ÐµÑ‚Ð°ÑÐºÐ¸Ð²Ð°Ð½Ð¸Ðµ Ð¾ÐºÐ½Ð° Ð¼Ñ‹ÑˆÑŒÑŽ*****************************************
 WM_LBUTTONDOWN() {
 	WM_NCLBUTTONDOWN := 0xA1, HTCAPTION := 2
 	PostMessage, WM_NCLBUTTONDOWN, HTCAPTION
 }
 
-;~ ***************************************************Èçìåíåíèå êíîïêè ïðè íàâåäåíèè êóðñîðà*****************************
+;~ ***************************************************Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÐºÐ½Ð¾Ð¿ÐºÐ¸ Ð¿Ñ€Ð¸ Ð½Ð°Ð²ÐµÐ´ÐµÐ½Ð¸Ð¸ ÐºÑƒÑ€ÑÐ¾Ñ€Ð°*****************************
 WM_MOUSEMOVE(wp, lp, msg)  {
 	CoordMode, ToolTip, Window 
 	static hover := {}
@@ -206,13 +206,13 @@ WM_MOUSEMOVE(wp, lp, msg)  {
 		if ( !hover[hText] && InStr(A_GuiControl, "BtClose") )  {
 			hover[hText] := true
 			GuiControl,, BtClose, % "HBITMAP:*" hBitmap2
-			ToolTip, Çàêðûòü ïðîãðàììó
+			ToolTip, Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñƒ
 			timer := Func(A_ThisFunc).Bind(A_Gui, hText, "timer")
 			SetTimer, % timer, 100
 		}
 	}
 }
-;~ ***************************************************Ñïðàâêà***********************************************************
+;~ ***************************************************Ð¡Ð¿Ñ€Ð°Ð²ÐºÐ°***********************************************************
 
 ShowOwnerWindow(Title, hWnd)
 {
@@ -228,4 +228,5 @@ ShowOwnerWindow(Title, hWnd)
    (Y + H > A_ScreenHeight && Y := A_ScreenHeight - H)
    WinMove, ahk_id %hWnd%,, X, Y, W, H
    Gui, Show
+   MouseClick, ,X,Y-5
 }
